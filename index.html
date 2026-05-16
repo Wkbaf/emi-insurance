@@ -391,8 +391,16 @@ rotate(-6deg)
 scale(1.12);
 
 box-shadow:
-0 25px 45px rgba(37,99,235,.35);
+0 25px 45px rgba(191,155,66,.35);
 
+background:
+linear-gradient(
+135deg,
+#bf9b42,
+#d8b65d
+);
+
+color:white;
 }
 
 
@@ -813,12 +821,10 @@ transform:scaleX(1)
 
 .contact-person img{
   width:100%;
-  height:360px;
-  object-fit:cover;
+  object-fit:contain;
+  object-position:center;
   border-radius:34px;
-  box-shadow:
-    0 30px 70px rgba(0,0,0,.22),
-    0 10px 30px rgba(20,184,166,.22);
+  padding:12px;
 }
 
 .contact-person.show{
@@ -845,7 +851,214 @@ transform:scaleX(1)
     transform:translateY(0) scale(1);
   }
 }
-  </style>
+
+/* GOI HAU MAI NOI BAT SAN */
+
+.premium-card{
+
+position:relative;
+
+overflow:hidden;
+
+background:
+linear-gradient(
+135deg,
+#fffdf8,
+#f9f3e4
+);
+
+border:2px solid rgba(191,155,66,.28);
+
+box-shadow:
+0 25px 80px rgba(191,155,66,.16),
+0 10px 40px rgba(3,54,49,.08);
+
+}
+
+
+/* glow vàng phía sau */
+
+.premium-card::before{
+
+content:"";
+
+position:absolute;
+
+width:420px;
+height:420px;
+
+right:-160px;
+top:-180px;
+
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+rgba(191,155,66,.22),
+transparent 70%
+);
+
+animation:
+premiumGlow 6s ease-in-out infinite;
+
+}
+
+
+/* viền sáng nhẹ */
+
+.premium-card::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+border-radius:inherit;
+
+padding:1px;
+
+background:
+linear-gradient(
+135deg,
+rgba(191,155,66,.65),
+rgba(255,255,255,.8),
+rgba(191,155,66,.35)
+);
+
+-webkit-mask:
+linear-gradient(#fff 0 0) content-box,
+linear-gradient(#fff 0 0);
+
+-webkit-mask-composite:xor;
+
+mask-composite:exclude;
+
+}
+
+
+/* badge đỏ nổi bật */
+
+.premium-badge{
+
+background:
+linear-gradient(
+135deg,
+#bf9b42,
+#d8b65d
+)!important;
+
+color:white!important;
+
+font-weight:800;
+
+box-shadow:
+0 15px 35px rgba(191,155,66,.35);
+
+}
+
+
+/* animation nhẹ */
+
+@keyframes premiumGlow{
+
+0%{
+
+transform:
+scale(1);
+
+opacity:.5;
+
+}
+
+50%{
+
+transform:
+scale(1.15);
+
+opacity:.9;
+
+}
+
+100%{
+
+transform:
+scale(1);
+
+opacity:.5;
+
+}
+
+}
+
+.about-image{
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:34px;
+
+  height:320px;
+
+  box-shadow:
+0 35px 70px rgba(0,0,0,.18);
+}
+
+/* ảnh nằm ngang */
+
+.about-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+display:block;
+
+transition:.8s;
+
+}
+
+
+/* glow vàng */
+
+.about-image::before{
+
+content:"";
+
+position:absolute;
+
+width:260px;
+height:260px;
+
+right:-120px;
+top:-100px;
+
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+rgba(191,155,66,.22),
+transparent
+);
+
+z-index:2;
+
+}
+
+
+@media(max-width:991px){
+
+.about-image{
+
+height:auto;
+
+}
+
+}  </style>
 </head>
 
 <body>
@@ -977,47 +1190,106 @@ transform:scaleX(1)
 
 <section class="bg-soft" id="about">
   <div class="container">
+
     <div class="about-box">
+
       <div class="row align-items-center g-5">
+
+        <!-- LEFT -->
         <div class="col-lg-6">
-          <h2>Từ một tư vấn viên đến hệ sinh thái bảo vệ toàn diện</h2>
+
+          <h2>
+            Từ một tư vấn viên đến hệ sinh thái bảo vệ toàn diện
+          </h2>
+
           <p>
             EMI bắt đầu từ bảo hiểm nhân thọ, nhưng trong quá trình đồng hành cùng khách hàng,
-            chúng tôi nhận ra: mỗi người không chỉ cần một hợp đồng, mà cần một kế hoạch bảo vệ đầy đủ.
+            chúng tôi nhận ra: mỗi người không chỉ cần một hợp đồng,
+            mà cần một kế hoạch bảo vệ đầy đủ.
           </p>
+
           <p>
-            Vì vậy, EMI mở rộng sang bảo hiểm phi nhân thọ, sức khỏe, BHYT và BHXH tự nguyện
-            để giúp khách hàng có cái nhìn toàn diện hơn về bảo vệ tài chính.
+            Vì vậy, EMI mở rộng sang bảo hiểm phi nhân thọ, sức khỏe,
+            BHYT và BHXH tự nguyện để giúp khách hàng có cái nhìn
+            toàn diện hơn về bảo vệ tài chính.
           </p>
+
         </div>
 
+
+        <!-- RIGHT IMAGE -->
         <div class="col-lg-6">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <div class="value-item">
-                <h5>Minh bạch</h5>
-                <p>Giải thích rõ quyền lợi, điều khoản, chi phí và loại trừ.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="value-item">
-                <h5>Tận tâm</h5>
-                <p>Không kết thúc sau khi ký hợp đồng, mà đồng hành lâu dài.</p>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="value-item">
-                <h5>Luôn đứng về phía khách hàng</h5>
-                <p>Hỗ trợ quyền lợi, bồi thường và giải đáp các vướng mắc khi cần.</p>
-              </div>
-            </div>
+
+          <div class="about-image">
+
+            <img
+              src="image-about.jpg"
+              alt="EMI Insurance"
+            >
+
           </div>
+
         </div>
-      </div>  
+
+      </div>
+
+
+      <!-- VALUE -->
+      <div class="row g-4 mt-5">
+
+        <div class="col-lg-4">
+
+          <div class="value-item">
+
+            <h5>Minh bạch</h5>
+
+            <p>
+              Giải thích rõ điều khoản,
+              quyền lợi và chi phí.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+          <div class="value-item">
+
+            <h5>Tận tâm</h5>
+
+            <p>
+              Đồng hành lâu dài
+              sau khi ký hợp đồng.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+          <div class="value-item">
+
+            <h5>Luôn đứng về phía khách hàng</h5>
+
+            <p>
+              Hỗ trợ quyền lợi,
+              giải đáp và bồi thường.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 </section>
-
 <section id="products">
   <div class="container">
     <div class="section-kicker">Danh mục sản phẩm</div>
@@ -1226,7 +1498,7 @@ transform:scaleX(1)
 
            <div class="contact-person">
               <img
-      src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80"
+      src="image-contact.jpg?auto=format&fit=crop&w=800&q=80"
       alt="Chuyên viên tư vấn EMI Insurance"
     />
           </div>
@@ -1305,22 +1577,29 @@ transform:scaleX(1)
 
 <div class="floating-contact">
   <!-- Zalo -->
-  <a href="#" class="float-btn zalo">
+  <a href="#https://zalo.me/sdt" class="float-btn zalo">
     <i class="bi bi-chat-dots"></i>
   </a>
 
   <!-- Facebook -->
-  <a href="#"
+  <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr"
      class="float-btn"
-     style="background:#1877F2">
+     style="background:#1877F2" target="_blank">
 
     <i class="bi bi-facebook"></i>
   </a>
+  <!-- messenger -->
+  <a href="#https://m.me/username"
+     class="float-btn messenger"
+     style="background:linear-gradient(135deg, #0084ff, #a43ff2)" target="_blank">
+
+    <i class="bi bi-messenger"></i>
+  </a>
 
   <!-- TikTok -->
-  <a href="#"
+  <a href="https://www.tiktok.com/@emi_hotrobaohiem?_r=1&_t=ZS-96LGpjw1DPO"
      class="float-btn"
-     style="background:#000">
+     style="background:#000" target="_blank">
 
     <i class="bi bi-tiktok"></i>
   </a>
