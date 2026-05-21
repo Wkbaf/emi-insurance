@@ -167,6 +167,333 @@
             font-weight: 800;
         }
 
+        .text-quote {
+            color: var(--green);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /* HỆ SINH THÁI BẢO VỆ 4.0 */
+        .ecosystem-section {
+            padding: 88px 0;
+            background: #fff;
+        }
+
+        .eco-top-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(191, 155, 66, .55);
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin: 0 auto 20px;
+        }
+
+        .eco-top-badge i {
+            font-size: 14px;
+            color: var(--blue);
+        }
+
+        .eco-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .eco-title {
+            font-size: clamp(38px, 5vw, 62px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            color: #033631;
+            margin-bottom: 18px;
+        }
+
+        .eco-title .text-gold {
+            background: linear-gradient(135deg,
+                    #bf9b42,
+                    #f3d37c,
+                    #bf9b42);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .eco-subtitle {
+            font-size: 32px;
+            font-weight: 800;
+            color: #033631;
+            margin-bottom: 18px;
+        }
+
+        .eco-deco {
+            color: var(--blue);
+            font-size: 14px;
+            opacity: .85;
+        }
+
+        .eco-intro {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: clamp(14px, 1.4vw, 16px);
+            line-height: 1.75;
+            color: #4b5563;
+        }
+
+        .pillar-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid #e8ecef;
+            border-radius: 24px;
+            padding: 32px 24px 28px;
+            text-align: center;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, .06);
+            transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease;
+        }
+
+        /* Desktop */
+        @media (min-width:992px) {
+
+            .pillar-card:hover,
+            .pillar-card:focus-within {
+                border-color: var(--blue);
+
+                box-shadow:
+                    0 18px 48px rgba(191, 155, 66, .22);
+
+                transform: translateY(-4px);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width:991px) {
+
+            .pillar-card:active {
+                border-color: var(--blue);
+
+                box-shadow:
+                    0 12px 35px rgba(191, 155, 66, .18);
+
+                transform: scale(.98);
+
+                background: #fffdf8;
+            }
+        }
+
+        .pillar-icon-wrap {
+            width: 110px;
+            height: 110px;
+
+            border-radius: 50%;
+
+            background: #fffdf8;
+
+            border: 1px solid #efe6cf;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .04);
+
+            margin: 0 auto 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition:.35s ease;
+        }
+
+        .pillar-icon-wrap i {
+            font-size: 48px;
+            color: #d8b65d;
+        }
+
+        .pillar-icon-wrap .fa-solid {
+            font-size: 34px;
+        }
+
+        .pillar-icon-duo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pillar-icon-duo .icon-back {
+            font-size: 30px;
+            opacity: .9;
+        }
+
+        .pillar-icon-duo .icon-front {
+            position: absolute;
+            right: 10px;
+            bottom: 12px;
+            font-size: 22px;
+        }
+
+        .pillar-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 14px;
+
+            margin: 22px 0 24px;
+
+            position: relative;
+        }
+
+        /* 2 gạch vàng */
+        .pillar-line {
+            width: 38px;
+            height: 3px;
+
+            border-radius: 20px;
+
+            background: #d8b65d;
+
+            opacity: .9;
+        }
+
+
+        .pillar-num .pillar-line:last-child {
+            background: linear-gradient(90deg, var(--blue), transparent);
+        }
+
+        /* vòng tròn số */
+        .pillar-badge {
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+
+            background: #033631;
+
+            color: #fff;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow:
+                0 10px 24px rgba(3, 54, 49, .18);
+
+            position: relative;
+        }
+
+        .pillar-card h4 {
+            margin-top: 26px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #033631;
+        }
+
+        /* kim cương nhỏ phía dưới */
+        .pillar-badge h4::after {
+            content: "◆";
+
+            position: absolute;
+
+            bottom: -32px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            font-size: 12px;
+
+            color: #d8b65d;
+        }
+
+        .pillar-card p {
+            font-size: clamp(13px, 1.2vw, 14px);
+            line-height: 1.65;
+            color: #5b6472;
+            margin: 0;
+        }
+
+        .eco-banner {
+            width: 70%;
+            margin: 40px auto 0;
+
+            padding: 18px 26px;
+
+            border-radius: 28px;
+
+            background: #fff;
+
+            border: 1px solid rgba(3, 54, 49, .18);
+
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, .05);
+        }
+
+
+        /* khung icon */
+        .eco-banner-icon {
+            width: 76px;
+            height: 76px;
+
+            min-width: 76px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(135deg,
+                    #fffdf8,
+                    #f6f2e8);
+
+            border: 1px solid #e7dcc2;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .7),
+                0 8px 20px rgba(0, 0, 0, .06);
+        }
+
+
+        /* chỉnh ảnh */
+        .eco-banner-icon img {
+            width: 48px;
+            height: 48px;
+
+            object-fit: contain;
+
+            transform: scale(1.05);
+        }
+
+        @media(max-width:768px) {
+            .eco-banner {
+                width: 100%;
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .eco-banner p {
+            margin: 0;
+            font-size: clamp(14px, 1.35vw, 10px);
+            line-height: 1.6;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
         .btn-outline-main {
             border: 1px solid rgba(255, 255, 255, .55);
             color: white;
@@ -652,26 +979,107 @@
 
         /* STATS */
         .stats {
-            padding: 38px 0;
-            background: white;
-            box-shadow: 0 10px 40px rgba(15, 23, 42, .05);
+            padding: 48px 0;
+            background: #f3f4f6;
         }
 
-        .stat-box {
-            text-align: center;
-            padding: 20px;
+        .stats-row {
+            align-items: stretch;
         }
 
-        .stat-box h3 {
-            font-size: 42px;
+        .stat-item {
+            display: flex;
+            padding: 28px 32px;
+            border-right: 1px solid #d1d5db;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .stat-icon-wrap {
+            flex-shrink: 0;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--navy);
-            font-weight: 900;
-            margin: 0;
+            font-size: 30px;
         }
 
-        .stat-box p {
-            color: var(--muted);
-            margin: 8px 0 0;
+        .stat-icon-wrap .fa-solid {
+            font-size: 28px;
+        }
+
+        .stat-icon-combo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon-combo .bi-people-fill {
+            font-size: 26px;
+        }
+
+        .stat-icon-combo .bi-shield-fill {
+            position: absolute;
+            right: 6px;
+            bottom: 8px;
+            font-size: 18px;
+        }
+
+        .stat-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stat-heading {
+            margin: 0 0 6px;
+            line-height: 1;
+            color: var(--blue);
+            font-weight: 800;
+        }
+
+        .stat-number {
+            font-size: clamp(36px, 4vw, 35px);
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--blue);
+        }
+
+        .stat-label {
+            font-size: clamp(22px, 2.5vw, 20px);
+            font-weight: 800;
+            color: var(--blue);
+            margin-left: 4px;
+        }
+
+        .stat-subtitle {
+            font-size: clamp(15px, 1.5vw, 17px);
+            font-weight: 800;
+            color: var(--navy);
+            margin: 0 0 10px;
+            line-height: 1.35;
+        }
+
+        .stat-desc {
+            font-size: clamp(13px, 1.2vw, 14px);
+            line-height: 1.65;
+            color: #4b5563;
+            margin: 0;
         }
 
         /* ABOUT */
@@ -705,6 +1113,21 @@
         .about-box p {
             color: rgba(255, 255, 255, .82);
             line-height: 1.9;
+            margin-bottom: 1rem;
+        }
+
+        .about-box p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .about-box .text-gold {
+            color: var(--green);
+        }
+
+        .about-box .text-quote {
+            color: var(--green);
+            font-weight: 700;
+            font-style: italic;
         }
 
         .value-item {
@@ -930,6 +1353,16 @@
             section {
                 padding: 72px 0
             }
+
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid #d1d5db;
+                padding: 24px 20px;
+            }
+
+            .stat-item:last-child {
+                border-bottom: none;
+            }
         }
 
         @media(max-width:576px) {
@@ -1001,6 +1434,54 @@
             .floating-contact {
                 right: 14px;
                 bottom: 14px
+            }
+
+            .stats {
+                padding: 32px 0;
+            }
+
+            .stat-item {
+                padding: 20px 16px;
+            }
+
+            .stat-icon-wrap {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            .stat-inner {
+                gap: 14px;
+            }
+
+            .stat-number {
+                font-size: 34px;
+            }
+
+            .stat-label {
+                font-size: 22px;
+            }
+
+            .stat-subtitle {
+                font-size: 15px;
+            }
+
+            .stat-desc {
+                font-size: 13px;
+            }
+
+            .ecosystem-section {
+                padding: 64px 0;
+            }
+
+            .eco-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 18px;
+            }
+
+            .pillar-card {
+                padding: 28px 20px 24px;
             }
         }
 
@@ -1437,6 +1918,11 @@
             height: 90%;
             object-fit: fill;
         }
+
+        .navbar-nav {
+            margin-right: 24px;
+            /* chỉnh 16–40px tùy ý */
+        }
     </style>
 </head>
 
@@ -1452,7 +1938,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-center flex-grow-1" id="navbar">
+            <div class="collapse navbar-collapse justify-content-end" id="navbar">
                 <ul class="navbar-nav align-items-lg-center py-3 py-lg-0">
                     <li class="nav-item"><a class="nav-link active-menu" href="#home">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
@@ -1556,64 +2042,152 @@
 
     <section class="stats">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 stat-box">
-                    <h3>24/7</h3>
-                    <p>Hỗ trợ khách hàng</p>
+            <div class="row stats-row g-0">
+                <div class="col-lg-4 stat-item">
+                    <div class="stat-inner">
+                        <div class="stat-icon-wrap" aria-hidden="true">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-heading"><span class="stat-number">12</span> <span
+                                    class="stat-label">Năm</span></p>
+                            <h3 class="stat-subtitle">Kinh nghiệm làm việc chuyên nghiệp</h3>
+                            <p class="stat-desc">Sự kết hợp giữa tư duy truyền thống và chuyên môn tài chính. EMI “bình
+                                dân hóa” ngôn ngữ bảo hiểm, giúp bóc tách mọi điều khoản phức tạp thành những khái niệm
+                                dễ hiểu, gần gũi và rõ ràng nhất dành cho bạn.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 stat-box">
-                    <h3>4+</h3>
-                    <p>Nhóm giải pháp bảo vệ</p>
+                <div class="col-lg-4 stat-item">
+                    <div class="stat-inner">
+                        <div class="stat-icon-wrap" aria-hidden="true">
+                            <span class="stat-icon-combo">
+                                <i class="bi bi-people-fill"></i>
+                                <i class="bi bi-shield-fill"></i>
+                            </span>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-heading"><span class="stat-number">200+</span><span class="stat-label">Gia
+                                    đình</span></p>
+                            <h3 class="stat-subtitle">Đã đồng hành và bảo vệ</h3>
+                            <p class="stat-desc">Không chạy theo số lượng bề nổi, EMI lựa chọn phục vụ chuyên sâu. Tốc
+                                độ phát triển điềm tĩnh giúp chúng tôi có đủ thời gian để chăm sóc cá nhân hóa, rà soát
+                                hợp đồng định kỳ và thực hiện đúng cam kết đồng hành dài hạn với từng gia đình.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 stat-box">
-                    <h3>100%</h3>
-                    <p>Tư vấn minh bạch</p>
+                <div class="col-lg-4 stat-item">
+                    <div class="stat-inner">
+                        <div class="stat-icon-wrap" aria-hidden="true">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-heading"><span class="stat-number">100%</span><span class="stat-label">Minh
+                                    bạch</span></p>
+                            <h3 class="stat-subtitle">Hiểu đúng trước khi quyết định</h3>
+                            <p class="stat-desc">Nói không với áp lực “chốt sale”. Tại EMI, quy trình tư vấn chỉ khép
+                                lại khi bạn đã thực sự thấu hiểu cặn kẽ mọi quyền lợi, điểm loại trừ và giới hạn của
+                                giải pháp. Sự an tâm của bạn phải đến từ sự minh bạch tuyệt đối.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section>
+    <section class="ecosystem-section" id="ecosystem">
         <div class="container">
-            <div class="section-kicker">Dịch vụ cốt lõi</div>
-            <h2 class="section-title">4 trụ cột bảo vệ của EMI</h2>
-            <p class="section-desc">
-                Một kế hoạch tài chính an toàn cần bảo vệ cả con người, tài sản,
-                sức khỏe và an sinh xã hội.
-            </p>
+            <header class="eco-header">
+                <div class="d-flex justify-content-center">
+                    <span class="eco-top-badge">
+                        <i class="bi bi-shield-plus" aria-hidden="true"></i>
+                        Hệ sinh thái bảo vệ 4.0
+                    </span>
+                </div>
+                <h2 class="eco-title">Hệ Sinh Thái <span class="text-gold">Bảo Vệ 4.0</span></h2>
+                <p class="eco-subtitle">
+                    <i class="bi bi-stars eco-deco" aria-hidden="true"></i>
+                    4 trụ cột kiến tạo sự an tâm toàn diện
+                    <i class="bi bi-stars eco-deco" aria-hidden="true"></i>
+                </p>
+                <p class="eco-intro">
+                    Không chỉ bán một bản hợp đồng, EMI thiết kế một mạng lưới bảo vệ đan xen giữa <br> con người, tài
+                    sản, sức khỏe và quỹ hưu trí dài hạn. <br> Một nền tảng vững chắc để bạn an tâm xây dựng di sản.
+                </p>
+            </header>
 
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6">
-                    <div class="emi-card">
-                        <div class="emi-icon"><i class="bi bi-person-heart"></i></div>
-                        <h4>Bảo vệ con người</h4>
-                        <p>Nhân thọ giúp xây dựng quỹ dự phòng tài chính trước các rủi ro lớn.</p>
-                    </div>
+                    <article class="pillar-card">
+                        <div class="pillar-icon-wrap">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <div class="pillar-num">
+                            <span class="pillar-line"></span>
+                            <span class="pillar-badge">01</span>
+                            <span class="pillar-line"></span>
+                        </div>
+                        <h4>Quỹ Dự Phòng &amp; Di Sản</h4>
+                        <p>Bóc tách đúng giá trị của Bảo hiểm nhân thọ để xây dựng lớp khiên bảo vệ thu nhập người trụ
+                            cột và kiến tạo quỹ thừa kế an toàn cho thế hệ sau.</p>
+                    </article>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <div class="emi-card">
-                        <div class="emi-icon"><i class="bi bi-car-front"></i></div>
-                        <h4>Bảo vệ tài sản</h4>
-                        <p>Bảo vệ xe, nhà ở, tài sản cá nhân và doanh nghiệp trước biến cố bất ngờ.</p>
-                    </div>
+                    <article class="pillar-card">
+                        <div class="pillar-icon-wrap">
+                            <i class="fa-solid fa-house-circle-check"></i>
+                        </div>
+                        <div class="pillar-num">
+                            <span class="pillar-line"></span>
+                            <span class="pillar-badge">02</span>
+                            <span class="pillar-line"></span>
+                        </div>
+                        <h4>Bảo Vệ Tài Sản Cơ Sở</h4>
+                        <p>Che chắn những thành quả vật chất bạn đã nỗ lực gây dựng (nhà cửa, xe cộ, doanh nghiệp) khỏi
+                            những tổn thất và rủi ro không lường trước.</p>
+                    </article>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <div class="emi-card">
-                        <div class="emi-icon"><i class="bi bi-bank"></i></div>
-                        <h4>An sinh xã hội</h4>
-                        <p>BHXH tự nguyện giúp xây dựng nguồn thu nhập ổn định khi về già.</p>
-                    </div>
+                    <article class="pillar-card">
+                        <div class="pillar-icon-wrap">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <div class="pillar-num">
+                            <span class="pillar-line"></span>
+                            <span class="pillar-badge">03</span>
+                            <span class="pillar-line"></span>
+                        </div>
+                        <h4>Hưu Trí &amp; An Sinh</h4>
+                        <p>Hoạch định lộ trình tham gia Bảo hiểm Xã hội tự nguyện đúng cách, đảm bảo dòng tiền hưu trí
+                            độc lập và bền vững khi bước qua tuổi lao động.</p>
+                    </article>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <div class="emi-card">
-                        <div class="emi-icon"><i class="bi bi-hospital"></i></div>
-                        <h4>Chăm sóc y tế</h4>
-                        <p>Kết hợp BHYT và bảo hiểm sức khỏe để giảm áp lực chi phí điều trị.</p>
-                    </div>
+                    <article class="pillar-card">
+                        <div class="pillar-icon-wrap">
+                            <i class="fa-solid fa-hospital-user"></i>
+                        </div>
+                        <div class="pillar-num">
+                            <span class="pillar-line"></span>
+                            <span class="pillar-badge">04</span>
+                            <span class="pillar-line"></span>
+                        </div>
+                        <h4>Chăm Sóc Y Tế Kép</h4>
+                        <p>Tối ưu hóa chi phí điều trị bằng cách kết hợp thông minh giữa nền tảng BHYT nhà nước và thẻ
+                            sức khỏe tư nhân, giúp bạn tiếp cận dịch vụ y tế chất lượng cao.</p>
+                    </article>
                 </div>
+            </div>
+
+            <div class="eco-banner">
+                <div class="eco-banner-icon" aria-hidden="true">
+                    <img src="shield-4-0.png" alt="Shield EMI Insurance">
+                </div>
+                <p>EMI đồng hành cùng bạn ở hiện tại, bảo vệ bạn trước mọi biến cố, và kiến tạo tương lai thịnh vượng
+                    cho những người bạn yêu thương.</p>
             </div>
         </div>
     </section>
@@ -1628,20 +2202,21 @@
                     <!-- LEFT -->
                     <div class="col-lg-6">
 
-                        <h2>
-                            Từ một tư vấn viên đến hệ sinh thái bảo vệ toàn diện
-                        </h2>
-
                         <p>
-                            EMI bắt đầu từ bảo hiểm nhân thọ, nhưng trong quá trình đồng hành cùng khách hàng,
-                            chúng tôi nhận ra: mỗi người không chỉ cần một hợp đồng,
-                            mà cần một kế hoạch bảo vệ đầy đủ.
+                            Bước vào ngành bảo hiểm, Emi nhận ra rào cản lớn nhất của khách hàng không phải là thiếu
+                            tiền, mà là sự bối rối trước những điều khoản phức tạp.
                         </p>
 
                         <p>
-                            Vì vậy, EMI mở rộng sang bảo hiểm phi nhân thọ, sức khỏe,
-                            BHYT và BHXH tự nguyện để giúp khách hàng có cái nhìn
-                            toàn diện hơn về bảo vệ tài chính.
+                            Mang theo tư duy rành mạch, rõ ràng từ ngành truyền thông, <span class="text-gold">Emi
+                                Insurance</span> ra đời để <span class="text-quote">“bình dân hóa”</span> ngôn ngữ bảo
+                            hiểm.
+                        </p>
+
+                        <p>
+                            Chúng tôi không chỉ bán một hợp đồng nhân thọ, mà thiết kế một kế hoạch bảo vệ kết nối từ y
+                            tế, tài sản đến an sinh xã hội, giúp bạn có cái nhìn toàn diện và làm chủ hoàn toàn di sản
+                            tài chính của mình.
                         </p>
 
                     </div>
