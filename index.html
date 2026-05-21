@@ -1,1683 +1,2184 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>EMI Insurance | Hiểu đúng giá trị - Chọn đúng giải pháp</title>
-  <meta name="description" content="EMI Insurance cung cấp giải pháp bảo hiểm nhân thọ, sức khỏe, ô tô, xe máy, du lịch, BHYT và BHXH tự nguyện. Tư vấn minh bạch, tận tâm, đồng hành lâu dài.">
-  <meta name="keywords" content="bảo hiểm, bảo hiểm sức khỏe, bảo hiểm ô tô, bảo hiểm xe máy, bảo hiểm nhân thọ, BHYT, BHXH tự nguyện">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-
-html{
-  scroll-behavior:smooth;
-  scroll-padding-top:100px;
-}
-
-    :root{
-
-  /* MAIN BRAND */
-  --navy:#033631;      /* màu phụ mới */
-  --navy-2:#054840;
-
-  --blue:#bf9b42;      /* màu chính mới */
-  --green:#d8b65d;
-
-  /* SUPPORT */
-  --cyan:#e3c777;
-  --red:#8d6d1f;
-
-  --text:#1f2937;
-  --muted:#6b7280;
-
-  --light:#faf8f2;
-
-  --border:#efe6cf;
-
-  --white:#ffffff;
-
-}
-
-    *{margin:0;padding:0;box-sizing:border-box}
-
-    body{
-      font-family:'Inter',sans-serif;
-      color:var(--text);
-      background:#fff;
-      overflow-x:hidden;
-    }
-
-    a{text-decoration:none}
-
-    section{padding:96px 0}
-
-    .container{max-width:1180px}
-
-    /* NAVBAR */
-    .navbar{
-      background:rgba(255,255,255,.96);
-      backdrop-filter:blur(16px);
-      border-bottom:1px solid #eef2f7;
-      padding:16px 0;
-    }
-
-    .navbar-brand{
-      font-size:26px;
-      font-weight:900;
-      color:var(--navy)!important;
-      letter-spacing:-1px;
-    }
-
-    .brand-dot{color:var(--green)}
-
-    .nav-link{
-      color:#334155!important;
-      font-weight:600;
-      margin-left:18px;
-      font-size:15px;
-    }
-
-    .nav-link:hover{color:var(--blue)!important}
-
-    .btn-main{
-      background:linear-gradient(
-      135deg,
-      #bf9b42,
-      #d8b65d
-      );
-      color:white;
-      padding:12px 24px;
-      border-radius:999px;
-      font-weight:700;
-      border:none;
-      box-shadow:0 14px 30px rgba(37,99,235,.22);
-      transition:.3s;
-    }
-
-    .btn-main:hover{
-      color:white;
-      transform:translateY(-3px);
-      box-shadow:0 20px 40px rgba(37,99,235,.3);
-    }
-
-    .btn-outline-main{
-      border:1px solid rgba(255,255,255,.5);
-      color:white;
-      padding:12px 24px;
-      border-radius:999px;
-      font-weight:700;
-      transition:.3s;
-    }
-
-    .btn-outline-main:hover{
-      background:white;
-      color:var(--navy);
-    }
-
-    /* HERO */
-    .hero{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      padding-top:130px;
-      background:
-         radial-gradient(
-         circle at 85% 15%,
-         rgba(191,155,66,.22),
-         transparent 28%
-      ),
-
-      linear-gradient(
-      135deg,
-      #033631 0%,
-      #054840 50%,
-      #0b544b 100%
-      );
-      color:white;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      width:760px;
-      height:760px;
-      border-radius:50%;
-      background:rgba(255,255,255,.05);
-      top:-360px;
-      right:-220px;
-    }
-
-    .hero-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 18px;
-      border-radius:999px;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.18);
-      backdrop-filter:blur(12px);
-      font-weight:700;
-      margin-bottom:26px;
-      font-size:14px;
-    }
-
-    .hero h1{
-      font-size:68px;
-      line-height:1.04;
-      font-weight:900;
-      letter-spacing:-3px;
-      max-width:760px;
-      margin-bottom:24px;
-    }
-
-    .hero p{
-      font-size:19px;
-      line-height:1.8;
-      color:rgba(255,255,255,.82);
-      max-width:650px;
-      margin-bottom:38px;
-    }
-
-    .hero-card{
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.18);
-      backdrop-filter:blur(20px);
-      border-radius:34px;
-      padding:34px;
-      box-shadow:0 40px 80px rgba(0,0,0,.18);
-    }
-
-    .hero-card-icon{
-      width:76px;
-      height:76px;
-      border-radius:24px;
-      background:rgba(255,255,255,.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:34px;
-      margin-bottom:24px;
-    }
-
-    .hero-card h3{
-      font-size:26px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .hero-card p{
-      font-size:15px;
-      margin:0;
-    }
-
-    /* COMMON */
-    .section-kicker{
-      color:var(--green);
-      font-weight:900;
-      text-align:center;
-      text-transform:uppercase;
-      letter-spacing:1.5px;
-      font-size:40px;
-      margin-bottom:12px;
-    }
-
-    .section-title{
-      text-align:center;
-      font-size:25px;
-      font-weight:800;
-      letter-spacing:-2px;
-      color:var(--navy);
-      margin-bottom:16px;
-    }
-
-    .section-desc{
-      max-width:720px;
-      margin:0 auto 56px;
-      text-align:center;
-      color:var(--muted);
-      line-height:1.8;
-    }
-
-    /* CARD */
-  
-.emi-card{
-  position:relative;
-  overflow:hidden;
-
-  height:100%;
-
-  background:#fff;
-
-  border:1px solid rgba(37,99,235,.08);
-
-  border-radius:34px;
-
-  padding:36px;
-
-  transition:
-  transform .7s cubic-bezier(.22,1,.36,1),
-  box-shadow .7s ease,
-  border-color .6s ease;
-
-  box-shadow:
-  0 12px 30px rgba(15,23,42,.05),
-  0 30px 60px rgba(15,23,42,.04);
-
-  isolation:isolate;
-}
-
-
-/* glow background */
-
-.emi-card::before{
-
-content:"";
-
-position:absolute;
-
-width:320px;
-height:320px;
-
-background:
-radial-gradient(
-circle,
-rgba(56,189,248,.16),
-transparent 70%
-);
-
-top:-180px;
-right:-160px;
-
-transition:.8s ease;
-
-opacity:.6;
-
-z-index:0;
-}
-
-/* border glow */
-
-.emi-card::after{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-border-radius:inherit;
-
-padding:1px;
-
-background:
-linear-gradient(
-135deg,
-rgba(255,255,255,.8),
-rgba(37,99,235,.35),
-rgba(20,184,166,.35),
-rgba(255,255,255,.8)
-);
-
--webkit-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
-
--webkit-mask-composite:xor;
-
-mask-composite:exclude;
-
-opacity:0;
-
-transition:.7s ease;
-
-z-index:1;
-
-}
-
-
-/* hover */
-
-.emi-card:hover{
-
-transform:
-translateY(-18px)
-scale(1.03);
-
-border-color:transparent;
-
-box-shadow:
-0 40px 80px rgba(15,23,42,.14),
-0 18px 40px rgba(37,99,235,.16);
-
-}
-
-
-/* move glow */
-
-.emi-card:hover::before{
-
-transform:
-scale(1.4)
-translate(-20px,20px);
-
-opacity:1;
-
-}
-
-
-/* border active */
-
-.emi-card:hover::after{
-
-opacity:1;
-
-}
-
-
-/* icon animation */
-
-.emi-card:hover .emi-icon{
-
-transform:
-translateY(-8px)
-rotate(-6deg)
-scale(1.12);
-
-box-shadow:
-0 25px 45px rgba(191,155,66,.35);
-
-background:
-linear-gradient(
-135deg,
-#bf9b42,
-#d8b65d
-);
-
-color:white;
-}
-
-
-.emi-icon{
-
-transition:.7s cubic-bezier(.22,1,.36,1);
-
-position:relative;
-z-index:2;
-
-}
-
-
-/* title */
-
-.emi-card h4{
-
-transition:.45s ease;
-
-position:relative;
-z-index:2;
-
-}
-
-
-.emi-card:hover h4{
-
-color:var(--blue);
-
-transform:translateX(3px);
-
-}
-
-
-.emi-card p,
-.emi-card ul{
-
-position:relative;
-z-index:2;
-
-}
-
-    .emi-card:hover::after{
-      transform:scale(1.35);
-    }
-
-    .emi-icon{
-      width:76px;
-      height:76px;
-      border-radius:24px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:32px;
-      color:white;
-      background:linear-gradient(135deg,var(--blue),var(--green));
-      box-shadow:0 18px 36px rgba(37,99,235,.24);
-      margin-bottom:26px;
-      position:relative;
-      z-index:2;
-    }
-
-    .emi-card h4{
-      font-size:24px;
-      font-weight:900;
-      color:var(--navy);
-      margin-bottom:14px;
-      position:relative;
-      z-index:2;
-    }
-
-    .emi-card p{
-      color:var(--muted);
-      line-height:1.8;
-      margin:0;
-      position:relative;
-      z-index:2;
-    }
-
-    .bg-soft{background:var(--light)}
-
-    /* STATS */
-    .stats{
-      padding:38px 0;
-      background:white;
-      box-shadow:0 10px 40px rgba(15,23,42,.05);
-    }
-
-    .stat-box{
-      text-align:center;
-      padding:20px;
-    }
-
-    .stat-box h3{
-      font-size:42px;
-      color:var(--navy);
-      font-weight:900;
-      margin:0;
-    }
-
-    .stat-box p{
-      color:var(--muted);
-      margin:8px 0 0;
-    }
-
-    /* ABOUT */
-    .about-box{
-      background:linear-gradient(135deg,var(--navy),var(--navy-2));
-      color:white;
-      border-radius:42px;
-      padding:60px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .about-box::before{
-      content:"";
-      position:absolute;
-      width:500px;
-      height:500px;
-      border-radius:50%;
-      background:rgba(255,255,255,.05);
-      right:-160px;
-      top:-180px;
-    }
-
-    .about-box h2{
-      font-size:44px;
-      font-weight:900;
-      letter-spacing:-2px;
-      margin-bottom:24px;
-    }
-
-    .about-box p{
-      color:rgba(255,255,255,.82);
-      line-height:1.9;
-    }
-
-    .value-item{
-      background:rgba(255,255,255,.1);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:24px;
-      padding:24px;
-      height:100%;
-    }
-
-    .value-item h5{
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    /* PRODUCTS */
-    .product-list{
-      list-style:none;
-      padding:0;
-      margin:22px 0 0;
-      position:relative;
-      z-index:2;
-    }
-
-    .product-list li{
-      color:#475569;
-      margin-bottom:10px;
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-
-    .product-list i{
-      color:var(--green);
-      margin-top:3px;
-    }
-
-    /* PREMIUM */
-    .premium{
-      background:linear-gradient(135deg,#fff7ed,#eff6ff);
-    }
-
-    .premium-card{
-      background:white;
-      border-radius:38px;
-      padding:54px;
-      border:1px solid var(--border);
-      box-shadow:0 30px 80px rgba(15,23,42,.08);
-    }
-
-    .premium-badge{
-      display:inline-block;
-      background:#fee2e2;
-      color:#b91c1c;
-      font-weight:900;
-      padding:10px 18px;
-      border-radius:999px;
-      margin-bottom:20px;
-    }
-
-    /* CTA */
-    .cta-box{
-      background:
-        radial-gradient(
-        circle at right top,
-        rgba(191,155,66,.25),
-        transparent 32%
-      ),
-
-      linear-gradient(
-      135deg,
-      #033631,
-      #054840
-      );
-      border-radius:42px;
-      padding:64px;
-      color:white;
-      overflow:hidden;
-      position:relative;
-    }
-
-    .cta-box h2{
-      font-size:44px;
-      font-weight:900;
-      letter-spacing:-2px;
-      margin-bottom:18px;
-    }
-
-    .cta-box p{
-      color:rgba(255,255,255,.78);
-      line-height:1.8;
-      margin-bottom:0;
-    }
-
-    .form-control,.form-select{
-      height:58px;
-      border-radius:18px;
-      border:none;
-      padding-left:20px;
-    }
-
-    textarea.form-control{
-      height:120px;
-      padding-top:18px;
-    }
-
-    /* FLOAT CONTACT */
-    .floating-contact{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      z-index:999;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .float-btn{
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:24px;
-      box-shadow:0 18px 34px rgba(15,23,42,.22);
-    }
-
-    .zalo{background:#0068ff}
-    .phone{background:var(--green)}
-
-    footer{
-      background:#071b3a;
-      color:rgba(255,255,255,.78);
-      padding:60px 0 30px;
-    }
-
-    footer h5{
-      color:white;
-      font-weight:900;
-      margin-bottom:18px;
-    }
-
-    footer p, footer a{
-      color:rgba(255,255,255,.7);
-      font-size:15px;
-    }
-
-    footer a:hover{color:white}
-
-    @media(max-width:991px){
-      .hero h1{font-size:48px}
-      .hero{padding-top:130px}
-      .hero-card{margin-top:40px}
-      .about-box,.cta-box,.premium-card{padding:38px 26px}
-      .section-title{font-size:36px}
-      section{padding:72px 0}
-    }
-
-    @media(max-width:576px){
-      .hero h1{font-size:38px;letter-spacing:-1.5px}
-      .hero p{font-size:16px}
-      .section-title{font-size:32px}
-      .emi-card{padding:30px}
-      .floating-contact{right:14px;bottom:14px}
-    }
-
-/* active menu*/
-.active-menu{
-
-color:var(--blue)!important;
-
-font-weight:700;
-
-position:relative;
-
-}
-
-.active-menu:after{
-
-content:"";
-
-position:absolute;
-
-left:0;
-bottom:-8px;
-
-width:100%;
-height:3px;
-
-background:
-linear-gradient(
-90deg,
-var(--blue),
-var(--green)
-);
-
-border-radius:20px;
-
-animation:line .3s;
-
-}
-
-@keyframes line{
-
-from{
-transform:scaleX(0)
-}
-
-to{
-transform:scaleX(1)
-}
-
-}
-
-/* overide css */
-.emi-card{
- position:relative;
- overflow:hidden;
- transition:all .55s cubic-bezier(.22,1,.36,1)!important;
-}
-
-.emi-card::before{
- content:"";
- position:absolute;
- inset:0;
- border-radius:inherit;
-
- background:
- radial-gradient(
- circle at top right,
- rgba(191,155,66,.20),
- transparent 45%
- );
-
- opacity:0;
-
- transition:.6s;
-}
-
-.emi-card:hover{
-
- transform:
- translateY(-16px)
- scale(1.03)!important;
-
- box-shadow:
- 0 35px 70px rgba(191,155,66,.18),
- 0 10px 35px rgba(15,23,42,.12)!important;
-
-}
-
-.emi-card:hover::before{
- opacity:1;
-}
-
-.emi-card:hover .emi-icon{
-
- transform:
- scale(1.12)
- rotate(-8deg);
-
- transition:.6s;
-}
-
-.emi-icon{
- transition:.6s;
-}
-
-.emi-card:hover h4{
- color:var(--blue);
-}
-
-/*contact person effects*/
-.contact-person{
-  margin-top:32px;
-  max-width:360px;
-  opacity:0;
-  transform:translateY(100px) scale(.9);
-}
-
-.contact-person img{
-  width:100%;
-  object-fit:contain;
-  object-position:center;
-  border-radius:34px;
-  padding:12px;
-}
-
-.contact-person.show{
-  animation:bounceUp .9s cubic-bezier(.22,1,.36,1) forwards;
-}
-
-@keyframes bounceUp{
-  0%{
-    opacity:0;
-    transform:translateY(100px) scale(.9);
-  }
-
-  60%{
-    opacity:1;
-    transform:translateY(-20px) scale(1.04);
-  }
-
-  80%{
-    transform:translateY(8px) scale(.98);
-  }
-
-  100%{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
-
-/* GOI HAU MAI NOI BAT SAN */
-
-.premium-card{
-
-position:relative;
-
-overflow:hidden;
-
-background:
-linear-gradient(
-135deg,
-#fffdf8,
-#f9f3e4
-);
-
-border:2px solid rgba(191,155,66,.28);
-
-box-shadow:
-0 25px 80px rgba(191,155,66,.16),
-0 10px 40px rgba(3,54,49,.08);
-
-}
-
-
-/* glow vàng phía sau */
-
-.premium-card::before{
-
-content:"";
-
-position:absolute;
-
-width:420px;
-height:420px;
-
-right:-160px;
-top:-180px;
-
-border-radius:50%;
-
-background:
-radial-gradient(
-circle,
-rgba(191,155,66,.22),
-transparent 70%
-);
-
-animation:
-premiumGlow 6s ease-in-out infinite;
-
-}
-
-
-/* viền sáng nhẹ */
-
-.premium-card::after{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-border-radius:inherit;
-
-padding:1px;
-
-background:
-linear-gradient(
-135deg,
-rgba(191,155,66,.65),
-rgba(255,255,255,.8),
-rgba(191,155,66,.35)
-);
-
--webkit-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
-
--webkit-mask-composite:xor;
-
-mask-composite:exclude;
-
-}
-
-
-/* badge đỏ nổi bật */
-
-.premium-badge{
-
-background:
-linear-gradient(
-135deg,
-#bf9b42,
-#d8b65d
-)!important;
-
-color:white!important;
-
-font-weight:800;
-
-box-shadow:
-0 15px 35px rgba(191,155,66,.35);
-
-}
-
-
-/* animation nhẹ */
-
-@keyframes premiumGlow{
-
-0%{
-
-transform:
-scale(1);
-
-opacity:.5;
-
-}
-
-50%{
-
-transform:
-scale(1.15);
-
-opacity:.9;
-
-}
-
-100%{
-
-transform:
-scale(1);
-
-opacity:.5;
-
-}
-
-}
-
-.about-image{
-  position:relative;
-
-  overflow:hidden;
-
-  border-radius:34px;
-
-  height:320px;
-
-  box-shadow:
-0 35px 70px rgba(0,0,0,.18);
-}
-
-/* ảnh nằm ngang */
-
-.about-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-display:block;
-
-transition:.8s;
-
-}
-
-
-/* glow vàng */
-
-.about-image::before{
-
-content:"";
-
-position:absolute;
-
-width:260px;
-height:260px;
-
-right:-120px;
-top:-100px;
-
-border-radius:50%;
-
-background:
-radial-gradient(
-circle,
-rgba(191,155,66,.22),
-transparent
-);
-
-z-index:2;
-
-}
-
-
-@media(max-width:991px){
-
-.about-image{
-
-height:auto;
-
-}
-
-}  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.png?v=2">
+
+    <title>EMI Insurance | Hiểu đúng giá trị - Chọn đúng giải pháp</title>
+    <meta name="description"
+        content="EMI Insurance cung cấp giải pháp bảo hiểm nhân thọ, sức khỏe, ô tô, xe máy, du lịch, BHYT và BHXH tự nguyện. Tư vấn minh bạch, tận tâm, đồng hành lâu dài.">
+    <meta name="keywords"
+        content="bảo hiểm, bảo hiểm sức khỏe, bảo hiểm ô tô, bảo hiểm xe máy, bảo hiểm nhân thọ, BHYT, BHXH tự nguyện">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Link to Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 88px;
+        }
+
+        :root {
+
+            /* MAIN BRAND */
+            --navy: #033631;
+            /* màu phụ mới */
+            --navy-2: #054840;
+
+            --blue: #bf9b42;
+            /* màu chính mới */
+            --green: #d8b65d;
+
+            /* SUPPORT */
+            --cyan: #e3c777;
+            --red: #8d6d1f;
+
+            --text: #1f2937;
+            --muted: #6b7280;
+
+            --light: #faf8f2;
+
+            --border: #efe6cf;
+
+            --white: #ffffff;
+
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        section {
+            padding: 96px 0
+        }
+
+        .container {
+            max-width: 1180px
+        }
+
+        /* NAVBAR — white bar per design */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #eef2f7;
+            padding: 14px 0;
+            box-shadow: 0 4px 24px rgba(3, 54, 49, .06);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--navy) !important;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-dot {
+            color: var(--blue);
+        }
+
+        .brand-name {
+            color: var(--blue);
+            font-weight: 800;
+        }
+
+        .nav-link {
+            color: #1e293b !important;
+            font-weight: 600;
+            margin: 0 8px;
+            font-size: 15px;
+            padding: 6px 4px 12px !important;
+        }
+
+        .nav-link:hover {
+            color: var(--blue) !important;
+        }
+
+        .navbar-cta-desktop {
+            flex-shrink: 0;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg,
+                    #bf9b42,
+                    #d8b65d);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 14px 30px rgba(191, 155, 66, .28);
+            transition: .3s;
+        }
+
+        .btn-main:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(191, 155, 66, .38);
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #bf9b42, #d4a84a);
+            color: #fff;
+            padding: 13px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .16);
+            transition: .3s;
+            white-space: normal;
+            text-align: center;
+        }
+
+        .btn-hero-primary:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, .22);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .text-gold {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .btn-outline-main {
+            border: 1px solid rgba(255, 255, 255, .55);
+            color: white;
+            padding: 13px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: .3s;
+            white-space: normal;
+            text-align: center;
+            background: transparent;
+        }
+
+        .btn-outline-main:hover {
+            background: white;
+            color: var(--navy);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            padding-bottom: 72px;
+            margin-top: 0;
+            background:
+                radial-gradient(circle at 85% 15%,
+                    rgba(191, 155, 66, .22),
+                    transparent 28%),
+
+                linear-gradient(135deg,
+                    #033631 0%,
+                    #054840 50%,
+                    #0b544b 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 760px;
+            height: 760px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            top: -360px;
+            right: -220px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, .22);
+            border: 1px solid rgba(255, 255, 255, .14);
+            font-weight: 600;
+            margin-bottom: 22px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, .95);
+        }
+
+        .hero-badge i {
+            color: #7ec8e8;
+            font-size: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 4.2vw, 52px);
+            line-height: 1.12;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            max-width: 580px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--green);
+            display: inline;
+        }
+
+        .hero-lead {
+            font-size: clamp(15px, 1.6vw, 17px);
+            line-height: 1.65;
+            color: rgba(255, 255, 255, .9);
+            max-width: 526px;
+            margin-bottom: 24px;
+        }
+
+        .hero-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px;
+            max-width: 100%;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .hero-feature-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .28);
+            background: rgba(255, 255, 255, .06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .hero-feature-text,
+        .hero-eco-text {
+            font-size: clamp(14px, 1.45vw, 16px);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .9);
+            margin: 0;
+            flex: 1;
+            min-width: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .hero-feature-text .text-gold,
+        .hero-eco-text .text-gold {
+            display: inline;
+            white-space: nowrap;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .16);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 32px 34px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, .18);
+        }
+
+        .hero-card-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card-icon {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #bf9b42, #d8b65d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 0;
+        }
+
+        .hero-card-title-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hero-card h3 {
+            font-size: clamp(17px, 2vw, 21px);
+            font-weight: 800;
+            margin-bottom: 0;
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        .hero-card-intro {
+            font-size: clamp(13px, 1.35vw, 15px);
+            line-height: 1.65;
+            color: rgba(255, 255, 255, .88);
+            margin-bottom: 6px;
+        }
+
+        .hero-eco-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .hero-eco-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .hero-eco-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .hero-eco-icon {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .25);
+            background: rgba(255, 255, 255, .06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 17px;
+            margin-top: 2px;
+        }
+
+        /* COMMON */
+        .section-kicker {
+            color: var(--green);
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            max-width: 720px;
+            margin: 0 auto 56px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        /* CARD */
+
+        .emi-card {
+            position: relative;
+            overflow: hidden;
+
+            height: 100%;
+
+            background: #fff;
+
+            border: 1px solid rgba(37, 99, 235, .08);
+
+            border-radius: 34px;
+
+            padding: 36px;
+
+            transition:
+                transform .7s cubic-bezier(.22, 1, .36, 1),
+                box-shadow .7s ease,
+                border-color .6s ease;
+
+            box-shadow:
+                0 12px 30px rgba(15, 23, 42, .05),
+                0 30px 60px rgba(15, 23, 42, .04);
+
+            isolation: isolate;
+        }
+
+
+        /* glow background */
+
+        .emi-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 320px;
+            height: 320px;
+
+            background:
+                radial-gradient(circle,
+                    rgba(56, 189, 248, .16),
+                    transparent 70%);
+
+            top: -180px;
+            right: -160px;
+
+            transition: .8s ease;
+
+            opacity: .6;
+
+            z-index: 0;
+        }
+
+        /* border glow */
+
+        .emi-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: inherit;
+
+            padding: 1px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 255, 255, .8),
+                    rgba(37, 99, 235, .35),
+                    rgba(20, 184, 166, .35),
+                    rgba(255, 255, 255, .8));
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite: xor;
+
+            mask-composite: exclude;
+
+            opacity: 0;
+
+            transition: .7s ease;
+
+            z-index: 1;
+
+        }
+
+
+        /* hover */
+
+        .emi-card:hover {
+
+            transform:
+                translateY(-18px) scale(1.03);
+
+            border-color: transparent;
+
+            box-shadow:
+                0 40px 80px rgba(15, 23, 42, .14),
+                0 18px 40px rgba(37, 99, 235, .16);
+
+        }
+
+
+        /* move glow */
+
+        .emi-card:hover::before {
+
+            transform:
+                scale(1.4) translate(-20px, 20px);
+
+            opacity: 1;
+
+        }
+
+
+        /* border active */
+
+        .emi-card:hover::after {
+
+            opacity: 1;
+
+        }
+
+
+        /* icon animation */
+
+        .emi-card:hover .emi-icon {
+
+            transform:
+                translateY(-8px) rotate(-6deg) scale(1.12);
+
+            box-shadow:
+                0 25px 45px rgba(191, 155, 66, .35);
+
+            background:
+                linear-gradient(135deg,
+                    #bf9b42,
+                    #d8b65d);
+
+            color: white;
+        }
+
+
+        .emi-icon {
+
+            transition: .7s cubic-bezier(.22, 1, .36, 1);
+
+            position: relative;
+            z-index: 2;
+
+        }
+
+
+        /* title */
+
+        .emi-card h4 {
+
+            transition: .45s ease;
+
+            position: relative;
+            z-index: 2;
+
+        }
+
+
+        .emi-card:hover h4 {
+
+            color: var(--blue);
+
+            transform: translateX(3px);
+
+        }
+
+
+        .emi-card p,
+        .emi-card ul {
+
+            position: relative;
+            z-index: 2;
+
+        }
+
+        .emi-card:hover::after {
+            transform: scale(1.35);
+        }
+
+        .emi-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            box-shadow: 0 18px 36px rgba(37, 99, 235, .24);
+            margin-bottom: 26px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .emi-card h4 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--navy);
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .emi-card p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bg-soft {
+            background: var(--light)
+        }
+
+        /* STATS */
+        .stats {
+            padding: 38px 0;
+            background: white;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, .05);
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-box h3 {
+            font-size: 42px;
+            color: var(--navy);
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .stat-box p {
+            color: var(--muted);
+            margin: 8px 0 0;
+        }
+
+        /* ABOUT */
+        .about-box {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            color: white;
+            border-radius: 42px;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-box::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            right: -160px;
+            top: -180px;
+        }
+
+        .about-box h2 {
+            font-size: 44px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .about-box p {
+            color: rgba(255, 255, 255, .82);
+            line-height: 1.9;
+        }
+
+        .value-item {
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 24px;
+            padding: 24px;
+            height: 100%;
+        }
+
+        .value-item h5 {
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        /* PRODUCTS */
+        .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 22px 0 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-list li {
+            color: #475569;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .product-list i {
+            color: var(--green);
+            margin-top: 3px;
+        }
+
+        /* PREMIUM */
+        .premium {
+            background: linear-gradient(135deg, #fff7ed, #eff6ff);
+        }
+
+        .premium-card {
+            background: white;
+            border-radius: 38px;
+            padding: 54px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(15, 23, 42, .08);
+        }
+
+        .premium-badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 900;
+            padding: 10px 18px;
+            border-radius: 999px;
+            margin-bottom: 20px;
+        }
+
+        /* CTA */
+        .cta-box {
+            background:
+                radial-gradient(circle at right top,
+                    rgba(191, 155, 66, .25),
+                    transparent 32%),
+
+                linear-gradient(135deg,
+                    #033631,
+                    #054840);
+            border-radius: 42px;
+            padding: 64px;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cta-box h2 {
+            font-size: 44px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+
+        .cta-box p {
+            color: rgba(255, 255, 255, .78);
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .form-control,
+        .form-select {
+            height: 58px;
+            border-radius: 18px;
+            border: none;
+            padding-left: 20px;
+        }
+
+        textarea.form-control {
+            height: 120px;
+            padding-top: 18px;
+        }
+
+        /* FLOAT CONTACT */
+        .floating-contact {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .float-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 18px 34px rgba(15, 23, 42, .22);
+        }
+
+        .zalo {
+            background: #0068ff
+        }
+
+        .phone {
+            background: var(--green)
+        }
+
+        footer {
+            background: #071b3a;
+            color: rgba(255, 255, 255, .78);
+            padding: 60px 0 30px;
+        }
+
+        footer h5 {
+            color: white;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+
+        footer p,
+        footer a {
+            color: rgba(255, 255, 255, .7);
+            font-size: 15px;
+        }
+
+        footer a:hover {
+            color: white
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .hero h1 {
+                max-width: 100%;
+                letter-spacing: -1px;
+            }
+
+            .hero-lead {
+                max-width: 100%;
+            }
+
+            .hero-card {
+                margin-top: 12px;
+            }
+
+            .hero-actions .btn {
+                flex: 1 1 auto;
+                min-width: 200px;
+            }
+        }
+
+        @media(max-width:991px) {
+            .navbar-collapse {
+                background: #fff;
+                border: 1px solid #eef2f7;
+                border-radius: 14px;
+                margin-top: 12px;
+                padding: 8px 12px 14px;
+                box-shadow: 0 12px 32px rgba(3, 54, 49, .08);
+            }
+
+            .hero {
+                padding-top: 92px;
+                min-height: auto;
+                padding-bottom: 64px;
+            }
+
+            .hero-card {
+                margin-top: 4px;
+                padding: 26px 24px;
+            }
+
+            .navbar-cta-desktop {
+                display: none !important;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .about-box,
+            .cta-box,
+            .premium-card {
+                padding: 38px 26px
+            }
+
+            .section-title {
+                font-size: 36px
+            }
+
+            section {
+                padding: 72px 0
+            }
+        }
+
+        @media(max-width:576px) {
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .hero h1 {
+                letter-spacing: -0.8px;
+                margin-bottom: 16px;
+            }
+
+            .hero-lead {
+                margin-bottom: 20px;
+            }
+
+            .hero-feature {
+                gap: 12px;
+            }
+
+            .hero-feature-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                font-size: 16px;
+            }
+
+            .hero-feature-text,
+            .hero-eco-text {
+                font-size: 14px;
+                line-height: 1.55;
+            }
+
+            .hero-card {
+                padding: 22px 18px;
+                border-radius: 22px;
+            }
+
+            .hero-card-head {
+                gap: 14px;
+            }
+
+            .hero-card-icon {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                font-size: 22px;
+            }
+
+            .hero-eco-item {
+                padding: 16px 0;
+                gap: 12px;
+            }
+
+            .btn-outline-main,
+            .btn-hero-primary {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+
+            .section-title {
+                font-size: 32px
+            }
+
+            .emi-card {
+                padding: 30px
+            }
+
+            .floating-contact {
+                right: 14px;
+                bottom: 14px
+            }
+        }
+
+        /* active menu */
+        .active-menu {
+            color: var(--blue) !important;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .active-menu:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 4px;
+            width: 100%;
+            height: 3px;
+            background: var(--blue);
+            border-radius: 20px;
+            animation: line .3s;
+        }
+
+        @keyframes line {
+
+            from {
+                transform: scaleX(0)
+            }
+
+            to {
+                transform: scaleX(1)
+            }
+
+        }
+
+        /* overide css */
+        .emi-card {
+            position: relative;
+            overflow: hidden;
+            transition: all .55s cubic-bezier(.22, 1, .36, 1) !important;
+        }
+
+        .emi-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(191, 155, 66, .20),
+                    transparent 45%);
+
+            opacity: 0;
+
+            transition: .6s;
+        }
+
+        .emi-card:hover {
+
+            transform:
+                translateY(-16px) scale(1.03) !important;
+
+            box-shadow:
+                0 35px 70px rgba(191, 155, 66, .18),
+                0 10px 35px rgba(15, 23, 42, .12) !important;
+
+        }
+
+        .emi-card:hover::before {
+            opacity: 1;
+        }
+
+        .emi-card:hover .emi-icon {
+
+            transform:
+                scale(1.12) rotate(-8deg);
+
+            transition: .6s;
+        }
+
+        .emi-icon {
+            transition: .6s;
+        }
+
+        .emi-card:hover h4 {
+            color: var(--blue);
+        }
+
+        /*contact person effects*/
+        .contact-person {
+            margin-top: 32px;
+            max-width: 360px;
+            opacity: 0;
+            transform: translateY(100px) scale(.9);
+        }
+
+        .contact-person img {
+            width: 100%;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 34px;
+            padding: 12px;
+        }
+
+        .contact-person.show {
+            animation: bounceUp .9s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        @keyframes bounceUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(.9);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1.04);
+            }
+
+            80% {
+                transform: translateY(8px) scale(.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* GOI HAU MAI NOI BAT SAN */
+
+        .premium-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(135deg,
+                    #fffdf8,
+                    #f9f3e4);
+
+            border: 2px solid rgba(191, 155, 66, .28);
+
+            box-shadow:
+                0 25px 80px rgba(191, 155, 66, .16),
+                0 10px 40px rgba(3, 54, 49, .08);
+
+        }
+
+
+        /* glow vàng phía sau */
+
+        .premium-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            right: -160px;
+            top: -180px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(circle,
+                    rgba(191, 155, 66, .22),
+                    transparent 70%);
+
+            animation:
+                premiumGlow 6s ease-in-out infinite;
+
+        }
+
+
+        /* viền sáng nhẹ */
+
+        .premium-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: inherit;
+
+            padding: 1px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(191, 155, 66, .65),
+                    rgba(255, 255, 255, .8),
+                    rgba(191, 155, 66, .35));
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite: xor;
+
+            mask-composite: exclude;
+
+        }
+
+
+        /* badge đỏ nổi bật */
+
+        .premium-badge {
+
+            background:
+                linear-gradient(135deg,
+                    #bf9b42,
+                    #d8b65d) !important;
+
+            color: white !important;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 15px 35px rgba(191, 155, 66, .35);
+
+        }
+
+
+        /* animation nhẹ */
+
+        @keyframes premiumGlow {
+
+            0% {
+
+                transform:
+                    scale(1);
+
+                opacity: .5;
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.15);
+
+                opacity: .9;
+
+            }
+
+            100% {
+
+                transform:
+                    scale(1);
+
+                opacity: .5;
+
+            }
+
+        }
+
+        .about-image {
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 34px;
+
+            height: 320px;
+
+            box-shadow:
+                0 35px 70px rgba(0, 0, 0, .18);
+        }
+
+        /* ảnh nằm ngang */
+
+        .about-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: .8s;
+
+        }
+
+
+        /* glow vàng */
+
+        .about-image::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            right: -120px;
+            top: -100px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(circle,
+                    rgba(191, 155, 66, .22),
+                    transparent);
+
+            z-index: 2;
+
+        }
+
+
+        @media(max-width:991px) {
+
+            .about-image {
+
+                height: auto;
+
+            }
+
+        }
+
+        /* ICON giống thiết kế ảnh */
+
+        .ecosystem-icon {
+
+            width: 68px;
+            height: 68px;
+
+            border-radius: 18px;
+
+            background: linear-gradient(135deg,
+                    rgba(33, 95, 78, .95),
+                    rgba(22, 72, 60, .95));
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 15px 35px rgba(0, 0, 0, .2);
+
+            font-size: 30px;
+            color: #e3c777;
+        }
+
+
+        .title-with-icon {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .small-shield {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #fff;
+            opacity: .95;
+        }
+
+
+        .hero-eco-icon {
+
+            width: 54px;
+            height: 54px;
+            min-width: 54px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 255, 255, .09),
+                    rgba(255, 255, 255, .04));
+
+            border: 1px solid rgba(255, 255, 255, .15);
+
+            font-size: 22px;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08);
+
+        }
+
+
+        .hero-eco-icon i {
+
+            color: white;
+
+        }
+
+
+        .hero-eco-item:hover .hero-eco-icon {
+
+            transform: translateY(-3px);
+
+            transition: .35s;
+
+            background:
+                linear-gradient(135deg,
+                    #bf9b42,
+                    #d8b65d);
+
+        }
+
+        .hero-card-image-icon {
+            width: 90px;
+            height: 90px;
+
+            border-radius: 22px;
+            /* bo góc ô vuông */
+
+            background: rgba(255, 255, 255, .08);
+
+            border: 1px solid rgba(255, 255, 255, .12);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+            /* cắt ảnh theo bo góc */
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 15px 35px rgba(0, 0, 0, .18);
+        }
+
+        .hero-card-image-icon img {
+            width: 90%;
+            height: 90%;
+            object-fit: fill;
+        }
+    </style>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">EMI<span class="brand-dot">.</span>Insurance</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item"><a class="nav-link" href="#home">Trang chủ</a></li>
-        <li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
-        <li class="nav-item"><a class="nav-link" href="#products">Sản phẩm</a></li>
-        <li class="nav-item"><a class="nav-link" href="#knowledge">Kiến thức</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
-        <li class="nav-item ms-lg-4 mt-3 mt-lg-0">
-          <a href="#contact" class="btn btn-main">Nhận báo giá</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<section class="hero" id="home">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-7">
-        <div class="hero-badge">
-          <i class="bi bi-shield-check"></i>
-          Hiểu đúng giá trị - Chọn đúng giải pháp
-        </div>
-
-        <h1>Bảo hiểm không khó hiểu khi bắt đầu từ sự minh bạch</h1>
-
-        <p>
-          EMI giúp bạn kết nối các giải pháp từ Nhân thọ, Phi nhân thọ,
-          Sức khỏe, BHYT đến BHXH tự nguyện thành một kế hoạch bảo vệ hoàn chỉnh.
-        </p>
-
-        <div class="d-flex gap-3 flex-wrap">
-          <a href="#contact" class="btn btn-main">Đăng ký tư vấn miễn phí</a>
-          <a href="#products" class="btn btn-outline-main">Khám phá giải pháp</a>
-        </div>
-      </div>
-
-      <div class="col-lg-5">
-        <div class="hero-card">
-          <div class="hero-card-icon">
-            <i class="bi bi-heart-pulse"></i>
-          </div>
-          <h3>Hệ sinh thái bảo vệ toàn diện</h3>
-          <p>
-            Không chỉ là một hợp đồng bảo hiểm, EMI đồng hành để bạn hiểu đúng,
-            chọn đúng và an tâm hơn trong từng giai đoạn cuộc sống.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="stats">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 stat-box">
-        <h3>24/7</h3>
-        <p>Hỗ trợ khách hàng</p>
-      </div>
-      <div class="col-md-4 stat-box">
-        <h3>4+</h3>
-        <p>Nhóm giải pháp bảo vệ</p>
-      </div>
-      <div class="col-md-4 stat-box">
-        <h3>100%</h3>
-        <p>Tư vấn minh bạch</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="section-kicker">Dịch vụ cốt lõi</div>
-    <h2 class="section-title">4 trụ cột bảo vệ của EMI</h2>
-    <p class="section-desc">
-      Một kế hoạch tài chính an toàn cần bảo vệ cả con người, tài sản,
-      sức khỏe và an sinh xã hội.
-    </p>
-
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-person-heart"></i></div>
-          <h4>Bảo vệ con người</h4>
-          <p>Nhân thọ giúp xây dựng quỹ dự phòng tài chính trước các rủi ro lớn.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-car-front"></i></div>
-          <h4>Bảo vệ tài sản</h4>
-          <p>Bảo vệ xe, nhà ở, tài sản cá nhân và doanh nghiệp trước biến cố bất ngờ.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-bank"></i></div>
-          <h4>An sinh xã hội</h4>
-          <p>BHXH tự nguyện giúp xây dựng nguồn thu nhập ổn định khi về già.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-hospital"></i></div>
-          <h4>Chăm sóc y tế</h4>
-          <p>Kết hợp BHYT và bảo hiểm sức khỏe để giảm áp lực chi phí điều trị.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="bg-soft" id="about">
-  <div class="container">
-
-    <div class="about-box">
-
-      <div class="row align-items-center g-5">
-
-        <!-- LEFT -->
-        <div class="col-lg-6">
-
-          <h2>
-            Từ một tư vấn viên đến hệ sinh thái bảo vệ toàn diện
-          </h2>
-
-          <p>
-            EMI bắt đầu từ bảo hiểm nhân thọ, nhưng trong quá trình đồng hành cùng khách hàng,
-            chúng tôi nhận ra: mỗi người không chỉ cần một hợp đồng,
-            mà cần một kế hoạch bảo vệ đầy đủ.
-          </p>
-
-          <p>
-            Vì vậy, EMI mở rộng sang bảo hiểm phi nhân thọ, sức khỏe,
-            BHYT và BHXH tự nguyện để giúp khách hàng có cái nhìn
-            toàn diện hơn về bảo vệ tài chính.
-          </p>
-
-        </div>
-
-
-        <!-- RIGHT IMAGE -->
-        <div class="col-lg-6">
-
-          <div class="about-image">
-
-            <img
-              src="image-about.jpg"
-              alt="EMI Insurance"
-            >
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- VALUE -->
-      <div class="row g-4 mt-5">
-
-        <div class="col-lg-4">
-
-          <div class="value-item">
-
-            <h5>Minh bạch</h5>
-
-            <p>
-              Giải thích rõ điều khoản,
-              quyền lợi và chi phí.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="col-lg-4">
-
-          <div class="value-item">
-
-            <h5>Tận tâm</h5>
-
-            <p>
-              Đồng hành lâu dài
-              sau khi ký hợp đồng.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="col-lg-4">
-
-          <div class="value-item">
-
-            <h5>Luôn đứng về phía khách hàng</h5>
-
-            <p>
-              Hỗ trợ quyền lợi,
-              giải đáp và bồi thường.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-<section id="products">
-  <div class="container">
-    <div class="section-kicker">Danh mục sản phẩm</div>
-    <h2 class="section-title">Giải pháp cho từng nhu cầu</h2>
-    <p class="section-desc">
-      EMI không bán một sản phẩm đơn lẻ, mà tư vấn giải pháp phù hợp với từng giai đoạn và mục tiêu tài chính.
-    </p>
-
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-shield-lock"></i></div>
-          <h4>Nhân thọ</h4>
-          <p>Bảo vệ giá trị con người và chuyển giao di sản.</p>
-          <ul class="product-list">
-            <li><i class="bi bi-check-circle"></i> Quỹ học vấn cho con</li>
-            <li><i class="bi bi-check-circle"></i> Bảo vệ thu nhập</li>
-            <li><i class="bi bi-check-circle"></i> Kế hoạch hưu trí</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-car-front-fill"></i></div>
-          <h4>Phi nhân thọ</h4>
-          <p>Bảo vệ tài sản và hành trình.</p>
-          <ul class="product-list">
-            <li><i class="bi bi-check-circle"></i> Xe ô tô, xe máy</li>
-            <li><i class="bi bi-check-circle"></i> Nhà tư nhân</li>
-            <li><i class="bi bi-check-circle"></i> Du lịch trong & ngoài nước</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-heart-pulse-fill"></i></div>
-          <h4>Sức khỏe</h4>
-          <p>Giải pháp sức khỏe kết hợp giữa BHYT và bảo hiểm tư nhân.</p>
-          <ul class="product-list">
-            <li><i class="bi bi-check-circle"></i> Nội trú, ngoại trú</li>
-            <li><i class="bi bi-check-circle"></i> Phòng riêng</li>
-            <li><i class="bi bi-check-circle"></i> Bệnh viện quốc tế</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-person-vcard"></i></div>
-          <h4>BHXH tự nguyện</h4>
-          <p>Giải pháp an sinh bền vững cho mọi người Việt.</p>
-          <ul class="product-list">
-            <li><i class="bi bi-check-circle"></i> Hướng dẫn tham gia</li>
-            <li><i class="bi bi-check-circle"></i> Lộ trình lương hưu</li>
-            <li><i class="bi bi-check-circle"></i> Tư vấn quyền lợi</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="bg-soft">
-  <div class="container">
-    <div class="section-kicker">Hành trình cuộc sống</div>
-    <h2 class="section-title">Sát cánh bên bạn trên từng chặng đường</h2>
-    <p class="section-desc">
-      Từ độc thân, giáo dục, gia đình đến hưu trí — mỗi giai đoạn đều cần một lớp bảo vệ phù hợp.
-    </p>
-
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card text-center">
-          <div class="emi-icon mx-auto"><i class="bi bi-person"></i></div>
-          <h4>Độc thân</h4>
-          <p>Bảo vệ thu nhập và chăm sóc sức khỏe cho bản thân.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card text-center">
-          <div class="emi-icon mx-auto"><i class="bi bi-mortarboard"></i></div>
-          <h4>Giáo dục</h4>
-          <p>Chuẩn bị tài chính vững chắc cho tương lai con trẻ.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card text-center">
-          <div class="emi-icon mx-auto"><i class="bi bi-people"></i></div>
-          <h4>Gia đình</h4>
-          <p>Bảo vệ những người thân yêu trước biến cố bất ngờ.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card text-center">
-          <div class="emi-icon mx-auto"><i class="bi bi-sunrise"></i></div>
-          <h4>Hưu trí</h4>
-          <p>Xây dựng nguồn thu nhập ổn định cho tuổi già.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="premium">
-  <div class="container">
-    <div class="premium-card">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-6">
-          <span class="premium-badge">Dịch vụ ưu đãi</span>
-          <h2 class="section-title text-start mb-3">Gói Hậu mãi 5 sao</h2>
-          <p class="text-muted lh-lg">
-            EMI không chỉ hỗ trợ trước khi mua, mà còn đồng hành sau khi hợp đồng được phát hành.
-            Đây là điểm khác biệt giúp khách hàng an tâm hơn trong suốt quá trình sử dụng bảo hiểm.
-          </p>
-        </div>
-
-        <div class="col-lg-6">
-          <div class="row g-3">
-            <div class="col-md-6"><div class="emi-card"><h4>Rà soát hợp đồng</h4><p>Kiểm tra hợp đồng cũ để phát hiện khoảng trống quyền lợi.</p></div></div>
-            <div class="col-md-6"><div class="emi-card"><h4>Hỗ trợ bồi thường</h4><p>Đồng hành 24/7 khi khách hàng cần làm hồ sơ quyền lợi.</p></div></div>
-            <div class="col-md-6"><div class="emi-card"><h4>Quà tri ân</h4><p>Tặng quà định kỳ cho khách hàng tham gia nhiều gói.</p></div></div>
-            <div class="col-md-6"><div class="emi-card"><h4>Khách hàng thân thiết</h4><p>Ưu đãi cho khách hàng tham gia combo nhiều loại hình.</p></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="knowledge">
-  <div class="container">
-    <div class="section-kicker">Thư viện kiến thức</div>
-    <h2 class="section-title">Hiểu đúng trước khi chọn mua</h2>
-    <p class="section-desc">
-      EMI xây dựng nội dung giáo dục để khách hàng có đủ thông tin trước khi ra quyết định.
-    </p>
-
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-journal-text"></i></div>
-          <h4>Thuật ngữ bảo hiểm</h4>
-          <p>Giải thích dễ hiểu các điều khoản thường gặp.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-columns-gap"></i></div>
-          <h4>So sánh sản phẩm</h4>
-          <p>So sánh quyền lợi, chi phí và phạm vi bảo vệ.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-chat-heart"></i></div>
-          <h4>Câu chuyện khách hàng</h4>
-          <p>Những bài học thực tế trong quá trình bảo vệ tài chính.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="emi-card">
-          <div class="emi-icon"><i class="bi bi-activity"></i></div>
-          <h4>Góc sức khỏe</h4>
-          <p>Chia sẻ lối sống lành mạnh và phòng ngừa rủi ro.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="bg-soft">
-  <div class="container">
-    <div class="section-kicker">Đối tác</div>
-    <h2 class="section-title">Kết nối nhiều thương hiệu bảo hiểm</h2>
-    <p class="section-desc">
-      EMI hướng đến việc giúp khách hàng có nhiều lựa chọn phù hợp hơn thay vì chỉ nhìn vào một sản phẩm duy nhất.
-    </p>
-
-    <div class="row g-4 text-center">
-      <div class="col-lg-3 col-md-6"><div class="emi-card"><h3 class="fw-black" style="color:#e4002b">AIA</h3><p>Nhân thọ & sức khỏe.</p></div></div>
-      <div class="col-lg-3 col-md-6"><div class="emi-card"><h3 class="fw-black" style="color:#005baa">Bảo Việt</h3><p>Thương hiệu lâu năm.</p></div></div>
-      <div class="col-lg-3 col-md-6"><div class="emi-card"><h3 class="fw-black" style="color:#00a651">Xanh</h3><p>Giải pháp linh hoạt.</p></div></div>
-      <div class="col-lg-3 col-md-6"><div class="emi-card"><h3 class="fw-black" style="color:#f58220">PVI</h3><p>Xe, tài sản & du lịch.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="container">
-    <div class="cta-box">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-6">
-          <h2>Nhận tư vấn bảo hiểm miễn phí</h2>
-          <p>
-            Để lại thông tin, EMI sẽ hỗ trợ bạn hiểu rõ nhu cầu,
-            lựa chọn giải pháp phù hợp và tối ưu quyền lợi bảo vệ.
-          </p>
-
-           <div class="contact-person">
-              <img
-      src="image-contact.jpg?auto=format&fit=crop&w=800&q=80"
-      alt="Chuyên viên tư vấn EMI Insurance"
-    />
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <form>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Họ và tên">
-              </div>
-              <div class="col-md-6">
-                <input type="tel" class="form-control" placeholder="Số điện thoại">
-              </div>
-              <div class="col-12">
-                <select class="form-select">
-                  <option selected>Nhu cầu bảo hiểm</option>
-                  <option>Nhân thọ</option>
-                  <option>Sức khỏe</option>
-                  <option>Ô tô / Xe máy</option>
-                  <option>BHXH tự nguyện / BHYT</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <textarea class="form-control" placeholder="Nội dung cần tư vấn"></textarea>
-              </div>
-              <div class="col-12">
-                <button type="button" class="btn btn-main w-100 py-3">Gửi yêu cầu tư vấn</button>
-              </div>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex align-items-center">
+            <a class="navbar-brand" href="#home">EMI<span class="brand-dot">.</span><span
+                    class="brand-name">Insurance</span></a>
+
+            <button class="navbar-toggler ms-auto me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Mở menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center flex-grow-1" id="navbar">
+                <ul class="navbar-nav align-items-lg-center py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link active-menu" href="#home">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#knowledge">Kiến thức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
+                    <li class="nav-item d-lg-none mt-3">
+                        <a href="#contact" class="btn btn-main w-100">Nhận báo giá</a>
+                    </li>
+                </ul>
             </div>
-          </form>
+
+            <div class="navbar-cta-desktop d-none d-lg-block">
+                <a href="#contact" class="btn btn-main">Nhận báo giá</a>
+            </div>
         </div>
-      </div>  
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-7">
+                    <div class="hero-badge">
+                        <i class="bi bi-gem"></i>
+                        Triết lý đồng hành
+                    </div>
+
+                    <h1>Bảo hiểm không khó hiểu khi bạn bắt đầu từ việc <span class="highlight">Hiểu Đúng Giá
+                            Trị.</span></h1>
+
+                    <p class="hero-lead">
+                        Hành trình bảo vệ tài chính không nên bắt đầu bằng sự thúc giục.
+                        Tại <span class="text-gold">Emi Insurance</span>, chúng tôi ưu tiên sự minh bạch và thấu đáo:
+                    </p>
+
+                    <ul class="hero-features">
+                        <li class="hero-feature">
+                            <span class="hero-feature-icon" aria-hidden="true"><i class="bi bi-search"></i></span>
+                            <p class="hero-feature-text"><span class="text-gold">Hiểu đúng:</span> Bóc tách mọi điều
+                                khoản phức tạp, giúp bạn nhìn rõ quyền lợi và rủi ro thực sự.</p>
+                        </li>
+                        <li class="hero-feature">
+                            <span class="hero-feature-icon" aria-hidden="true"><i class="bi bi-bullseye"></i></span>
+                            <p class="hero-feature-text"><span class="text-gold">Chọn đúng:</span> Không bán một gói rập
+                                khuôn. Chúng tôi thiết kế một lớp khiên bảo vệ vừa vặn nhất với tài chính và giai đoạn
+                                cuộc sống của riêng bạn.</p>
+                        </li>
+                    </ul>
+
+                    <div class="hero-actions">
+                        <a href="#contact"
+                            class="btn btn-hero-primary d-inline-flex align-items-center justify-content-center gap-2">Bắt
+                            đầu lộ trình an tâm <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#products"
+                            class="btn btn-outline-main d-inline-flex align-items-center justify-content-center gap-2">Tìm
+                            hiểu hệ sinh thái 4.0 <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="hero-card">
+                        <div class="hero-card-head">
+                            <div class="hero-card-icon hero-card-image-icon" aria-hidden="true">
+                                <img src="shield-4-0.png" alt="Shield EMI Insurance">
+                            </div>
+
+                            <div class="hero-card-title-wrap">
+                                <div class="title-with-icon">
+                                    <i class="bi bi-shield-fill small-shield"></i>
+                                    <h3>Hệ sinh thái bảo vệ 4.0:<br>Đa tầng - Toàn diện</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="hero-card-intro">
+                            Một hợp đồng đơn lẻ là chưa đủ. EMI Insurance kết nối các nguồn lực để tạo ra một di sản tài
+                            chính vững chắc cho bạn:
+                        </p>
+                        <ul class="hero-eco-list">
+                            <li class="hero-eco-item">
+                                <span class="hero-eco-icon" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+                                <p class="hero-eco-text"><span class="text-gold">BHXH tự nguyện:</span> Nền tảng an
+                                    sinh, đảm bảo lương hưu dài hạn.</p>
+                            </li>
+                            <li class="hero-eco-item">
+                                <span class="hero-eco-icon" aria-hidden="true"><i
+                                        class="fa-solid fa-kit-medical"></i></span>
+                                <p class="hero-eco-text"><span class="text-gold">Chăm sóc y tế (BHYT &amp; Tư
+                                        nhân):</span> San sẻ gánh nặng chi phí viện phí tức thời.</p>
+                            </li>
+                            <li class="hero-eco-item">
+                                <span class="hero-eco-icon" aria-hidden="true"><i class="bi bi-shield"></i></span>
+                                <p class="hero-eco-text"><span class="text-gold">Nhân thọ &amp; Phi nhân thọ:</span> Quỹ
+                                    dự phòng sinh mạng và bảo vệ tài sản trước biến cố lớn.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 stat-box">
+                    <h3>24/7</h3>
+                    <p>Hỗ trợ khách hàng</p>
+                </div>
+                <div class="col-md-4 stat-box">
+                    <h3>4+</h3>
+                    <p>Nhóm giải pháp bảo vệ</p>
+                </div>
+                <div class="col-md-4 stat-box">
+                    <h3>100%</h3>
+                    <p>Tư vấn minh bạch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-kicker">Dịch vụ cốt lõi</div>
+            <h2 class="section-title">4 trụ cột bảo vệ của EMI</h2>
+            <p class="section-desc">
+                Một kế hoạch tài chính an toàn cần bảo vệ cả con người, tài sản,
+                sức khỏe và an sinh xã hội.
+            </p>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-person-heart"></i></div>
+                        <h4>Bảo vệ con người</h4>
+                        <p>Nhân thọ giúp xây dựng quỹ dự phòng tài chính trước các rủi ro lớn.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-car-front"></i></div>
+                        <h4>Bảo vệ tài sản</h4>
+                        <p>Bảo vệ xe, nhà ở, tài sản cá nhân và doanh nghiệp trước biến cố bất ngờ.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-bank"></i></div>
+                        <h4>An sinh xã hội</h4>
+                        <p>BHXH tự nguyện giúp xây dựng nguồn thu nhập ổn định khi về già.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-hospital"></i></div>
+                        <h4>Chăm sóc y tế</h4>
+                        <p>Kết hợp BHYT và bảo hiểm sức khỏe để giảm áp lực chi phí điều trị.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-soft" id="about">
+        <div class="container">
+
+            <div class="about-box">
+
+                <div class="row align-items-center g-5">
+
+                    <!-- LEFT -->
+                    <div class="col-lg-6">
+
+                        <h2>
+                            Từ một tư vấn viên đến hệ sinh thái bảo vệ toàn diện
+                        </h2>
+
+                        <p>
+                            EMI bắt đầu từ bảo hiểm nhân thọ, nhưng trong quá trình đồng hành cùng khách hàng,
+                            chúng tôi nhận ra: mỗi người không chỉ cần một hợp đồng,
+                            mà cần một kế hoạch bảo vệ đầy đủ.
+                        </p>
+
+                        <p>
+                            Vì vậy, EMI mở rộng sang bảo hiểm phi nhân thọ, sức khỏe,
+                            BHYT và BHXH tự nguyện để giúp khách hàng có cái nhìn
+                            toàn diện hơn về bảo vệ tài chính.
+                        </p>
+
+                    </div>
+
+
+                    <!-- RIGHT IMAGE -->
+                    <div class="col-lg-6">
+
+                        <div class="about-image">
+
+                            <img src="image-about.jpg" alt="EMI Insurance">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VALUE -->
+                <div class="row g-4 mt-5">
+
+                    <div class="col-lg-4">
+
+                        <div class="value-item">
+
+                            <h5>Minh bạch</h5>
+
+                            <p>
+                                Giải thích rõ điều khoản,
+                                quyền lợi và chi phí.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-4">
+
+                        <div class="value-item">
+
+                            <h5>Tận tâm</h5>
+
+                            <p>
+                                Đồng hành lâu dài
+                                sau khi ký hợp đồng.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-4">
+
+                        <div class="value-item">
+
+                            <h5>Luôn đứng về phía khách hàng</h5>
+
+                            <p>
+                                Hỗ trợ quyền lợi,
+                                giải đáp và bồi thường.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <section id="products">
+        <div class="container">
+            <div class="section-kicker">Danh mục sản phẩm</div>
+            <h2 class="section-title">Giải pháp cho từng nhu cầu</h2>
+            <p class="section-desc">
+                EMI không bán một sản phẩm đơn lẻ, mà tư vấn giải pháp phù hợp với từng giai đoạn và mục tiêu tài chính.
+            </p>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-shield-lock"></i></div>
+                        <h4>Nhân thọ</h4>
+                        <p>Bảo vệ giá trị con người và chuyển giao di sản.</p>
+                        <ul class="product-list">
+                            <li><i class="bi bi-check-circle"></i> Quỹ học vấn cho con</li>
+                            <li><i class="bi bi-check-circle"></i> Bảo vệ thu nhập</li>
+                            <li><i class="bi bi-check-circle"></i> Kế hoạch hưu trí</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-car-front-fill"></i></div>
+                        <h4>Phi nhân thọ</h4>
+                        <p>Bảo vệ tài sản và hành trình.</p>
+                        <ul class="product-list">
+                            <li><i class="bi bi-check-circle"></i> Xe ô tô, xe máy</li>
+                            <li><i class="bi bi-check-circle"></i> Nhà tư nhân</li>
+                            <li><i class="bi bi-check-circle"></i> Du lịch trong & ngoài nước</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-heart-pulse-fill"></i></div>
+                        <h4>Sức khỏe</h4>
+                        <p>Giải pháp sức khỏe kết hợp giữa BHYT và bảo hiểm tư nhân.</p>
+                        <ul class="product-list">
+                            <li><i class="bi bi-check-circle"></i> Nội trú, ngoại trú</li>
+                            <li><i class="bi bi-check-circle"></i> Phòng riêng</li>
+                            <li><i class="bi bi-check-circle"></i> Bệnh viện quốc tế</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-person-vcard"></i></div>
+                        <h4>BHXH tự nguyện</h4>
+                        <p>Giải pháp an sinh bền vững cho mọi người Việt.</p>
+                        <ul class="product-list">
+                            <li><i class="bi bi-check-circle"></i> Hướng dẫn tham gia</li>
+                            <li><i class="bi bi-check-circle"></i> Lộ trình lương hưu</li>
+                            <li><i class="bi bi-check-circle"></i> Tư vấn quyền lợi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-soft">
+        <div class="container">
+            <div class="section-kicker">Hành trình cuộc sống</div>
+            <h2 class="section-title">Sát cánh bên bạn trên từng chặng đường</h2>
+            <p class="section-desc">
+                Từ độc thân, giáo dục, gia đình đến hưu trí — mỗi giai đoạn đều cần một lớp bảo vệ phù hợp.
+            </p>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card text-center">
+                        <div class="emi-icon mx-auto"><i class="bi bi-person"></i></div>
+                        <h4>Độc thân</h4>
+                        <p>Bảo vệ thu nhập và chăm sóc sức khỏe cho bản thân.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card text-center">
+                        <div class="emi-icon mx-auto"><i class="bi bi-mortarboard"></i></div>
+                        <h4>Giáo dục</h4>
+                        <p>Chuẩn bị tài chính vững chắc cho tương lai con trẻ.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card text-center">
+                        <div class="emi-icon mx-auto"><i class="bi bi-people"></i></div>
+                        <h4>Gia đình</h4>
+                        <p>Bảo vệ những người thân yêu trước biến cố bất ngờ.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card text-center">
+                        <div class="emi-icon mx-auto"><i class="bi bi-sunrise"></i></div>
+                        <h4>Hưu trí</h4>
+                        <p>Xây dựng nguồn thu nhập ổn định cho tuổi già.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium">
+        <div class="container">
+            <div class="premium-card">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <span class="premium-badge">Dịch vụ ưu đãi</span>
+                        <h2 class="section-title text-start mb-3">Gói Hậu mãi 5 sao</h2>
+                        <p class="text-muted lh-lg">
+                            EMI không chỉ hỗ trợ trước khi mua, mà còn đồng hành sau khi hợp đồng được phát hành.
+                            Đây là điểm khác biệt giúp khách hàng an tâm hơn trong suốt quá trình sử dụng bảo hiểm.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="emi-card">
+                                    <h4>Rà soát hợp đồng</h4>
+                                    <p>Kiểm tra hợp đồng cũ để phát hiện khoảng trống quyền lợi.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="emi-card">
+                                    <h4>Hỗ trợ bồi thường</h4>
+                                    <p>Đồng hành 24/7 khi khách hàng cần làm hồ sơ quyền lợi.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="emi-card">
+                                    <h4>Quà tri ân</h4>
+                                    <p>Tặng quà định kỳ cho khách hàng tham gia nhiều gói.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="emi-card">
+                                    <h4>Khách hàng thân thiết</h4>
+                                    <p>Ưu đãi cho khách hàng tham gia combo nhiều loại hình.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="knowledge">
+        <div class="container">
+            <div class="section-kicker">Thư viện kiến thức</div>
+            <h2 class="section-title">Hiểu đúng trước khi chọn mua</h2>
+            <p class="section-desc">
+                EMI xây dựng nội dung giáo dục để khách hàng có đủ thông tin trước khi ra quyết định.
+            </p>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-journal-text"></i></div>
+                        <h4>Thuật ngữ bảo hiểm</h4>
+                        <p>Giải thích dễ hiểu các điều khoản thường gặp.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-columns-gap"></i></div>
+                        <h4>So sánh sản phẩm</h4>
+                        <p>So sánh quyền lợi, chi phí và phạm vi bảo vệ.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-chat-heart"></i></div>
+                        <h4>Câu chuyện khách hàng</h4>
+                        <p>Những bài học thực tế trong quá trình bảo vệ tài chính.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <div class="emi-icon"><i class="bi bi-activity"></i></div>
+                        <h4>Góc sức khỏe</h4>
+                        <p>Chia sẻ lối sống lành mạnh và phòng ngừa rủi ro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-soft">
+        <div class="container">
+            <div class="section-kicker">Đối tác</div>
+            <h2 class="section-title">Kết nối nhiều thương hiệu bảo hiểm</h2>
+            <p class="section-desc">
+                EMI hướng đến việc giúp khách hàng có nhiều lựa chọn phù hợp hơn thay vì chỉ nhìn vào một sản phẩm duy
+                nhất.
+            </p>
+
+            <div class="row g-4 text-center">
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <h3 class="fw-black" style="color:#e4002b">AIA</h3>
+                        <p>Nhân thọ & sức khỏe.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <h3 class="fw-black" style="color:#005baa">Bảo Việt</h3>
+                        <p>Thương hiệu lâu năm.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <h3 class="fw-black" style="color:#00a651">Xanh</h3>
+                        <p>Giải pháp linh hoạt.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="emi-card">
+                        <h3 class="fw-black" style="color:#f58220">PVI</h3>
+                        <p>Xe, tài sản & du lịch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="cta-box">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <h2>Nhận tư vấn bảo hiểm miễn phí</h2>
+                        <p>
+                            Để lại thông tin, EMI sẽ hỗ trợ bạn hiểu rõ nhu cầu,
+                            lựa chọn giải pháp phù hợp và tối ưu quyền lợi bảo vệ.
+                        </p>
+
+                        <div class="contact-person">
+                            <img src="image-contact.jpg?auto=format&fit=crop&w=800&q=80"
+                                alt="Chuyên viên tư vấn EMI Insurance" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <form id="consultForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" name="ho_ten" class="form-control" placeholder="Họ và tên *"
+                                        required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input type="tel" name="so_dien_thoai" class="form-control"
+                                        placeholder="Số điện thoại *" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <select name="nhu_cau_bao_hiem" class="form-select" required>
+                                        <option value="" selected disabled>Nhu cầu bảo hiểm *</option>
+                                        <option>Nhân thọ</option>
+                                        <option>Sức khỏe</option>
+                                        <option>Ô tô / Xe máy</option>
+                                        <option>BHXH tự nguyện / BHYT</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <textarea name="noi_dung" class="form-control"
+                                        placeholder="Nội dung cần tư vấn"></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-main w-100 py-3">
+                                        Gửi yêu cầu tư vấn
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5>EMI Insurance</h5>
+                    <p>Hiểu đúng giá trị - Chọn đúng giải pháp.</p>
+                    <p>Website: emi-ensurance.com</p>
+                </div>
+
+                <div class="col-lg-3">
+                    <h5>Sản phẩm</h5>
+                    <p>Nhân thọ</p>
+                    <p>Sức khỏe</p>
+                    <p>Ô tô - Xe máy</p>
+                    <p>BHXH tự nguyện</p>
+                </div>
+
+                <div class="col-lg-3">
+                    <h5>Hỗ trợ</h5>
+                    <p>Quy trình bồi thường</p>
+                    <p>FAQ</p>
+                    <p>Danh sách bệnh viện</p>
+                </div>
+
+                <div class="col-lg-2">
+                    <h5>Liên hệ</h5>
+                    <p>Zalo / Messenger</p>
+                    <p>Hotline: 09xx xxx xxx</p>
+                </div>
+            </div>
+
+            <hr style="border-color:rgba(255,255,255,.12);margin:36px 0 24px">
+
+            <div class="text-center">
+                © 2026 EMI Insurance. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-contact">
+        <!-- Zalo -->
+        <a href="#https://zalo.me/sdt" class="float-btn zalo">
+            <i class="bi bi-chat-dots"></i>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr" class="float-btn"
+            style="background:#1877F2" target="_blank">
+
+            <i class="bi bi-facebook"></i>
+        </a>
+        <!-- messenger -->
+        <a href="#https://m.me/username" class="float-btn messenger"
+            style="background:linear-gradient(135deg, #0084ff, #a43ff2)" target="_blank">
+
+            <i class="bi bi-messenger"></i>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@emi_hotrobaohiem?_r=1&_t=ZS-96LGpjw1DPO" class="float-btn"
+            style="background:#000" target="_blank">
+
+            <i class="bi bi-tiktok"></i>
+        </a>
     </div>
-  </div>
-</section>
 
-<footer>
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <h5>EMI Insurance</h5>
-        <p>Hiểu đúng giá trị - Chọn đúng giải pháp.</p>
-        <p>Website: emi-ensurance.com</p>
-      </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-      <div class="col-lg-3">
-        <h5>Sản phẩm</h5>
-        <p>Nhân thọ</p>
-        <p>Sức khỏe</p>
-        <p>Ô tô - Xe máy</p>
-        <p>BHXH tự nguyện</p>
-      </div>
+    <script>
+        /* MENU SMOOTH SCROLL */
+        document.querySelectorAll(".nav-link").forEach(link => {
+            link.addEventListener("click", function (e) {
+                const href = this.getAttribute("href");
 
-      <div class="col-lg-3">
-        <h5>Hỗ trợ</h5>
-        <p>Quy trình bồi thường</p>
-        <p>FAQ</p>
-        <p>Danh sách bệnh viện</p>
-      </div>
+                if (href && href.startsWith("#")) {
+                    e.preventDefault();
 
-      <div class="col-lg-2">
-        <h5>Liên hệ</h5>
-        <p>Zalo / Messenger</p>
-        <p>Hotline: 09xx xxx xxx</p>
-      </div>
-    </div>
+                    const target = document.querySelector(href);
 
-    <hr style="border-color:rgba(255,255,255,.12);margin:36px 0 24px">
+                    if (target) {
+                        const y = target.offsetTop - 90;
 
-    <div class="text-center">
-      © 2026 EMI Insurance. All rights reserved.
-    </div>
-  </div>
-</footer>
+                        window.scrollTo({
+                            top: y,
+                            behavior: "smooth"
+                        });
 
-<div class="floating-contact">
-  <!-- Zalo -->
-  <a href="#https://zalo.me/sdt" class="float-btn zalo">
-    <i class="bi bi-chat-dots"></i>
-  </a>
-
-  <!-- Facebook -->
-  <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr"
-     class="float-btn"
-     style="background:#1877F2" target="_blank">
-
-    <i class="bi bi-facebook"></i>
-  </a>
-  <!-- messenger -->
-  <a href="#https://m.me/username"
-     class="float-btn messenger"
-     style="background:linear-gradient(135deg, #0084ff, #a43ff2)" target="_blank">
-
-    <i class="bi bi-messenger"></i>
-  </a>
-
-  <!-- TikTok -->
-  <a href="https://www.tiktok.com/@emi_hotrobaohiem?_r=1&_t=ZS-96LGpjw1DPO"
-     class="float-btn"
-     style="background:#000" target="_blank">
-
-    <i class="bi bi-tiktok"></i>
-  </a>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-/* MENU SMOOTH SCROLL */
-document.querySelectorAll(".nav-link").forEach(link => {
-  link.addEventListener("click", function(e) {
-    const href = this.getAttribute("href");
-
-    if (href && href.startsWith("#")) {
-      e.preventDefault();
-
-      const target = document.querySelector(href);
-
-      if (target) {
-        const y = target.offsetTop - 90;
-
-        window.scrollTo({
-          top: y,
-          behavior: "smooth"
+                        const navbarCollapse = document.querySelector(".navbar-collapse");
+                        if (navbarCollapse.classList.contains("show")) {
+                            new bootstrap.Collapse(navbarCollapse).hide();
+                        }
+                    }
+                }
+            });
         });
 
-        const navbarCollapse = document.querySelector(".navbar-collapse");
-        if (navbarCollapse.classList.contains("show")) {
-          new bootstrap.Collapse(navbarCollapse).hide();
+
+        /* ACTIVE MENU */
+        const menuObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll(".nav-link").forEach(link => {
+                        link.classList.remove("active-menu");
+
+                        if (link.getAttribute("href") === "#" + entry.target.id) {
+                            link.classList.add("active-menu");
+                        }
+                    });
+                }
+            });
+        }, {
+            threshold: 0.35
+        });
+
+        document.querySelectorAll("section[id]").forEach(section => {
+            menuObserver.observe(section);
+        });
+
+
+        /* CONTACT PERSON BOUNCE */
+        const contactSection = document.querySelector("#contact");
+        const contactPerson = document.querySelector(".contact-person");
+
+        if (contactSection && contactPerson) {
+            const contactObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        contactPerson.classList.add("show");
+                    } else {
+                        contactPerson.classList.remove("show");
+                    }
+                });
+            }, {
+                threshold: 0.45
+            });
+
+            contactObserver.observe(contactSection);
         }
-      }
-    }
-  });
-});
+    </script>
+    <script>
+        const consultForm = document.querySelector("#consultForm");
 
+        consultForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-/* ACTIVE MENU */
-const menuObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      document.querySelectorAll(".nav-link").forEach(link => {
-        link.classList.remove("active-menu");
+            const btn = consultForm.querySelector("button[type='submit']");
+            btn.innerText = "Đang gửi...";
+            btn.disabled = true;
 
-        if (link.getAttribute("href") === "#" + entry.target.id) {
-          link.classList.add("active-menu");
-        }
-      });
-    }
-  });
-}, {
-  threshold: 0.35
-});
+            try {
+                await fetch("https://script.google.com/macros/s/AKfycbynEB0RQoZF3s8FoYcbC4b5MiwIClgTwC60exHSAicSODe_JgYHoL4i1AI_UYItmoWm/exec", {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: new FormData(consultForm)
+                });
 
-document.querySelectorAll("section[id]").forEach(section => {
-  menuObserver.observe(section);
-});
+                alert("Gửi yêu cầu thành công! EMI sẽ liên hệ bạn sớm.");
+                consultForm.reset();
 
+            } catch (error) {
+                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+            }
 
-/* CONTACT PERSON BOUNCE */
-const contactSection = document.querySelector("#contact");
-const contactPerson = document.querySelector(".contact-person");
-
-if (contactSection && contactPerson) {
-  const contactObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        contactPerson.classList.add("show");
-      } else {
-        contactPerson.classList.remove("show");
-      }
-    });
-  }, {
-    threshold: 0.45
-  });
-
-  contactObserver.observe(contactSection);
-}
-</script>
+            btn.innerText = "Gửi yêu cầu tư vấn";
+            btn.disabled = false;
+        });
+    </script>
 
 </body>
+
 </html>
