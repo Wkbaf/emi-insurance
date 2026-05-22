@@ -147,7 +147,7 @@ class EmiFooter extends HTMLElement {
                 </a>
 
                 <button class="float-btn chat-main" type="button">
-                    <i class="bi bi-chat-dots"></i>
+                    <i class="bi bi-telephone"></i>
                 </button>
             </div>
 
