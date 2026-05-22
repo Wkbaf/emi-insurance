@@ -76,6 +76,25 @@ section {
     color: var(--gold) !important
 }
 
+.btn-main,
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 800;
+    border: none;
+    box-shadow: 0 14px 30px rgba(191, 155, 66, .28);
+    transition: .3s
+}
+
+.btn-main:hover,
+.btn-gold:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(191, 155, 66, .38)
+}
+
 .btn-outline-light-custom {
     border: 1px solid rgba(255, 255, 255, .5);
     color: #fff;
@@ -199,6 +218,82 @@ section {
 .shield-icon i {
     font-size: 76px;
     color: var(--gold-2)
+}
+
+.pieces {
+    background: var(--cream)
+}
+
+.piece-card {
+    height: 100%;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 34px 28px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, .06);
+    transition: .35s ease;
+    position: relative;
+    overflow: hidden
+}
+
+.piece-card:hover,
+.piece-card.is-touch {
+    transform: translateY(-8px);
+    box-shadow: 0 26px 60px rgba(191, 155, 66, .18);
+    border-color: rgba(191, 155, 66, .45)
+}
+
+.piece-card::before {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    right: -120px;
+    top: -120px;
+    background: rgba(216, 182, 93, .12)
+}
+
+.piece-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: var(--gold-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card h3 {
+    font-size: 22px;
+    color: var(--navy);
+    font-weight: 900;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card .message {
+    font-weight: 700;
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card p {
+    color: var(--muted);
+    line-height: 1.78;
+    margin: 0;
+    position: relative;
+    z-index: 1
 }
 
 .process-step {
@@ -566,5 +661,134 @@ footer a:hover {
 
     .heritage-hero p{
         font-size:15px;
+    }
+}
+/* ================================
+   AN SINH XÃ HỘI / CHĂM SÓC Y TẾ
+   ================================ */
+.health-hero{
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0,32,30,.96) 0%,
+            rgba(0,32,30,.84) 36%,
+            rgba(0,32,30,.46) 60%,
+            rgba(0,32,30,.10) 100%
+        ),
+        url("../image/cham-soc-y-te.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height: calc(100vh - 72px);
+    position: relative;
+}
+
+.health-hero::before,
+.health-hero::after{
+    display:none;
+}
+
+.health-hero .container{
+    position:relative;
+    z-index:2;
+}
+
+.health-hero .eyebrow{
+    color:#d9a441;
+}
+
+.health-hero h1{
+    max-width:760px;
+}
+
+.health-hero .highlight{
+    color:#d9a441;
+}
+
+.health-pain-box{
+    background:
+        radial-gradient(circle at 12% 18%, rgba(5,72,64,.08), transparent 28%),
+        linear-gradient(135deg, #fffdf8, #f9f3e4);
+}
+
+.health-pillars .piece-card{
+    min-height: 100%;
+}
+
+.pillar-card{
+    padding-top: 86px;
+}
+
+.pillar-card .piece-icon{
+    position:absolute;
+    top:28px;
+    left:28px;
+    margin-bottom:0;
+}
+
+.pillar-number{
+    position:absolute;
+    top:34px;
+    right:28px;
+    min-width:42px;
+    height:28px;
+    padding:0 10px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, var(--gold), var(--gold-2));
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    box-shadow:0 10px 22px rgba(191,155,66,.25);
+    z-index:2;
+}
+
+.claim-support{
+    background:#fff;
+}
+
+.support-step{
+    align-items:flex-start;
+}
+
+.support-step .step-num{
+    background:linear-gradient(135deg, var(--navy), var(--navy-2));
+    color:var(--gold-2);
+    font-size:22px;
+}
+
+@media(max-width:991px){
+    .health-hero{
+        min-height:auto;
+        padding:90px 0;
+        background-position:center;
+    }
+
+    .health-hero{
+        background-image:
+            linear-gradient(rgba(0,32,30,.88), rgba(0,32,30,.88)),
+            url("../image/cham-soc-y-te.jpg");
+    }
+}
+
+@media(max-width:575px){
+    .pillar-card{
+        padding-top:78px;
+    }
+
+    .pillar-card .piece-icon{
+        width:62px;
+        height:62px;
+        border-radius:20px;
+        font-size:28px;
+        top:24px;
+        left:22px;
+    }
+
+    .pillar-number{
+        top:28px;
+        right:22px;
     }
 }

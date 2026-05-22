@@ -1,0 +1,385 @@
+:root {
+    --navy: #033631;
+    --navy-2: #054840;
+    --navy-3: #002e2b;
+    --gold: #bf9b42;
+    --gold-2: #d8b65d;
+    --cream: #faf8f2;
+    --cream-2: #f4ead7;
+    --border: #efe6cf;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --white: #fff;
+}
+
+.btn-main,
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 14px 30px rgba(191, 155, 66, .28);
+    transition: .3s
+}
+
+.btn-main:hover,
+.btn-gold:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(191, 155, 66, .38)
+}
+
+/* FOR STYLE 3 CARDS */
+.pieces {
+    background: var(--cream)
+}
+
+.piece-card {
+    height: 100%;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 34px 28px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, .06);
+    transition: .35s ease;
+    position: relative;
+    overflow: hidden
+}
+
+.piece-card:hover,
+.piece-card.is-touch {
+    transform: translateY(-8px);
+    box-shadow: 0 26px 60px rgba(191, 155, 66, .18);
+    border-color: rgba(191, 155, 66, .45)
+}
+
+.piece-card::before {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    right: -120px;
+    top: -120px;
+    background: rgba(216, 182, 93, .12)
+}
+
+.piece-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: var(--gold-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card h3 {
+    font-size: 22px;
+    color: var(--navy);
+    font-weight: 900;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card .message {
+    font-weight: 700;
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1
+}
+
+.piece-card p {
+    color: var(--muted);
+    line-height: 1.78;
+    margin: 0;
+    position: relative;
+    z-index: 1
+}
+
+/* FOR CARD THUC TRANG DIEM DAU 1 */
+.pain-section {
+    background: var(--cream);
+}
+
+.pain-box {
+    background: #fff;
+    border: 1px solid rgba(191, 155, 66, .2);
+    border-radius: 38px;
+    padding: 42px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, .08);
+    overflow: hidden;
+}
+
+.pain-image {
+    height: 360px;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 18px 46px rgba(15, 23, 42, .12);
+    background: linear-gradient(135deg, #efe5d2, #fff);
+}
+
+.pain-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pain-box {
+    background: linear-gradient(135deg, #fffdf8, #f9f3e4);
+    border: 1px solid rgba(191, 155, 66, .25);
+    border-radius: 38px;
+    padding: 46px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, .08);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border: 1px solid rgba(191, 155, 66, .45);
+    border-radius: 999px;
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+@media(max-width:991px) {
+    .pain-image {
+        height: 280px;
+    }
+}
+
+/* FOR CARD THUC TRANG DIEM DAU 2 */
+.section-title {
+    font-size: clamp(30px, 3.4vw, 48px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 18px
+}
+
+.section-desc {
+    color: var(--muted);
+    line-height: 1.85;
+    font-size: 16px
+}
+
+.text-gold {
+    color: var(--gold);
+    font-weight: 800
+}
+
+.pain-box {
+    background: linear-gradient(135deg, #fffdf8, #f9f3e4);
+    border: 1px solid rgba(191, 155, 66, .25);
+    border-radius: 38px;
+    padding: 54px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, .08);
+    position: relative;
+    overflow: hidden
+}
+
+.pain-box::before {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    right: -160px;
+    top: -170px;
+    background: radial-gradient(circle, rgba(191, 155, 66, .18), transparent 70%)
+}
+
+.pain-box>* {
+    position: relative;
+    z-index: 1
+}
+
+@media(max-width:991px) {
+
+    .pain-box,
+    .cta-box {
+        padding: 38px 26px
+    }
+}
+
+/* SECTION WITH ROADMAP LINE STEPS */
+.retirement-roadmap {
+    background:
+        radial-gradient(circle at 50% -10%, rgba(216, 182, 93, .20), transparent 34%),
+        radial-gradient(circle at 10% 80%, rgba(255, 255, 255, .06), transparent 26%),
+        linear-gradient(180deg, #033631 0%, #012b28 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    padding: 86px 0 96px;
+}
+
+.roadmap-subtitle {
+    display: block;
+    color: rgba(255, 255, 255, .82);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.roadmap-title {
+    color: var(--gold-2);
+    font-size: clamp(30px, 3.5vw, 46px);
+    font-weight: 900;
+    letter-spacing: -.8px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.roadmap-line {
+    max-width: 820px;
+    height: 2px;
+    margin: 0 auto 28px;
+    border-top: 2px dashed rgba(216, 182, 93, .65);
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.roadmap-line span {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(216, 182, 93, .35);
+}
+
+.roadmap-cards {
+    align-items: stretch;
+}
+
+.piece-card {
+    height: 100%;
+    background: #fffaf0;
+    border: 1px solid rgba(216, 182, 93, .45);
+    border-radius: 24px;
+    padding: 38px 28px 34px;
+    box-shadow: 0 20px 52px rgba(0, 0, 0, .22);
+    transition: .35s ease;
+}
+
+.piece-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 74px rgba(0, 0, 0, .28);
+}
+
+.piece-head {
+    display: grid;
+    grid-template-columns: 82px 1fr;
+    gap: 22px;
+    align-items: start;
+    margin-bottom: 22px;
+}
+
+.piece-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 25%, #0b6a5f, #023b35 72%);
+    color: #fffaf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16);
+}
+
+.piece-card h3 {
+    color: #033631;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.32;
+    letter-spacing: -.4px;
+    margin: 4px 0 0;
+}
+
+.piece-title-line {
+    display: block;
+    width: 48px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 999px;
+    margin: 0 auto 34px;
+}
+
+.piece-message {
+    color: #b5861d;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.45;
+    margin: 0 0 26px;
+}
+
+.piece-desc {
+    color: #1f2937;
+    font-size: 16px;
+    line-height: 1.78;
+    margin: 0;
+}
+
+@media(max-width:991px) {
+    .piece-card {
+        padding: 32px 24px;
+    }
+
+    .piece-card h3 {
+        font-size: 23px;
+    }
+}
+
+@media(max-width:576px) {
+    .piece-head {
+        grid-template-columns: 68px 1fr;
+        gap: 16px;
+    }
+
+    .piece-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+    }
+
+    .piece-card h3 {
+        font-size: 20px;
+    }
+
+    .piece-message {
+        font-size: 16px;
+    }
+
+    .piece-desc {
+        font-size: 15px;
+    }
+}
