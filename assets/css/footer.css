@@ -1,163 +1,162 @@
-.emi-footer{
+.emi-footer {
     background:
-    radial-gradient(circle at top left,#00343b,#00181d);
-    color:#fff;
-    padding:70px 0 25px;
-    position:relative;
+        radial-gradient(circle at top left, #00343b, #00181d);
+    color: #fff;
+    padding: 70px 0 25px;
+    position: relative;
 }
 
-.footer-logo{
-    font-size:60px;
-    font-weight:800;
-    line-height:1;
-    color:#e2a84b;
-    letter-spacing:4px;
+.footer-logo {
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1;
+    color: #e2a84b;
+    letter-spacing: 4px;
 }
 
-.footer-subtitle{
-    color:#d0a14d;
-    letter-spacing:4px;
-    font-size:14px;
-    margin-bottom:25px;
+.footer-subtitle {
+    color: #d0a14d;
+    letter-spacing: 4px;
+    font-size: 14px;
+    margin-bottom: 25px;
 }
 
-.footer-desc{
-    color:#d8d8d8;
-    line-height:1.8;
+.footer-desc {
+    color: #d8d8d8;
+    line-height: 1.8;
 }
 
-.emi-footer h5{
-    color:#d7a247;
-    margin-bottom:30px;
-    position:relative;
-    font-weight:600;
+.emi-footer h5 {
+    color: #d7a247;
+    margin-bottom: 30px;
+    position: relative;
+    font-weight: 600;
 }
 
-.emi-footer ul{
-    list-style:none;
-    padding:0;
+.emi-footer ul {
+    list-style: none;
+    padding: 0;
 }
 
-.emi-footer ul li{
-    margin-bottom:18px;
-    color:#ddd;
-    transition:.3s;
-    cursor:pointer;
+.emi-footer ul li {
+    margin-bottom: 18px;
+    color: #ddd;
+    transition: .3s;
+    cursor: pointer;
 }
 
-.emi-footer ul li:hover{
-    color:#d7a247;
-    padding-left:8px;
+.emi-footer ul li:hover {
+    color: #d7a247;
+    padding-left: 8px;
 }
 
-.social-list{
-    display:flex;
-    gap:12px;
-    margin-top:25px;
+.social-list {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
 }
 
-.social-list a{
-    width:45px;
-    height:45px;
-    border:1px solid #d7a247;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#d7a247;
-    text-decoration:none;
-    transition:.3s;
+.social-list a {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #d7a247;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #d7a247;
+    text-decoration: none;
+    transition: .3s;
 }
 
-.social-list a:hover{
-    background:#d7a247;
-    color:#041d22;
+.social-list a:hover {
+    background: #d7a247;
+    color: #041d22;
 }
 
-.contact-item{
-    display:flex;
-    gap:15px;
-    margin-bottom:22px;
+.contact-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 22px;
 }
 
-.contact-item .icon{
-    width:42px;
-    height:42px;
-    border:1px solid #d7a247;
-    border-radius:50%;
-    color:#d7a247;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
+.contact-item .icon {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #d7a247;
+    border-radius: 50%;
+    color: #d7a247;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.contact-item p{
-    margin:0;
-    color:#ccc;
-    font-size:14px;
+.contact-item p {
+    margin: 0;
+    color: #ccc;
+    font-size: 14px;
 }
 
-.contact-item strong{
-    color:#fff;
+.contact-item strong {
+    color: #fff;
 }
 
-.emi-footer hr{
-    margin:45px 0 20px;
-    border-color:rgba(255,255,255,.08);
+.emi-footer hr {
+    margin: 45px 0 20px;
+    border-color: rgba(255, 255, 255, .08);
 }
 
-.footer-bottom{
-    text-align:center;
-    color:#9a9a9a;
-    font-size:14px;
+.footer-bottom {
+    text-align: center;
+    color: #9a9a9a;
+    font-size: 14px;
 }
 
 /* Mobile */
 
-@media(max-width:768px){
+@media(max-width:768px) {
 
-.footer-logo{
-font-size:46px;
+    .footer-logo {
+        font-size: 46px;
+    }
+
+    .contact-item {
+        align-items: flex-start;
+    }
+
 }
 
-.contact-item{
-align-items:flex-start;
+.footer-links {
+    list-style: none;
+    padding: 0;
 }
 
+.footer-links li {
+    margin-bottom: 18px;
 }
 
-.footer-links{
-    list-style:none;
-    padding:0;
+.footer-links a {
+    color: #ddd;
+    text-decoration: none;
+    transition: .3s;
+    display: inline-block;
 }
 
-.footer-links li{
-    margin-bottom:18px;
-}
-
-.footer-links a{
-    color:#ddd;
-    text-decoration:none;
-    transition:.3s;
-    display:inline-block;
-}
-
-.footer-links a:hover{
-    color:#d7a247;
-    transform:translateX(8px);
+.footer-links a:hover {
+    color: #d7a247;
+    transform: translateX(8px);
 }
 
 
 /* FLOAT CONTACT */
 .floating-contact {
-    position: fixed;
-    right: 22px;
-    bottom: 22px;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 70px;
+    height: 340px;
+    z-index: 10;
 }
 
 .float-btn {
@@ -380,4 +379,266 @@ footer a:hover {
     .pillar-card {
         padding: 28px 20px 24px;
     }
+}
+
+/* FOR EFFECT FLOATING CONTACTS */
+.floating-actions {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    width: 70px;
+    height: 430px;
+    z-index: 9990;
+}
+
+.floating-contact {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 70px;
+    height: 58px;
+}
+
+.float-btn,
+.back-to-top {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    transition: all 0.35s ease;
+}
+
+.back-to-top {
+    position: absolute;
+    right: 0;
+    bottom: 76px;
+
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+
+    background: #fff;
+    color: #0f766e;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+
+    transition: all 0.35s ease;
+
+    /* layer cao hơn */
+    z-index: 99999;
+}
+
+.floating-actions.is-open .back-to-top {
+    bottom: 356px;
+}
+
+.back-to-top {
+    pointer-events: auto;
+}
+
+.floating-contact {
+    z-index: 10;
+}
+
+.back-to-top {
+    z-index: 99999;
+}
+
+.chat-main {
+    background: linear-gradient(135deg, #00b894, #0984e3);
+    cursor: pointer;
+
+    /* thấp hơn nút top */
+    z-index: 9991;
+
+    animation: chatPulse 1.8s infinite;
+}
+
+.chat-main:hover {
+    transform: scale(1.08) rotate(-6deg);
+}
+
+.chat-main:hover i {
+    animation: chatShake 0.45s ease;
+}
+
+.contact {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0) scale(0.4);
+    z-index: 2;
+}
+
+.zalo {
+    background: #0068ff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.facebook {
+    background: #1877f2;
+}
+
+.messenger {
+    background: linear-gradient(135deg, #0084ff, #a43ff2);
+}
+
+.tiktok {
+    background: #000;
+}
+
+.floating-actions.is-open .contact {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.floating-actions.is-open .zalo {
+    transform: translateY(-76px) scale(1);
+}
+
+.floating-actions.is-open .facebook {
+    transform: translateY(-144px) scale(1);
+}
+
+.floating-actions.is-open .messenger {
+    transform: translateY(-212px) scale(1);
+}
+
+.floating-actions.is-open .tiktok {
+    transform: translateY(-280px) scale(1);
+}
+
+.contact {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0) scale(0.4);
+
+    z-index: 2;
+
+    transition:
+        transform .35s ease,
+        opacity .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+}
+
+/* EFFECT HOVER CONTACT */
+.contact:hover {
+    filter: brightness(1.12);
+
+    box-shadow:
+        0 0 18px rgba(255,255,255,.28),
+        0 12px 30px rgba(0,0,0,.28);
+
+    z-index: 20;
+}
+
+/* ICON ANIMATION */
+.contact:hover i {
+    animation: contactBounce .45s ease;
+}
+
+/* ZALO TEXT EFFECT */
+.zalo:hover {
+    letter-spacing: .4px;
+}
+
+@keyframes contactBounce {
+    0% {
+        transform: scale(1) rotate(0);
+    }
+
+    25% {
+        transform: scale(1.15) rotate(-10deg);
+    }
+
+    50% {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    75% {
+        transform: scale(1.12) rotate(-6deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.floating-actions.is-open .back-to-top {
+    bottom: 356px;
+}
+
+.back-to-top:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.back-to-top:hover {
+    z-index: 10000;
+}
+
+.floating-actions.is-open .back-to-top {
+    bottom: 356px;
+}
+
+@keyframes chatPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(9,132,227,0.45);
+    }
+    70% {
+        box-shadow: 0 0 0 14px rgba(9,132,227,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(9,132,227,0);
+    }
+}
+
+@keyframes chatShake {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(-12deg);
+    }
+    50% {
+        transform: rotate(12deg);
+    }
+    75% {
+        transform: rotate(-8deg);
+    }
+}
+
+.floating-actions.is-open .zalo:hover {
+    transform: translateY(-76px) scale(1.16);
+}
+
+.floating-actions.is-open .facebook:hover {
+    transform: translateY(-144px) scale(1.16);
+}
+
+.floating-actions.is-open .messenger:hover {
+    transform: translateY(-212px) scale(1.16);
+}
+
+.floating-actions.is-open .tiktok:hover {
+    transform: translateY(-280px) scale(1.16);
 }
