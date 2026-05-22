@@ -18,7 +18,7 @@ class EmiFooter extends HTMLElement {
                                 <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr" target="_blank">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="https://zalo.me/sdt" target="_blank">Zalo</a>
+                                <a href="https://zalo.me/0823865827" target="_blank">Zalo</a>
                             </div>
                         </div>
 
@@ -130,14 +130,14 @@ class EmiFooter extends HTMLElement {
             
 
             <div class="floating-contact">
-                <a href="https://zalo.me/sdt" class="float-btn contact zalo" target="_blank">Zalo</a>
+                <a href="https://zalo.me/0823865827" class="float-btn contact zalo" target="_blank">Zalo</a>
 
                 <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr"
                 class="float-btn contact facebook" target="_blank">
                     <i class="bi bi-facebook"></i>
                 </a>
 
-                <a href="https://m.me/username" class="float-btn contact messenger" target="_blank">
+                <a href="https://m.me/baohiem.hieudung.chondung.vn" class="float-btn contact messenger" target="_blank">
                     <i class="bi bi-messenger"></i>
                 </a>
 
