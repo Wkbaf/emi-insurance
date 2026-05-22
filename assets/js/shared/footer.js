@@ -126,25 +126,87 @@ class EmiFooter extends HTMLElement {
                 </div>
             </footer>
 
-            <div class="floating-contact">
-                <a href="https://zalo.me/sdt" class="float-btn zalo" target="_blank">
-                    <i class="bi bi-chat-dots"></i>
-                </a>
+            <div class="floating-actions">
+            
 
-                <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr" class="float-btn facebook" target="_blank"  style="background:#1877F2">
+            <div class="floating-contact">
+                <a href="https://zalo.me/sdt" class="float-btn contact zalo" target="_blank">Zalo</a>
+
+                <a href="https://web.facebook.com/baohiem.hieudung.chondung.vn/?_rdc=1&_rdr"
+                class="float-btn contact facebook" target="_blank">
                     <i class="bi bi-facebook"></i>
                 </a>
 
-                <a href="https://m.me/username" class="float-btn messenger" target="_blank" style="background:linear-gradient(135deg, #0084ff, #a43ff2)">
+                <a href="https://m.me/username" class="float-btn contact messenger" target="_blank">
                     <i class="bi bi-messenger"></i>
                 </a>
 
-                <a href="https://www.tiktok.com/@emi_hotrobaohiem?_r=1&_t=ZS-96LGpjw1DPO" style="background:#000" class="float-btn tiktok" target="_blank">
+                <a href="https://www.tiktok.com/@emi_hotrobaohiem?_r=1&_t=ZS-96LGpjw1DPO"
+                class="float-btn contact tiktok" target="_blank">
                     <i class="bi bi-tiktok"></i>
                 </a>
+
+                <button class="float-btn chat-main" type="button">
+                    <i class="bi bi-chat-dots"></i>
+                </button>
             </div>
+
+            <button class="back-to-top" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+                <i class="bi bi-arrow-up"></i>
+            </button>
+         </div>
         `;
+
+        // FOR MOBILE FLOATING CONTACTS
+        const floatingActions = this.querySelector('.floating-actions');
+        const floatingContact = this.querySelector('.floating-contact');
+        const chatMain = this.querySelector('.chat-main');
+        const backToTop = this.querySelector('.back-to-top');
+
+        let closeTimer;
+
+        const openContacts = () => {
+            clearTimeout(closeTimer);
+            floatingActions.classList.add('is-open');
+        };
+
+        const closeContacts = () => {
+            closeTimer = setTimeout(() => {
+                floatingActions.classList.remove('is-open');
+            }, 180);
+        };
+
+        // Desktop hover
+        chatMain.addEventListener('mouseenter', openContacts);
+
+        floatingContact.addEventListener('mouseenter', () => {
+            if (floatingActions.classList.contains('is-open')) {
+                openContacts();
+            }
+        });
+
+        backToTop.addEventListener('mouseenter', () => {
+            if (floatingActions.classList.contains('is-open')) {
+                openContacts();
+            }
+        });
+
+        floatingActions.addEventListener('mouseleave', closeContacts);
+
+        // Mobile touch/click
+        chatMain.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            floatingActions.classList.toggle('is-open');
+        });
+
+        backToTop.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
+
+
 }
 
 customElements.define('emi-footer', EmiFooter);
