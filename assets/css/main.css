@@ -1802,7 +1802,7 @@ textarea.form-control {
     display: flex;
     gap: 0;
     overflow-x: auto;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 
     padding: 24px;
 
