@@ -956,120 +956,100 @@
     
         if (!slider || !prevBtn || !nextBtn) return;
     
-        const originalItems = Array.from(slider.children);
-    
-        // reset để tránh bị duplicate nhiều lần nếu script chạy lại
-        slider.innerHTML = "";
-    
-        // clone 3 bộ: left - center - right
-        for (let i = 0; i < 3; i++) {
-            originalItems.forEach(item => {
-                slider.appendChild(item.cloneNode(true));
-            });
-        }
-    
-        let autoScroll = null;
+        let rafId = null;
         let resumeTimer = null;
-        let isHovering = false;
+        let endTimer = null;
+        let isPaused = false;
     
-        const speed = 1;
-        const intervalTime = 20;
-        const scrollStep = 320;
-        const resumeDelay = 2500;
+        const speed = 0.45;
+        const step = 260;
+        const resumeDelay = 1800;
+        const endDelay = 900;
     
-        function oneSetWidth() {
-            return slider.scrollWidth / 3;
+        function maxScroll() {
+            return slider.scrollWidth - slider.clientWidth;
         }
     
-        function goToMiddle() {
-            slider.scrollLeft = oneSetWidth();
+        function stopAuto() {
+            cancelAnimationFrame(rafId);
+            rafId = null;
         }
     
-        function normalizeScroll() {
-            const setWidth = oneSetWidth();
+        function startAuto() {
+            stopAuto();
+            if (isPaused) return;
     
-            // nếu đi quá bộ bên phải, kéo về bộ giữa
-            if (slider.scrollLeft >= setWidth * 2) {
-                slider.scrollLeft -= setWidth;
-            }
+            function tick() {
+                const max = maxScroll();
     
-            // nếu lùi quá bộ bên trái, kéo về bộ giữa
-            if (slider.scrollLeft <= 0) {
-                slider.scrollLeft += setWidth;
-            }
-        }
+                if (slider.scrollLeft >= max - 1) {
+                    stopAuto();
+                    clearTimeout(endTimer);
     
-        function startAutoScroll() {
-            stopAutoScroll();
+                    endTimer = setTimeout(() => {
+                        slider.scrollTo({ left: 0, behavior: "auto" });
+                        startAuto();
+                    }, endDelay);
     
-            if (isHovering) return;
+                    return;
+                }
     
-            autoScroll = setInterval(() => {
                 slider.scrollLeft += speed;
-                normalizeScroll();
-            }, intervalTime);
-        }
-    
-        function stopAutoScroll() {
-            if (autoScroll) {
-                clearInterval(autoScroll);
-                autoScroll = null;
+                rafId = requestAnimationFrame(tick);
             }
+    
+            rafId = requestAnimationFrame(tick);
         }
     
-        function resumeAutoScrollLater() {
+        function pauseThenResume() {
+            stopAuto();
             clearTimeout(resumeTimer);
+            clearTimeout(endTimer);
     
             resumeTimer = setTimeout(() => {
-                startAutoScroll();
+                if (!isPaused) startAuto();
             }, resumeDelay);
         }
     
         function manualScroll(direction) {
-            stopAutoScroll();
-            clearTimeout(resumeTimer);
+            pauseThenResume();
     
-            normalizeScroll();
+            const target = Math.max(
+                0,
+                Math.min(slider.scrollLeft + direction * step, maxScroll())
+            );
     
-            slider.scrollBy({
-                left: direction * scrollStep,
+            slider.scrollTo({
+                left: target,
                 behavior: "smooth"
             });
-    
-            setTimeout(() => {
-                normalizeScroll();
-                resumeAutoScrollLater();
-            }, 800);
         }
     
-        nextBtn.addEventListener("click", () => {
-            manualScroll(1);
-        });
-    
-        prevBtn.addEventListener("click", () => {
-            manualScroll(-1);
-        });
+        nextBtn.addEventListener("click", () => manualScroll(1));
+        prevBtn.addEventListener("click", () => manualScroll(-1));
     
         slider.addEventListener("mouseenter", () => {
-            isHovering = true;
+            isPaused = true;
+            stopAuto();
             clearTimeout(resumeTimer);
-            stopAutoScroll();
         });
     
         slider.addEventListener("mouseleave", () => {
-            isHovering = false;
-            resumeAutoScrollLater();
+            isPaused = false;
+            pauseThenResume();
         });
     
-        // chờ layout render xong rồi set vị trí giữa
-        requestAnimationFrame(() => {
-            goToMiddle();
-            startAutoScroll();
+        slider.addEventListener("touchstart", () => {
+            isPaused = true;
+            stopAuto();
+        }, { passive: true });
+    
+        slider.addEventListener("touchend", () => {
+            isPaused = false;
+            pauseThenResume();
         });
     
-        window.addEventListener("resize", () => {
-            goToMiddle();
-        });
+        startAuto();
     });
     </script>
 <script src="assets/js/shared/footer.js"></script>
