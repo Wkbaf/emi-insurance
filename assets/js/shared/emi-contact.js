@@ -8,7 +8,7 @@ class EmiContact extends HTMLElement {
   
                 <div class="col-lg-6">
                   <div class="contact-left">
-                    <div class="contact-badge">
+                    <div class="section-kicker">
                       <i class="bi bi-chat-dots"></i>
                       Tư vấn 1-1 minh bạch
                     </div>

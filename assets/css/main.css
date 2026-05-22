@@ -666,16 +666,6 @@ section {
 }
 
 /* COMMON */
-.section-kicker {
-    color: var(--green);
-    font-weight: 900;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: 40px;
-    margin-bottom: 12px;
-}
-
 .section-title {
     text-align: center;
     font-size: 25px;
@@ -1779,6 +1769,18 @@ textarea.form-control {
     background: #cb8a34;
 }
 
+@media(max-width:768px) {
+    .partner-subtitle span {
+        width: 25px;
+        height: 1px;
+        background: #cb8a34;
+    }
+
+    .partner-subtitle {
+        font-size: 15px;
+    }
+}
+
 .partner-desc {
     color: #667;
     line-height: 1.8;
@@ -1960,11 +1962,11 @@ textarea.form-control {
     width: 180px;
     height: 100px;
 
-    background: rgba(255,255,255,.82);
+    background: rgba(255, 255, 255, .82);
 
     backdrop-filter: blur(10px);
 
-    border: 1px solid rgba(216,182,93,.15);
+    border: 1px solid rgba(216, 182, 93, .15);
 
     transition: .35s ease;
 }
@@ -1973,7 +1975,7 @@ textarea.form-control {
     transform: translateY(-6px);
 
     box-shadow:
-        0 15px 35px rgba(191,155,66,.18);
+        0 15px 35px rgba(191, 155, 66, .18);
 }
 
 /* button */
@@ -1985,7 +1987,7 @@ textarea.form-control {
 
     border-radius: 50%;
 
-    background: rgba(255,255,255,.92);
+    background: rgba(255, 255, 255, .92);
 
     backdrop-filter: blur(10px);
 
@@ -2000,7 +2002,7 @@ textarea.form-control {
     transform: translateY(-50%);
 
     box-shadow:
-        0 10px 25px rgba(0,0,0,.12);
+        0 10px 25px rgba(0, 0, 0, .12);
 
     transition: .3s ease;
 
@@ -2013,8 +2015,7 @@ textarea.form-control {
     color: white;
 
     transform:
-        translateY(-50%)
-        scale(1.08);
+        translateY(-50%) scale(1.08);
 }
 
 .partner-nav.prev {
@@ -2388,7 +2389,7 @@ textarea.form-control {
     }
 
     .knowledge-subtitle {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .title-line {
