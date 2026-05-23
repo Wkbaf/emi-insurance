@@ -414,7 +414,7 @@ footer a:hover {
     color: #fff;
     text-decoration: none;
     font-size: 24px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     transition: all 0.35s ease;
 }
 
@@ -438,7 +438,7 @@ footer a:hover {
     font-size: 24px;
     cursor: pointer;
 
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 
     transition: all 0.35s ease;
 
@@ -466,18 +466,78 @@ footer a:hover {
     background: linear-gradient(135deg, #00b894, #0984e3);
     cursor: pointer;
 
-    /* thấp hơn nút top */
     z-index: 9991;
 
+    /* pulse như cũ */
     animation: chatPulse 1.8s infinite;
+
+    overflow: hidden;
 }
 
+/* TELEPHONE ICON */
+.chat-main i {
+    animation: phoneRing 1.2s infinite;
+    transform-origin: center;
+}
+
+/* HOVER */
 .chat-main:hover {
-    transform: scale(1.08) rotate(-6deg);
+    background: linear-gradient(135deg, #ffb347, #ff6b35);
+
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 20px rgba(255, 180, 71, 0.45),
+        0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
+/* hover thì NGỪNG rung */
 .chat-main:hover i {
-    animation: chatShake 0.45s ease;
+    animation: none;
+}
+
+/* RUNG ĐIỆN THOẠI */
+@keyframes phoneRing {
+    0% {
+        transform: rotate(0);
+    }
+
+    8% {
+        transform: rotate(18deg);
+    }
+
+    16% {
+        transform: rotate(-18deg);
+    }
+
+    24% {
+        transform: rotate(14deg);
+    }
+
+    32% {
+        transform: rotate(-14deg);
+    }
+
+    40% {
+        transform: rotate(10deg);
+    }
+
+    48% {
+        transform: rotate(-10deg);
+    }
+
+    56% {
+        transform: rotate(6deg);
+    }
+
+    64% {
+        transform: rotate(-6deg);
+    }
+
+    72%,
+    100% {
+        transform: rotate(0);
+    }
 }
 
 .contact {
@@ -545,8 +605,8 @@ footer a:hover {
     filter: brightness(1.12);
 
     box-shadow:
-        0 0 18px rgba(255,255,255,.28),
-        0 12px 30px rgba(0,0,0,.28);
+        0 0 18px rgba(255, 255, 255, .28),
+        0 12px 30px rgba(0, 0, 0, .28);
 
     z-index: 20;
 }
@@ -589,7 +649,7 @@ footer a:hover {
 
 .back-to-top:hover {
     transform: translateY(-4px) scale(1.08);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
 .back-to-top:hover {
@@ -602,26 +662,33 @@ footer a:hover {
 
 @keyframes chatPulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(9,132,227,0.45);
+        box-shadow: 0 0 0 0 rgba(9, 132, 227, 0.45);
     }
+
     70% {
-        box-shadow: 0 0 0 14px rgba(9,132,227,0);
+        box-shadow: 0 0 0 14px rgba(9, 132, 227, 0);
     }
+
     100% {
-        box-shadow: 0 0 0 0 rgba(9,132,227,0);
+        box-shadow: 0 0 0 0 rgba(9, 132, 227, 0);
     }
 }
 
 @keyframes chatShake {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: rotate(0);
     }
+
     25% {
         transform: rotate(-12deg);
     }
+
     50% {
         transform: rotate(12deg);
     }
+
     75% {
         transform: rotate(-8deg);
     }
