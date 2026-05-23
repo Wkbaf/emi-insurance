@@ -108,7 +108,7 @@ class EmiContact extends HTMLElement {
       btn.disabled = true;
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbynEB0RQoZF3s8FoYcbC4b5MiwIClgTwC60exHSAicSODe_JgYHoL4i1AI_UYItmoWm/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbxI1QZjPOihg4uRzzr6lN6rqwefjG54UyEJOhq1xPNCWGfeEGlo847ZwNhhCKiiSw6e/exec", {
           method: "POST",
           mode: "no-cors",
           body: new FormData(consultForm)
