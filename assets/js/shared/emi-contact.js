@@ -43,6 +43,17 @@ class EmiContact extends HTMLElement {
                             inputmode="tel"
                             title="Vui lòng nhập số điện thoại hợp lệ, ví dụ: 0912345678 hoặc +84912345678">
                         </div>
+
+                        <div class="col-12">
+                          <input
+                            type="email"
+                            name="email"
+                            class="form-control custom-input"
+                            placeholder="Email (không bắt buộc)"
+                            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                            title="Vui lòng nhập email hợp lệ"
+                          >
+                        </div>
   
                         <div class="col-12">
 
@@ -108,7 +119,7 @@ class EmiContact extends HTMLElement {
       btn.disabled = true;
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbxI1QZjPOihg4uRzzr6lN6rqwefjG54UyEJOhq1xPNCWGfeEGlo847ZwNhhCKiiSw6e/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbw0Ahqj1Wgun0SLhu0b1AptUUCM8KcHKASTpiW_oj7Fj5gLxAKAzFACnOVk-5k6PP-f/exec", {
           method: "POST",
           mode: "no-cors",
           body: new FormData(consultForm)
