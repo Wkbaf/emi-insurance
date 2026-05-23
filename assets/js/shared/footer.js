@@ -33,20 +33,20 @@ class EmiFooter extends HTMLElement {
                                 </li>
 
                                 <li>
-                                    <a href="bao-ve-tien-ich-song.html">
+                                    <a href="tien-ich-cuoc-song.html">
                                         Bảo vệ Tiện ích sống
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="quy-cham-soc-y-te.html">
+                                    <a href="cham-soc-y-te.html">
                                         Quỹ Chăm sóc Y tế
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="thu-vien.html">
-                                        Thư viện Video / Case Study
+                                    <a href="an-sinh-xa-hoi.html">
+                                        Hoạch định An sinh Xã hội
                                     </a>
                                 </li>
                             </ul>
