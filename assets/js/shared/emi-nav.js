@@ -64,13 +64,13 @@ class EmiNav extends HTMLElement {
   
               <li class="nav-item">
                 <a class="nav-link"
-                   href="${isHome ? '#contact' : 'index.html#contact'}">
+                   href="#contact">
                    Liên hệ
                 </a>
               </li>
   
               <li class="nav-item d-lg-none mt-3">
-                <a href="${isHome ? '#contact' : 'index.html#contact'}"
+                <a href="#contact"
                    class="btn btn-main w-100">
                    Nhận báo giá
                 </a>
@@ -80,7 +80,7 @@ class EmiNav extends HTMLElement {
           </div>
   
           <div class="navbar-cta-desktop d-none d-lg-block">
-            <a href="${isHome ? '#contact' : 'index.html#contact'}"
+            <a href="#contact"
                class="btn btn-main">
                Nhận báo giá
             </a>
