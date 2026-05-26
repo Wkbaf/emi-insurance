@@ -245,29 +245,23 @@
 
         <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
+        <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+        <script src="assets/js/firebase.js"></script>
+
         <script>
-            // Firebase Config
-            const firebaseConfig = {
-                apiKey: "AIzaSyCcvbf5k-0IywLEF1NEcrqGPC1vQZRC57g",
-                authDomain: "emi-insurance-9f19d.firebaseapp.com",
-                projectId: "emi-insurance-9f19d",
-                storageBucket: "emi-insurance-9f19d.firebasestorage.app",
-                messagingSenderId: "267715366989",
-                appId: "1:267715366989:web:ca6f4c35ebfaae15d60c04",
-                measurementId: "G-YM00TLCCWF"
-            };
-
-            // Init Firebase
-            firebase.initializeApp(firebaseConfig);
-
             const auth = firebase.auth();
 
             // Auto redirect nếu đã login
-            auth.onAuthStateChanged((user) => {
+            firebase.auth().onAuthStateChanged(async (user) => {
 
                 if (user) {
 
-                    window.location.href = "dashboard.html";
+                    const tokenResult = await user.getIdTokenResult();
+
+                    if (tokenResult.claims.role) {
+                        window.location.replace("dashboard.html");
+                    }
 
                 }
 

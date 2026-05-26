@@ -1,0 +1,139 @@
+body {
+    background: #f4f7fb;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: #111827;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 24px;
+    color: white;
+}
+
+.sidebar h3 {
+    font-weight: 700;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #1f2937;
+    color: white;
+}
+
+.main-content {
+    margin-left: 260px;
+    padding: 32px;
+}
+
+.topbar {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 24px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    margin-bottom: 28px;
+}
+
+.stat-box {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: rgba(15, 118, 110, 0.1);
+    color: #0f766e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+
+.content-card {
+    background: white;
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.quick-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 22px;
+    transition: 0.25s;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.quick-card:hover {
+    transform: translateY(-4px);
+    border-color: #0f766e;
+    box-shadow: 0 14px 35px rgba(15, 118, 110, 0.12);
+}
+
+.quick-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: rgba(15, 118, 110, 0.1);
+    color: #0f766e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 18px;
+}
+
+.admin-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(20, 184, 166, 0.25);
+    border: 3px solid white;
+    transition: 0.3s;
+}
+
+.admin-avatar:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+@media(max-width: 991px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
