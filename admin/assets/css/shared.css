@@ -4,3 +4,58 @@
     color: white !important;
     border-radius: 10px;
 }
+
+/* FOR FORM */
+.thumbnail-preview {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.help-text {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 6px;
+}
+
+.section-box {
+    border: 1px solid #eadfc8;
+    border-radius: 18px;
+    padding: 18px;
+    background: #fffaf1;
+    margin-bottom: 18px;
+}
+
+.section-box h6 {
+    color: #004c45;
+}
+
+.view-section {
+    border: 1px solid #eadfc8;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    background: #fffdf8;
+}
+
+.view-section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #00594f;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.result-list li,
+.view-section li {
+    margin-bottom: 6px;
+}

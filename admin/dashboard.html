@@ -15,253 +15,51 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="assets/css/giai-ma-thuat-ngu.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/shared.css">
 
     <style>
-        body {
-            background: #f4f7fb;
-            font-family: Arial, sans-serif;
-        }
-
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #111827;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 24px;
-            color: white;
-            overflow-y: auto;
-        }
-
-        .main-content {
-            margin-left: 260px;
-            padding: 32px;
-        }
-
-        .topbar,
-        .content-card,
-        .stat-box {
-            background: white;
-            border-radius: 22px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-        }
-
-        .topbar {
-            padding: 20px 24px;
-            margin-bottom: 28px;
-        }
-
-        .stat-box {
-            padding: 24px;
-            height: 100%;
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-            background: rgba(15, 118, 110, 0.1);
-            color: #0f766e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            flex: 0 0 auto;
-        }
-
-        .content-card {
-            padding: 28px;
-        }
-
-        .quick-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 20px;
-            padding: 22px;
-            transition: 0.25s;
-            height: 100%;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            background: #fff;
-        }
-
-        .quick-card:hover {
-            transform: translateY(-4px);
-            border-color: #0f766e;
-            box-shadow: 0 14px 35px rgba(15, 118, 110, 0.12);
-        }
-
-        .quick-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 16px;
-            background: rgba(15, 118, 110, 0.1);
-            color: #0f766e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            margin-bottom: 18px;
-        }
-
-        .admin-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, #0f766e, #14b8a6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            box-shadow: 0 10px 20px rgba(20, 184, 166, 0.25);
-            border: 3px solid white;
-        }
-
-        .welcome-name {
-            color: #0f766e;
-        }
-
-        .dashboard-section-title {
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .quick-actions-row .quick-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quick-card-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .quick-card-actions .btn {
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 14px;
-        }
-
         .history-widget {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .history-list-simple {
             display: grid;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .history-item {
-            display: grid;
-            grid-template-columns: 44px 1fr auto;
-            gap: 14px;
-            align-items: center;
-            padding: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
-            background: #fff;
-            transition: 0.2s;
+        .history-list-simple .list-group-item {
+            border-color: #e9ecef;
+            border-radius: 12px;
         }
 
-        .history-item:hover {
-            border-color: rgba(15, 118, 110, 0.35);
-            box-shadow: 0 12px 28px rgba(15, 118, 110, 0.08);
-        }
-
-        .history-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: #ecfdf5;
-            color: #0f766e;
+        .history-title-simple {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .history-title {
-            font-weight: 800;
-            color: #111827;
-            margin-bottom: 4px;
-        }
-
-        .history-meta {
-            color: #6b7280;
-            font-size: 13px;
-        }
-
-        .history-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            font-size: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 15px;
             font-weight: 700;
-            background: #f3f4f6;
-            color: #374151;
-            white-space: nowrap;
+            color: #212529;
+            line-height: 1.35;
         }
 
-        .history-badge.create {
-            background: #ecfdf5;
-            color: #047857;
+        .history-title-text {
+            min-width: 0;
         }
 
-        .history-badge.update {
-            background: #eff6ff;
-            color: #1d4ed8;
-        }
-
-        .history-link {
-            text-decoration: none;
-            color: #0f766e;
-            font-weight: 800;
+        .history-meta-simple {
             font-size: 13px;
+            color: #6c757d;
+        }
+
+        .history-show-btn {
             white-space: nowrap;
-        }
-
-        .history-link:hover {
-            color: #0b5f59;
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 42px 20px;
-            border: 1px dashed #d1d5db;
-            border-radius: 20px;
-            color: #6b7280;
-        }
-
-        @media(max-width: 991px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-        }
-
-        @media(max-width: 575px) {
-            .history-item {
-                grid-template-columns: 44px 1fr;
-            }
-
-            .history-action {
-                grid-column: 1 / -1;
-                padding-left: 58px;
-            }
         }
     </style>
+
 </head>
 
 <body>
@@ -348,10 +146,10 @@
                         <h5 class="fw-bold">Giải mã thuật ngữ</h5>
                         <p class="text-muted mb-0">Quản lý và xem trang giải thích thuật ngữ bảo hiểm.</p>
                         <div class="quick-card-actions">
-                            <a href="giai-ma-thuat-ngu-admin.html" class="btn btn-success">
+                            <a href="giai-ma-thuat-ngu.html" class="btn btn-success">
                                 <i class="bi bi-pencil-square me-1"></i> Quản lý
                             </a>
-                            <a href="giai-ma-thuat-ngu.html" class="btn btn-outline-success">
+                            <a href="../giai-ma-thuat-ngu.html" class="btn btn-outline-success" target="_blank">
                                 <i class="bi bi-box-arrow-up-right me-1"></i> Trang user
                             </a>
                         </div>
@@ -362,9 +160,13 @@
                     <div class="quick-card">
                         <div class="quick-icon"><i class="bi bi-shield-check"></i></div>
                         <h5 class="fw-bold">Case Study thực tế</h5>
-                        <p class="text-muted mb-0">Xem trang case study phía user. Quản lý case study đang tạm ẩn khỏi quick action.</p>
+                        <p class="text-muted mb-0">Xem trang case study phía user. Quản lý case study đang tạm ẩn khỏi
+                            quick action.</p>
                         <div class="quick-card-actions">
-                            <a href="case-study-thuc-te.html" class="btn btn-outline-success">
+                            <a href="case-study.html" class="btn btn-success">
+                                <i class="bi bi-pencil-square me-1"></i> Quản lý
+                            </a>
+                            <a href="../case-study-thuc-te.html" class="btn btn-outline-success" target="_blank">
                                 <i class="bi bi-box-arrow-up-right me-1"></i> Trang user
                             </a>
                         </div>
@@ -375,7 +177,8 @@
                     <div class="quick-card">
                         <div class="quick-icon"><i class="bi bi-plus-circle"></i></div>
                         <h5 class="fw-bold">Sẵn sàng mở rộng</h5>
-                        <p class="text-muted mb-0">Sau này khi thêm bảng mới, chỉ cần thêm source vào cấu hình dashboard.</p>
+                        <p class="text-muted mb-0">Sau này khi thêm bảng mới, chỉ cần thêm source vào cấu hình
+                            dashboard.</p>
                     </div>
                 </div>
             </div>
@@ -390,7 +193,6 @@
                             <h4 class="dashboard-section-title mb-1">Lịch sử Case Study</h4>
                             <div class="text-muted">Log gần đây từ bảng <strong>caseStudies</strong></div>
                         </div>
-                        <span class="history-badge"><i class="bi bi-eye"></i> Read only</span>
                     </div>
 
                     <div id="caseStudyHistory" class="history-widget">
@@ -406,7 +208,6 @@
                             <h4 class="dashboard-section-title mb-1">Lịch sử Giải mã thuật ngữ</h4>
                             <div class="text-muted">Log gần đây từ bảng <strong>explainCards</strong></div>
                         </div>
-                        <span class="history-badge"><i class="bi bi-eye"></i> Read only</span>
                     </div>
 
                     <div id="termHistory" class="history-widget">
@@ -433,19 +234,19 @@
                 collection: "caseStudies",
                 label: "Case Study",
                 icon: "bi-shield-check",
-                listUrl: "case-study-thuc-te.html",
                 wrapperId: "caseStudyHistory",
-                titleField: "title",
-                subtitleField: "category"
+                titleFields: ["title", "name"],
+                subtitleFields: ["category", "description"],
+                showUrl: (id) => `../case-study-detail.html?id=${encodeURIComponent(id)}`
             },
             {
                 collection: "explainCards",
                 label: "Giải mã thuật ngữ",
                 icon: "bi-book",
-                listUrl: "giai-ma-thuat-ngu.html",
                 wrapperId: "termHistory",
-                titleField: "title",
-                subtitleField: "category"
+                titleFields: ["termName", "title", "term", "name"],
+                subtitleFields: ["category", "definition", "description"],
+                showUrl: (id) => `giai-ma-thuat-ngu.html?show=${encodeURIComponent(id)}`
             }
         ];
 
@@ -499,16 +300,12 @@
             wrapper.innerHTML = `<div class="history-empty">Đang tải lịch sử...</div>`;
 
             try {
-                const snapshot = await db.collection(source.collection)
-                    .where("isDeleted", "==", false)
-                    .get();
+                const snapshot = await db.collection(source.collection).get();
 
                 const logs = [];
 
                 snapshot.forEach((doc) => {
                     const data = doc.data() || {};
-
-                    if (data.isDeleted === true) return;
 
                     const createdAt = data.createdAt || null;
                     const updatedAt = data.updatedAt || null;
@@ -518,10 +315,11 @@
                     logs.push({
                         id: doc.id,
                         source,
-                        title: data[source.titleField] || data.term || data.name || "Chưa có tiêu đề",
-                        subtitle: data[source.subtitleField] || data.description || "",
+                        title: getFirstValue(data, source.titleFields) || "Chưa có tiêu đề",
+                        subtitle: getFirstValue(data, source.subtitleFields) || "",
                         changedAt,
-                        actionType
+                        actionType,
+                        isDeleted: data.isDeleted === true
                     });
                 });
 
@@ -543,44 +341,62 @@
             const wrapper = document.getElementById(wrapperId);
 
             if (!logs.length) {
-                wrapper.innerHTML = `<div class="history-empty">Chưa có nội dung nào.</div>`;
+                wrapper.innerHTML = `
+                    <div class="alert alert-light border mb-0 text-muted">
+                        Chưa có nội dung nào.
+                    </div>
+                `;
                 return;
             }
 
-            wrapper.innerHTML = logs.map((log) => {
+            wrapper.innerHTML = `
+                <div class="list-group history-list-simple">
+                    ${logs.map((log) => {
                 const dateText = formatDateTime(log.changedAt);
                 const actionLabel = log.actionType === "update" ? "Cập nhật" : "Tạo mới";
-                const actionIcon = log.actionType === "update" ? "bi-pencil-square" : "bi-plus-circle";
+                const actionClass = log.actionType === "update" ? "text-bg-warning" : "text-bg-success";
+                const deletedBadge = log.isDeleted ? `<span class="badge text-bg-danger">Deleted</span>` : "";
+                const showUrl = log.source.showUrl(log.id);
 
                 return `
-                    <div class="history-item">
-                        <div class="history-icon">
-                            <i class="bi ${escapeAttr(log.source.icon)}"></i>
-                        </div>
+                        <div class="list-group-item p-3">
+                            <div class="d-flex align-items-start justify-content-between gap-3">
+                                <div class="min-w-0">
+                                    <div class="history-title-simple">
+                                        <span class="history-title-text ${log.isDeleted ? "text-decoration-line-through text-muted" : ""}">
+                                            ${escapeHtml(log.title)}
+                                        </span>
 
-                        <div>
-                            <div class="history-title">${escapeHtml(log.title)}</div>
-                            <div class="history-meta">
-                                ${log.subtitle ? `${escapeHtml(shortText(log.subtitle, 76))} · ` : ""}
-                                ${dateText ? `${escapeHtml(dateText)}` : "Chưa có thời gian"}
-                            </div>
-                            <div class="mt-2">
-                                <span class="history-badge ${escapeAttr(log.actionType)}">
-                                    <i class="bi ${actionIcon}"></i>
-                                    ${actionLabel}
-                                </span>
-                            </div>
-                        </div>
 
-                        <div class="history-action">
-                            <a class="history-link" href="${escapeAttr(log.source.listUrl)}">
-                                Đi tới trang
-                                <i class="bi bi-arrow-right-short"></i>
-                            </a>
+                                        ${log.isDeleted ? deletedBadge : `<span class="badge ${actionClass}">${actionLabel}</span>`}
+                                    </div>
+
+                                    <div class="history-meta-simple mt-1">
+                                        ${log.subtitle ? `${escapeHtml(shortText(log.subtitle, 76))} · ` : ""}
+                                        ${dateText ? escapeHtml(dateText) : "Chưa có thời gian"}
+                                    </div>
+                                </div>
+
+                                ${!log.isDeleted ? `
+                                    <a class="btn btn-sm btn-outline-primary history-show-btn"
+                                    href="${escapeAttr(showUrl)}">
+                                        Show
+                                    </a>
+                                ` : ""}
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join("");
+                    `;
+            }).join("")}
+                </div>
+            `;
+        }
+
+        function getFirstValue(data, fields = []) {
+            for (const field of fields) {
+                if (data[field]) return data[field];
+            }
+
+            return "";
         }
 
         function isUpdatedAfterCreated(updatedAt, createdAt) {

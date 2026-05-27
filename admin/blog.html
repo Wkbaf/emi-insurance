@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý Case Study</title>
+    <title>Quản lý Blog</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,6 +17,74 @@
 
     <link rel="stylesheet" href="assets/css/giai-ma-thuat-ngu.css">
     <link rel="stylesheet" href="assets/css/shared.css">
+
+    <style>
+        .thumbnail-preview {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .section-box {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 18px;
+            background: #fffaf1;
+            margin-bottom: 18px;
+        }
+
+        .section-box h6 {
+            color: #004c45;
+        }
+
+        .view-section {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+            background: #fffdf8;
+        }
+
+        .view-section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #00594f;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .result-list li,
+        .view-section li {
+            margin-bottom: 6px;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #b7791f;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,11 +114,11 @@
 
             <div>
                 <h3 class="mb-1 fw-bold">
-                    Case Study thực tế
+                    Góc nhìn chuyên gia
                 </h3>
 
                 <div class="text-muted">
-                    Quản lý nội dung case study hiển thị trên website
+                    Quản lý bài viết blog hiển thị trên website
                 </div>
             </div>
 
@@ -81,17 +149,17 @@
 
                 <div>
                     <h4 class="fw-bold mb-1">
-                        Danh sách Case Study
+                        Danh sách Blog
                     </h4>
 
                     <div class="text-muted">
-                        Thêm, sửa, xóa và xem chi tiết case study
+                        Thêm, sửa, xóa và xem chi tiết bài viết blog
                     </div>
                 </div>
 
                 <button class="btn btn-primary-custom" onclick="openAddModal()">
                     <i class="bi bi-plus-circle me-2"></i>
-                    Thêm Case Study
+                    Thêm Blog
                 </button>
 
             </div>
@@ -105,29 +173,29 @@
                         <i class="bi bi-search"></i>
 
                         <input id="searchInput" type="text" class="form-control"
-                            placeholder="Tìm theo title, category..." oninput="renderCaseStudies()">
+                            placeholder="Tìm theo title, category..." oninput="renderBlogs()">
                     </div>
 
                 </div>
 
                 <div class="col-md-4">
 
-                    <select id="categoryFilter" class="form-select" onchange="renderCaseStudies()">
+                    <select id="categoryFilter" class="form-select" onchange="renderBlogs()">
 
                         <option value="all">
                             Tất cả category
                         </option>
 
-                        <option value="Giải cứu hợp đồng cũ">
-                            Giải cứu hợp đồng cũ
+                        <option value="Tài Chính Gia Đình">
+                            Tài Chính Gia Đình
                         </option>
 
-                        <option value="Hành trình bồi thường">
-                            Hành trình bồi thường
+                        <option value="Phân Tích Giải Pháp">
+                            Phân Tích Giải Pháp
                         </option>
 
-                        <option value="Hoạch định mốc nhân sinh">
-                            Hoạch định mốc nhân sinh
+                        <option value="Nhật Ký Làm Nghề">
+                            Nhật Ký Làm Nghề
                         </option>
 
                     </select>
@@ -146,13 +214,15 @@
                             <th>Thumbnail</th>
                             <th>Title</th>
                             <th>Category</th>
+                            <th>Nổi bật</th>
+                            <th>Tác giả</th>
                             <th>Thời gian đọc</th>
                             <th>Cập nhật</th>
                             <th width="170">Manage</th>
                         </tr>
                     </thead>
 
-                    <tbody id="caseStudyTableBody"></tbody>
+                    <tbody id="blogTableBody"></tbody>
 
                 </table>
 
@@ -163,11 +233,11 @@
                 <i class="bi bi-folder-x"></i>
 
                 <h5 class="fw-bold">
-                    Chưa có case study
+                    Chưa có blog
                 </h5>
 
                 <p>
-                    Hãy thêm case study đầu tiên.
+                    Hãy thêm blog đầu tiên.
                 </p>
 
             </div>
@@ -177,7 +247,7 @@
     </div>
 
     <!-- Add/Edit Modal -->
-    <div class="modal fade" id="caseStudyModal" tabindex="-1">
+    <div class="modal fade" id="blogModal" tabindex="-1">
 
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
 
@@ -186,14 +256,14 @@
                 <div class="modal-header">
 
                     <h5 id="modalTitle" class="modal-title fw-bold">
-                        Thêm Case Study
+                        Thêm Blog
                     </h5>
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
                 </div>
 
-                <form id="caseStudyForm">
+                <form id="blogForm">
 
                     <div class="modal-body">
 
@@ -211,10 +281,33 @@
                                 <label class="form-label fw-semibold">Category</label>
                                 <select id="category" class="form-select" required>
                                     <option value="">Chọn category</option>
-                                    <option value="Giải cứu hợp đồng cũ">Giải cứu hợp đồng cũ</option>
-                                    <option value="Hành trình bồi thường">Hành trình bồi thường</option>
-                                    <option value="Hoạch định mốc nhân sinh">Hoạch định mốc nhân sinh</option>
+                                    <option value="Tài Chính Gia Đình">Tài Chính Gia Đình</option>
+                                    <option value="Phân Tích Giải Pháp">Phân Tích Giải Pháp</option>
+                                    <option value="Nhật Ký Làm Nghề">Nhật Ký Làm Nghề</option>
                                 </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label fw-semibold">Slug SEO</label>
+                                <input id="slug" type="text" class="form-control" placeholder="tai-sao-80-nguoi-tre...">
+                                <div class="help-text">Dùng cho URL chi tiết blog. Nếu bỏ trống, hệ thống tự tạo từ title.</div>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-semibold">Trạng thái</label>
+                                <select id="featured" class="form-select">
+                                    <option value="false">Bài thường</option>
+                                    <option value="true">Bài nổi bật</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Tác giả</label>
+                                <input id="author" type="text" class="form-control" value="EMI">
                             </div>
 
                         </div>
@@ -243,17 +336,17 @@
                         <div class="mb-3 d-flex align-items-center gap-3">
                             <img id="thumbnailPreview" class="thumbnail-preview" src="" alt="Thumbnail preview">
                             <div class="text-muted small">
-                                Ảnh này dùng cho card case study và trang chi tiết.
+                                Ảnh này dùng cho card blog và trang chi tiết.
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Mô tả ngắn trên card</label>
+                            <label class="form-label fw-semibold">Mô tả ngắn trên card / hero</label>
                             <textarea id="description" class="form-control" rows="3" required></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Kết quả nổi bật</label>
+                            <label class="form-label fw-semibold">Ý chính / điểm nổi bật</label>
                             <textarea id="keyResults" class="form-control" rows="4"
                                 placeholder="Mỗi dòng là một kết quả, ví dụ:&#10;Giảm hơn 30% phí đóng dự kiến&#10;Gia tăng lớp bảo vệ sinh mạng"
                                 required></textarea>
@@ -261,27 +354,26 @@
 
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label class="form-label fw-semibold">Quote trong card/trang chi tiết</label>
+                                <label class="form-label fw-semibold">Quote hoặc câu dẫn trong bài viết</label>
                                 <textarea id="cardQuote" class="form-control" rows="3" required></textarea>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label fw-semibold">Người nói quote</label>
+                                <label class="form-label fw-semibold">Người nói quote / nguồn</label>
                                 <input id="quoteAuthor" type="text" class="form-control" placeholder="EMI">
                             </div>
                         </div>
 
                         <hr class="my-4">
 
-                        <h5 class="fw-bold mb-3">Nội dung chi tiết khi user click “Xem chi tiết”</h5>
+                        <h5 class="fw-bold mb-3">Nội dung chi tiết khi user click “Đọc tiếp”</h5>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Kiểu nội dung chi tiết</label>
+                            <label class="form-label fw-semibold">Kiểu nội dung bài viết</label>
                             <select id="detailContentType" class="form-select" onchange="toggleDetailForm()">
                                 <option value="structured">Form 1 - Nhập theo từng mục</option>
                                 <option value="custom">Form 2 - Text editor custom</option>
                             </select>
-                            <div class="help-text">Field này sẽ được lưu vào Firestore để frontend biết case study dùng
-                                form nào.</div>
+                            <div class="help-text">Field này sẽ được lưu vào Firestore để frontend biết blog dùng form nào.</div>
                         </div>
 
                         <div id="structuredDetailForm">
@@ -319,7 +411,7 @@
 
                         <button type="submit" class="btn btn-primary-custom">
                             <i class="bi bi-save me-2"></i>
-                            Lưu Case Study
+                            Lưu Blog
                         </button>
 
                     </div>
@@ -342,7 +434,7 @@
                 <div class="modal-header">
 
                     <h5 class="modal-title fw-bold">
-                        Chi tiết Case Study
+                        Chi tiết Blog
                     </h5>
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -376,47 +468,47 @@
         const defaultSections = [
             {
                 number: "01",
-                title: "Khúc mắc ban đầu",
-                content: "Khách hàng tìm đến EMI với 4 hợp đồng đã tham gia hơn 4 năm. Tổng phí đóng mỗi năm gần 50 triệu đồng, nhưng cả gia đình không ai thực sự hiểu mình đang được bảo vệ điều gì. Người chồng lo lắng khi phát hiện thông tin người thụ hưởng có sai lệch, trong khi người vợ bắt đầu cảm thấy áp lực vì dòng tiền hằng tháng ngày càng nặng nề.",
+                title: "Vấn đề thường gặp",
+                content: "Nhiều người trẻ bắt đầu đi làm có thu nhập ổn định nhưng chưa có kế hoạch hưu trí rõ ràng. Tiền tiết kiệm thường bị dùng cho các mục tiêu ngắn hạn, còn câu chuyện nghỉ hưu bị đẩy về tương lai rất xa.",
                 bullets: []
             },
             {
                 number: "02",
-                title: "Bắt mạch & bóc tách",
-                content: "Sau khi rà soát toàn bộ điều khoản, EMI phát hiện:",
+                title: "Nguyên nhân",
+                content: "Có 5 nguyên nhân thường gặp khiến kế hoạch hưu trí tự nguyện bị trì hoãn:",
                 bullets: [
-                    "Trùng lặp quyền lợi nội trú giữa 2 hợp đồng",
-                    "Thiếu lớp bảo vệ sinh mạng cho người trụ cột",
-                    "Mệnh giá học vấn cho con chưa đủ",
-                    "Thông tin người thụ hưởng sai lệch với hồ sơ gốc"
+                    "Chưa hình dung rõ số tiền cần có khi nghỉ hưu",
+                    "Ưu tiên tiêu dùng hiện tại hơn tích lũy dài hạn",
+                    "Không biết bắt đầu với số tiền nhỏ như thế nào",
+                    "Nhầm lẫn giữa tiết kiệm, bảo hiểm và đầu tư"
                 ],
-                note: "Quan trọng nhất: Khách hàng chưa từng được giải thích rõ các điểm loại trừ."
+                note: "Quan trọng nhất: kế hoạch càng bắt đầu muộn thì áp lực tích lũy càng lớn."
             },
             {
                 number: "03",
-                title: "Giải pháp 4.0",
-                content: "Đội ngũ EMI làm việc trực tiếp với tổng đài hãng bảo hiểm để điều chỉnh luồng tin người thụ hưởng.",
+                title: "Góc nhìn chuyên gia",
+                content: "EMI gợi ý người trẻ bắt đầu bằng một kế hoạch nhỏ, đều đặn và có thể điều chỉnh theo từng giai đoạn thu nhập.",
                 bullets: [
-                    "Loại bỏ các quyền lợi trùng lặp",
-                    "Giữ lại lớp bảo vệ cốt lõi",
-                    "Thiết kế thêm thẻ y tế độc lập để tránh lỗ hổng",
-                    "Tối ưu lại dòng phí đóng hằng năm"
+                    "Xác định mục tiêu hưu trí theo mức sống mong muốn",
+                    "Tách riêng quỹ dự phòng, quỹ bảo vệ và quỹ tích lũy",
+                    "Bắt đầu bằng khoản đóng phù hợp với dòng tiền",
+                    "Đánh giá lại kế hoạch mỗi 6-12 tháng"
                 ],
-                note: "Toàn bộ quá trình được thực hiện theo đúng triết lý: “Làm chậm mà chắc.”"
+                note: "Triết lý phù hợp: làm chậm, hiểu đúng, rồi mới cam kết dài hạn."
             },
             {
                 number: "04",
-                title: "Kết quả & bài học kinh nghiệm",
-                content: "Gia đình không chỉ được tối ưu chi phí mà quan trọng hơn là hiểu rõ quyền lợi, tự tin trước mọi rủi ro.",
+                title: "Kết luận & hành động",
+                content: "Kế hoạch hưu trí không phải câu chuyện của tuổi già. Đó là cách người trẻ bảo vệ quyền tự do tài chính trong tương lai.",
                 bullets: [],
-                note: "Bài học rút ra: Đừng để rủi ro nhỏ hôm nay trở thành tổn thất lớn."
+                note: "Bài học rút ra: bắt đầu sớm bằng số tiền nhỏ thường dễ hơn bắt đầu muộn với áp lực lớn."
             }
         ];
 
-        const caseStudyModal = new bootstrap.Modal(document.getElementById("caseStudyModal"));
+        const blogModal = new bootstrap.Modal(document.getElementById("blogModal"));
         const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
-        let caseStudies = [];
+        let blogs = [];
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -424,36 +516,36 @@
                 return;
             }
             renderDetailSectionInputs(defaultSections);
-            loadCaseStudies();
+            loadBlogs();
         });
 
-        async function loadCaseStudies() {
+        async function loadBlogs() {
             try {
-                const snapshot = await db.collection("caseStudies")
+                const snapshot = await db.collection("blogs")
                     .where("isDeleted", "==", false)
                     .orderBy("createdAt", "desc")
                     .get();
 
-                caseStudies = [];
+                blogs = [];
 
                 snapshot.forEach((doc) => {
-                    caseStudies.push({ id: doc.id, ...doc.data() });
+                    blogs.push({ id: doc.id, ...doc.data() });
                 });
 
-                renderCaseStudies();
+                renderBlogs();
             } catch (error) {
                 console.log(error);
             }
         }
 
-        function renderCaseStudies() {
-            const tbody = document.getElementById("caseStudyTableBody");
+        function renderBlogs() {
+            const tbody = document.getElementById("blogTableBody");
             const emptyState = document.getElementById("emptyState");
 
             const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
             const categoryFilter = document.getElementById("categoryFilter").value;
 
-            const filtered = caseStudies.filter((item) => {
+            const filtered = blogs.filter((item) => {
                 const text = `${item.title || ""} ${item.category || ""} ${item.description || ""}`.toLowerCase();
                 const matchSearch = !keyword || text.includes(keyword);
                 const matchCategory = categoryFilter === "all" || item.category === categoryFilter;
@@ -482,12 +574,14 @@
                         <small class="text-muted">${escapeHtml(shortText(item.description || "", 70))}</small>
                     </td>
                     <td><span class="term-category">${escapeHtml(item.category || "")}</span></td>
+                    <td>${item.featured ? `<span class="featured-badge"><i class="bi bi-star-fill"></i> Nổi bật</span>` : `<span class="text-muted">Bài thường</span>`}</td>
+                    <td>${escapeHtml(item.author || "EMI")}</td>
                     <td>${escapeHtml(item.readingTime || "")}</td>
                     <td>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</td>
                     <td>
-                        <button class="action-btn btn-view" onclick="viewCaseStudy('${item.id}')"><i class="bi bi-eye"></i></button>
-                        <button class="action-btn btn-edit" onclick="editCaseStudy('${item.id}')"><i class="bi bi-pencil"></i></button>
-                        <button class="action-btn btn-delete" onclick="deleteCaseStudy('${item.id}')"><i class="bi bi-trash"></i></button>
+                        <button class="action-btn btn-view" onclick="viewBlog('${item.id}')"><i class="bi bi-eye"></i></button>
+                        <button class="action-btn btn-edit" onclick="editBlog('${item.id}')"><i class="bi bi-pencil"></i></button>
+                        <button class="action-btn btn-delete" onclick="deleteBlog('${item.id}')"><i class="bi bi-trash"></i></button>
                     </td>
                 `;
 
@@ -526,40 +620,46 @@
         }
 
         function openAddModal() {
-            document.getElementById("modalTitle").innerText = "Thêm Case Study";
-            document.getElementById("caseStudyForm").reset();
+            document.getElementById("modalTitle").innerText = "Thêm Blog";
+            document.getElementById("blogForm").reset();
             document.getElementById("editId").value = "";
             document.getElementById("thumbnailUrl").value = "";
             document.getElementById("thumbnailPreview").src = "assets/image/test1.webp";
 
-            document.getElementById("title").value = "Hợp đồng 50 triệu/năm suýt thành giấy lộn vì sai 1 chữ trong hồ sơ";
-            document.getElementById("category").value = "Giải cứu hợp đồng cũ";
-            document.getElementById("readingTime").value = "4 phút";
-            document.getElementById("updatedDate").value = "2024-05-15";
-            document.getElementById("description").value = "Khách hàng tham gia hơn 4 năm, tổng phí gần 50 triệu/năm nhưng chưa hiểu rõ mình đang được bảo vệ điều gì.";
+            document.getElementById("title").value = "Tại sao 80% người trẻ thất bại khi lập quỹ hưu trí tự nguyện?";
+            document.getElementById("category").value = "Tài Chính Gia Đình";
+            document.getElementById("slug").value = "tai-sao-80-nguoi-tre-that-bai-khi-lap-quy-huu-tri";
+            document.getElementById("featured").value = "true";
+            document.getElementById("author").value = "EMI";
+            document.getElementById("readingTime").value = "6 phút";
+            document.getElementById("updatedDate").value = "2024-05-24";
+            document.getElementById("description").value = "Không phải vì họ không kiếm đủ tiền, mà vì sai lầm ngay từ bước đầu tiên. Bài viết phân tích 5 nguyên nhân cốt lõi và cách xây dựng quỹ hưu trí bền vững.";
             document.getElementById("keyResults").value = [
                 "Giảm hơn 30% phí đóng dự kiến",
                 "Gia tăng lớp bảo vệ sinh mạng",
                 "Chuyển hóa hồ sơ phức tạp",
                 "Gia đình hiểu rõ toàn bộ cấu trúc tài chính"
             ].join("\n");
-            document.getElementById("cardQuote").value = "Một hợp đồng tốt không phải hợp đồng đắt tiền nhất. Mà là hợp đồng bạn thực sự hiểu rõ.";
+            document.getElementById("cardQuote").value = "Một kế hoạch hưu trí tốt không bắt đầu bằng số tiền lớn, mà bắt đầu bằng sự đều đặn và hiểu đúng.";
             document.getElementById("quoteAuthor").value = "EMI";
             document.getElementById("detailContentType").value = "structured";
             document.getElementById("customDetailEditor").innerHTML = "";
             toggleDetailForm();
             renderDetailSectionInputs(defaultSections);
-            caseStudyModal.show();
+            blogModal.show();
         }
 
-        function editCaseStudy(id) {
-            const item = caseStudies.find(c => c.id === id);
+        function editBlog(id) {
+            const item = blogs.find(c => c.id === id);
             if (!item) return;
 
-            document.getElementById("modalTitle").innerText = "Sửa Case Study";
+            document.getElementById("modalTitle").innerText = "Sửa Blog";
             document.getElementById("editId").value = item.id;
             document.getElementById("title").value = item.title || "";
             document.getElementById("category").value = item.category || "";
+            document.getElementById("slug").value = item.slug || "";
+            document.getElementById("featured").value = item.featured ? "true" : "false";
+            document.getElementById("author").value = item.author || "EMI";
             document.getElementById("readingTime").value = item.readingTime || "";
             document.getElementById("updatedDate").value = normalizeDateInput(item.updatedDate);
             document.getElementById("description").value = item.description || "";
@@ -573,7 +673,7 @@
             toggleDetailForm();
 
             renderDetailSectionInputs(Array.isArray(item.detailSections) && item.detailSections.length ? item.detailSections : defaultSections);
-            caseStudyModal.show();
+            blogModal.show();
         }
 
         function updateThumbnailPreview() {
@@ -602,8 +702,8 @@
             }));
         }
 
-        function viewCaseStudy(id) {
-            const item = caseStudies.find(c => c.id === id);
+        function viewBlog(id) {
+            const item = blogs.find(c => c.id === id);
             if (!item) return;
 
             const sections = Array.isArray(item.detailSections) ? item.detailSections : [];
@@ -618,6 +718,21 @@
                 <div class="view-block">
                     <label>Category</label>
                     <p>${escapeHtml(item.category || "")}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 view-block">
+                        <label>Slug</label>
+                        <p>${escapeHtml(item.slug || "")}</p>
+                    </div>
+                    <div class="col-md-3 view-block">
+                        <label>Loại bài</label>
+                        <p>${item.featured ? "Bài nổi bật" : "Bài thường"}</p>
+                    </div>
+                    <div class="col-md-3 view-block">
+                        <label>Tác giả</label>
+                        <p>${escapeHtml(item.author || "EMI")}</p>
+                    </div>
                 </div>
 
                 <div class="view-block">
@@ -637,7 +752,7 @@
                 </div>
 
                 <div class="view-block">
-                    <label>Kết quả nổi bật</label>
+                    <label>Ý chính / điểm nổi bật</label>
                     <ul class="result-list">${keyResults.map(result => `<li>${escapeHtml(result)}</li>`).join("")}</ul>
                 </div>
 
@@ -667,24 +782,24 @@
             viewModal.show();
         }
 
-        async function deleteCaseStudy(id) {
-            const confirmDelete = confirm("Bạn có chắc muốn xóa case study này?");
+        async function deleteBlog(id) {
+            const confirmDelete = confirm("Bạn có chắc muốn xóa blog này?");
             if (!confirmDelete) return;
 
             try {
-                await db.collection("caseStudies").doc(id).update({
+                await db.collection("blogs").doc(id).update({
                     isDeleted: true,
                     deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                await loadCaseStudies();
+                await loadBlogs();
             } catch (error) {
                 console.log(error);
                 alert("Xóa thất bại");
             }
         }
 
-        document.getElementById("caseStudyForm").addEventListener("submit", async function (e) {
+        document.getElementById("blogForm").addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const editId = document.getElementById("editId").value;
@@ -692,13 +807,16 @@
             const detailContentType = document.getElementById("detailContentType").value;
 
             if (!thumbnail) {
-                alert("Vui lòng nhập link ảnh thumbnail cho case study.");
+                alert("Vui lòng nhập link ảnh thumbnail cho blog.");
                 return;
             }
 
             const data = {
                 title: document.getElementById("title").value.trim(),
                 category: document.getElementById("category").value.trim(),
+                slug: document.getElementById("slug").value.trim() || createSlug(document.getElementById("title").value.trim()),
+                featured: document.getElementById("featured").value === "true",
+                author: document.getElementById("author").value.trim() || "EMI",
                 readingTime: document.getElementById("readingTime").value.trim(),
                 updatedDate: document.getElementById("updatedDate").value,
                 description: document.getElementById("description").value.trim(),
@@ -714,16 +832,16 @@
 
             try {
                 if (editId) {
-                    await db.collection("caseStudies").doc(editId).update(data);
+                    await db.collection("blogs").doc(editId).update(data);
                 } else {
                     data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     data.isDeleted = false;
-                    await db.collection("caseStudies").add(data);
+                    await db.collection("blogs").add(data);
                 }
 
-                hideModalSafely(caseStudyModal, document.getElementById("caseStudyModal"));
-                document.getElementById("caseStudyForm").reset();
-                await loadCaseStudies();
+                hideModalSafely(blogModal, document.getElementById("blogModal"));
+                document.getElementById("blogForm").reset();
+                await loadBlogs();
             } catch (error) {
                 console.log(error);
                 alert(`Lưu thất bại: ${error.message || error.code || "Không rõ lỗi"}`);
@@ -805,6 +923,19 @@
             modalEl.addEventListener("hide.bs.modal", () => clearModalFocus(modalEl));
             modalEl.addEventListener("hidden.bs.modal", () => clearModalFocus(modalEl));
         });
+
+        function createSlug(text) {
+            return String(text || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/Đ/g, "D")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
 
         async function logout() {
             await auth.signOut();

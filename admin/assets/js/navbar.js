@@ -18,10 +18,10 @@ const NAV_ITEMS = [
     permission: "case-studies:manage",
   },
   {
-    label: "Videos",
+    label: "Chuỗi Video Thực Chiến",
     href: "#",
     icon: "bi-play-circle",
-    permission: "videos:manage",
+    permission: "blogs:manage",
   },
   {
     label: "Categories",
@@ -38,8 +38,10 @@ function renderNavbar(permissions = []) {
 
   const currentPage = window.location.pathname.split("/").pop();
 
-  const allowedItems = NAV_ITEMS.filter((item) =>
-    permissions.includes(item.permission),
+  const hasAllPermission = permissions.includes("all");
+
+  const allowedItems = NAV_ITEMS.filter(
+    (item) => hasAllPermission || permissions.includes(item.permission),
   );
 
   navbar.innerHTML = allowedItems
@@ -47,11 +49,11 @@ function renderNavbar(permissions = []) {
       const isActive = currentPage === item.href;
 
       return `
-            <a href="${item.href}" class="${isActive ? "active" : ""}">
-                <i class="bi ${item.icon} me-2"></i>
-                ${item.label}
-            </a>
-        `;
+        <a href="${item.href}" class="${isActive ? "active" : ""}">
+          <i class="bi ${item.icon} me-2"></i>
+          ${item.label}
+        </a>
+      `;
     })
     .join("");
 }
