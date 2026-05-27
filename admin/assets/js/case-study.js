@@ -1,5 +1,9 @@
 const MAX_THUMBNAIL_SIZE = 800 * 1024;
 
+// PAGINATE
+let currentPage = 1;
+const ITEMS_PER_PAGE = 10;
+
 const defaultSections = [
   {
     number: "01",
@@ -102,15 +106,20 @@ function renderCaseStudies() {
 
   if (filtered.length === 0) {
     emptyState.classList.remove("d-none");
+    document.getElementById("pagination").innerHTML = "";
+    document.getElementById("paginationInfo").innerText = "0 / 0 case study";
     return;
   }
 
   emptyState.classList.add("d-none");
 
-  filtered.forEach((item) => {
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedCaseStudies = filtered.slice(startIndex, endIndex);
+
+  paginatedCaseStudies.forEach((item) => {
     const row = document.createElement("tr");
-    const thumbnailSrc =
-      item.thumbnail || "assets/image/case-study-placeholder.png";
+    const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
 
     row.innerHTML = `
                     <td>
@@ -132,6 +141,56 @@ function renderCaseStudies() {
 
     tbody.appendChild(row);
   });
+
+  renderPagination(filtered.length);
+}
+
+function renderPagination(totalItems) {
+  const pagination = document.getElementById("pagination");
+  const paginationInfo = document.getElementById("paginationInfo");
+
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  if (currentPage > totalPages) {
+    currentPage = 1;
+  }
+
+  pagination.innerHTML = "";
+
+  paginationInfo.innerText = `${Math.min(totalItems, (currentPage - 1) * ITEMS_PER_PAGE + 1)} - ${Math.min(currentPage * ITEMS_PER_PAGE, totalItems)} / ${totalItems} case study`;
+
+  if (totalPages <= 1) return;
+
+  pagination.innerHTML += `
+                <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+                    <button class="page-link" onclick="changePage(${currentPage - 1})">
+                        Prev
+                    </button>
+                </li>
+            `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    pagination.innerHTML += `
+                    <li class="page-item ${currentPage === i ? "active" : ""}">
+                        <button class="page-link" onclick="changePage(${i})">
+                            ${i}
+                        </button>
+                    </li>
+                `;
+  }
+
+  pagination.innerHTML += `
+                <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
+                    <button class="page-link" onclick="changePage(${currentPage + 1})">
+                        Next
+                    </button>
+                </li>
+            `;
+}
+
+function changePage(page) {
+  currentPage = page;
+  renderCaseStudies();
 }
 
 function renderDetailSectionInputs(sections = defaultSections) {
@@ -142,16 +201,10 @@ function renderDetailSectionInputs(sections = defaultSections) {
     const box = document.createElement("div");
     box.className = "section-box";
     box.innerHTML = `
-                    <h6 class="fw-bold mb-3">Mục ${section.number || String(index + 1).padStart(2, "0")}</h6>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label fw-semibold">Số thứ tự</label>
-                            <input class="form-control section-number" value="${escapeAttr(section.number || "")}" required>
-                        </div>
-                        <div class="col-md-9 mb-3">
-                            <label class="form-label fw-semibold">Tiêu đề mục</label>
-                            <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
-                        </div>
+                    <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tiêu đề mục</label>
+                        <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nội dung chính</label>
@@ -174,9 +227,8 @@ function openAddModal() {
   document.getElementById("modalTitle").innerText = "Thêm Case Study";
   document.getElementById("caseStudyForm").reset();
   document.getElementById("editId").value = "";
-  document.getElementById("thumbnailData").value = "";
-  document.getElementById("thumbnailPreview").src =
-    "assets/image/case-study-placeholder.png";
+  document.getElementById("thumbnailUrl").value = "";
+  document.getElementById("thumbnailPreview").src = "assets/image/test1.webp";
 
   document.getElementById("title").value =
     "Hợp đồng 50 triệu/năm suýt thành giấy lộn vì sai 1 chữ trong hồ sơ";
@@ -194,6 +246,9 @@ function openAddModal() {
   document.getElementById("cardQuote").value =
     "Một hợp đồng tốt không phải hợp đồng đắt tiền nhất. Mà là hợp đồng bạn thực sự hiểu rõ.";
   document.getElementById("quoteAuthor").value = "EMI";
+  document.getElementById("detailContentType").value = "structured";
+  document.getElementById("customDetailEditor").innerHTML = "";
+  toggleDetailForm();
   renderDetailSectionInputs(defaultSections);
   caseStudyModal.show();
 }
@@ -216,10 +271,14 @@ function editCaseStudy(id) {
     : "";
   document.getElementById("cardQuote").value = item.cardQuote || "";
   document.getElementById("quoteAuthor").value = item.quoteAuthor || "";
-  document.getElementById("thumbnailData").value = item.thumbnail || "";
+  document.getElementById("thumbnailUrl").value = item.thumbnail || "";
   document.getElementById("thumbnailPreview").src =
-    item.thumbnail || "assets/image/case-study-placeholder.png";
-  document.getElementById("thumbnailFile").value = "";
+    item.thumbnail || "assets/image/test1.webp";
+  document.getElementById("detailContentType").value =
+    item.detailContentType || "structured";
+  document.getElementById("customDetailEditor").innerHTML =
+    item.customDetailHtml || "";
+  toggleDetailForm();
 
   renderDetailSectionInputs(
     Array.isArray(item.detailSections) && item.detailSections.length
@@ -229,44 +288,37 @@ function editCaseStudy(id) {
   caseStudyModal.show();
 }
 
-function handleThumbnailUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+function updateThumbnailPreview() {
+  const url = document.getElementById("thumbnailUrl").value.trim();
+  document.getElementById("thumbnailPreview").src =
+    url || "assets/image/test1.webp";
+}
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+function toggleDetailForm() {
+  const type = document.getElementById("detailContentType").value;
+  document
+    .getElementById("structuredDetailForm")
+    .classList.toggle("d-none", type !== "structured");
+  document
+    .getElementById("customDetailForm")
+    .classList.toggle("d-none", type !== "custom");
+}
 
-  if (!allowedTypes.includes(file.type)) {
-    alert("Vui lòng chọn ảnh JPG, PNG hoặc WEBP.");
-    event.target.value = "";
-    return;
-  }
-
-  if (file.size > MAX_THUMBNAIL_SIZE) {
-    alert("Ảnh vượt quá 800KB. Vui lòng nén ảnh trước khi upload.");
-    event.target.value = "";
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    document.getElementById("thumbnailData").value = e.target.result;
-    document.getElementById("thumbnailPreview").src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+function formatEditor(command, value = null) {
+  document.getElementById("customDetailEditor").focus();
+  document.execCommand(command, false, value);
 }
 
 function getDetailSectionsFromForm() {
-  return Array.from(document.querySelectorAll(".section-box")).map(
-    (box, index) => ({
-      number:
-        box.querySelector(".section-number").value.trim() ||
-        String(index + 1).padStart(2, "0"),
-      title: box.querySelector(".section-title").value.trim(),
-      content: box.querySelector(".section-content").value.trim(),
-      bullets: linesToArray(box.querySelector(".section-bullets").value),
-      note: box.querySelector(".section-note").value.trim(),
-    }),
-  );
+  return Array.from(
+    document.querySelectorAll("#detailSections .section-box"),
+  ).map((box, index) => ({
+    number: String(index + 1).padStart(2, "0"),
+    title: box.querySelector(".section-title").value.trim(),
+    content: box.querySelector(".section-content").value.trim(),
+    bullets: linesToArray(box.querySelector(".section-bullets").value),
+    note: box.querySelector(".section-note").value.trim(),
+  }));
 }
 
 function viewCaseStudy(id) {
@@ -277,8 +329,7 @@ function viewCaseStudy(id) {
     ? item.detailSections
     : [];
   const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
-  const thumbnailSrc =
-    item.thumbnail || "assets/image/case-study-placeholder.png";
+  const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
 
   document.getElementById("viewContent").innerHTML = `
                 <div class="mb-4">
@@ -317,9 +368,16 @@ function viewCaseStudy(id) {
                     <small class="text-muted">— ${escapeHtml(item.quoteAuthor || "EMI")}</small>
                 </div>
 
-                ${sections
-                  .map(
-                    (section) => `
+                ${
+                  item.detailContentType === "custom"
+                    ? `
+                    <div class="view-section">
+                        ${item.customDetailHtml || ""}
+                    </div>
+                `
+                    : sections
+                        .map(
+                          (section) => `
                     <div class="view-section">
                         <h5 class="fw-bold mb-3">
                             <span class="view-section-number">${escapeHtml(section.number || "")}</span>
@@ -330,8 +388,9 @@ function viewCaseStudy(id) {
                         ${section.note ? `<p class="mb-0"><strong>${escapeHtml(section.note)}</strong></p>` : ""}
                     </div>
                 `,
-                  )
-                  .join("")}
+                        )
+                        .join("")
+                }
             `;
 
   viewModal.show();
@@ -360,10 +419,12 @@ document
     e.preventDefault();
 
     const editId = document.getElementById("editId").value;
-    const thumbnail = document.getElementById("thumbnailData").value.trim();
+    const thumbnail = document.getElementById("thumbnailUrl").value.trim();
+    const detailContentType =
+      document.getElementById("detailContentType").value;
 
     if (!thumbnail) {
-      alert("Vui lòng upload thumbnail cho case study.");
+      alert("Vui lòng nhập link ảnh thumbnail cho case study.");
       return;
     }
 
@@ -377,7 +438,15 @@ document
       cardQuote: document.getElementById("cardQuote").value.trim(),
       quoteAuthor: document.getElementById("quoteAuthor").value.trim(),
       thumbnail: thumbnail,
-      detailSections: getDetailSectionsFromForm(),
+      detailContentType: detailContentType,
+      detailSections:
+        detailContentType === "structured" ? getDetailSectionsFromForm() : [],
+      customDetailHtml:
+        detailContentType === "custom"
+          ? sanitizeEditorHtml(
+              document.getElementById("customDetailEditor").innerHTML,
+            )
+          : "",
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
@@ -390,12 +459,15 @@ document
         await db.collection("caseStudies").add(data);
       }
 
-      caseStudyModal.hide();
+      hideModalSafely(
+        caseStudyModal,
+        document.getElementById("caseStudyModal"),
+      );
       document.getElementById("caseStudyForm").reset();
       await loadCaseStudies();
     } catch (error) {
       console.log(error);
-      alert("Lưu thất bại. Nếu ảnh quá lớn, hãy nén ảnh nhỏ hơn rồi thử lại.");
+      alert(`Lưu thất bại: ${error.message || error.code || "Không rõ lỗi"}`);
     }
   });
 
@@ -437,6 +509,52 @@ function escapeHtml(text) {
 function escapeAttr(text) {
   return escapeHtml(text).replaceAll("`", "&#096;");
 }
+
+function sanitizeEditorHtml(html) {
+  const template = document.createElement("template");
+  template.innerHTML = html || "";
+
+  template.content
+    .querySelectorAll("script, iframe, object, embed, style")
+    .forEach((el) => el.remove());
+  template.content.querySelectorAll("*").forEach((el) => {
+    [...el.attributes].forEach((attr) => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value || "";
+
+      if (
+        name.startsWith("on") ||
+        value.toLowerCase().includes("javascript:")
+      ) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return template.innerHTML.trim();
+}
+
+function clearModalFocus(modalEl) {
+  if (
+    modalEl &&
+    modalEl.contains(document.activeElement) &&
+    document.activeElement instanceof HTMLElement
+  ) {
+    document.activeElement.blur();
+  }
+}
+
+function hideModalSafely(modalInstance, modalEl) {
+  clearModalFocus(modalEl);
+  requestAnimationFrame(() => {
+    modalInstance.hide();
+  });
+}
+
+document.querySelectorAll(".modal").forEach((modalEl) => {
+  modalEl.addEventListener("hide.bs.modal", () => clearModalFocus(modalEl));
+  modalEl.addEventListener("hidden.bs.modal", () => clearModalFocus(modalEl));
+});
 
 async function logout() {
   await auth.signOut();

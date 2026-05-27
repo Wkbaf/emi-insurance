@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Chuỗi Video Thực Chiến",
-    href: "#",
+    href: "blog.html",
     icon: "bi-play-circle",
     permission: "blogs:manage",
   },

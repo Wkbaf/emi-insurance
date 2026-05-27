@@ -91,19 +91,11 @@
                     <div class="glossary-search">
                         <i class="bi bi-search"></i>
 
-                        <input id="termSearch" type="search" placeholder="Tìm thuật ngữ: Phí ban đầu, Thời gian chờ..."
+                        <input id="termSearch" type="text" placeholder="Tìm thuật ngữ: Phí ban đầu, Thời gian chờ..."
                             autocomplete="off">
 
-                        <button id="clearTermSearch" type="button" aria-label="Xóa tìm kiếm">
-
-                            <i class="bi bi-x-lg"></i>
-                        </button>
+                        <button id="clearTermSearch" type="button" aria-label="Xóa tìm kiếm">&times;</button>
                     </div>
-
-                    <select id="termSort" aria-label="Sắp xếp thuật ngữ">
-                        <option value="default">Mới nhất</option>
-                        <option value="az">A - Z</option>
-                    </select>
 
                 </div>
                 <div class="glossary-tabs" aria-label="Nhóm thuật ngữ">
@@ -116,6 +108,12 @@
                 <div class="row g-4 align-items-start">
                     <div>
                         <div class="term-grid" id="termGrid"></div>
+
+                        <div class="load-more-wrap">
+                            <button id="loadMoreTerms" class="load-more-btn" type="button">
+                                Xem thêm
+                            </button>
+                        </div>
 
                         <div class="term-empty" id="termEmpty">
                             <i class="bi bi-search-heart"></i>
@@ -256,9 +254,11 @@
             const tabs = Array.from(document.querySelectorAll(".term-tab"));
             const searchInput = document.getElementById("termSearch");
             const clearBtn = document.getElementById("clearTermSearch");
-            const sortSelect = document.getElementById("termSort");
             const empty = document.getElementById("termEmpty");
             const grid = document.getElementById("termGrid");
+            const loadMoreBtn = document.getElementById("loadMoreTerms");
+            const ITEMS_PER_PAGE = 6;
+            let visibleLimit = ITEMS_PER_PAGE;
             const modal = document.getElementById("termModal");
             const iframe = document.getElementById("modalYoutube");
 
@@ -387,28 +387,29 @@
 
             function filterTerms() {
                 const keyword = normalize(searchInput.value.trim());
-                let visible = 0;
+                let matchedCards = [];
 
                 const cards = Array.from(document.querySelectorAll(".term-card"));
 
                 cards.forEach(card => {
                     const matchCategory = activeCategory === "all" || card.dataset.category === activeCategory;
-
                     const text = normalize(card.innerText + " " + card.dataset.keywords);
-
                     const matchSearch = !keyword || text.includes(keyword);
 
-                    card.hidden = !(matchCategory && matchSearch);
+                    const matched = matchCategory && matchSearch;
+                    card.hidden = true;
 
-                    if (!card.hidden)
-                        visible += 1;
+                    if (matched) matchedCards.push(card);
+                });
 
-
-
+                matchedCards.forEach((card, index) => {
+                    card.hidden = index >= visibleLimit;
                 });
 
                 clearBtn.classList.toggle("show", searchInput.value.length > 0);
-                empty.classList.toggle("show", visible === 0);
+                empty.classList.toggle("show", matchedCards.length === 0);
+
+                loadMoreBtn.style.display = matchedCards.length > visibleLimit ? "inline-flex" : "none";
             }
 
             async function loadTermsFromFirebase() {
@@ -466,11 +467,16 @@
 
                     activeCategory = tab.dataset.category;
 
+                    visibleLimit = ITEMS_PER_PAGE;
+
                     filterTerms();
                 });
             });
 
-            searchInput.addEventListener("input", filterTerms);
+            searchInput.addEventListener("input", () => {
+                visibleLimit = ITEMS_PER_PAGE;
+                filterTerms();
+            });
 
             clearBtn.addEventListener("click", () => {
                 searchInput.value = "";
@@ -478,19 +484,9 @@
                 filterTerms();
             });
 
-            sortSelect.addEventListener("change", () => {
-                if (sortSelect.value === "az") {
-                    terms.sort((a, b) => {
-                        return String(a.termName || "").localeCompare(String(b.termName || ""), "vi");
-                    });
-                } else {
-                    terms.sort((a, b) => {
-                        const aTime = a.createdAt?.seconds || 0;
-                        const bTime = b.createdAt?.seconds || 0;
-
-                        return bTime - aTime;
-                    });
-                } renderCards();
+            loadMoreBtn.addEventListener("click", () => {
+                visibleLimit += ITEMS_PER_PAGE;
+                filterTerms();
             });
 
             loadTermsFromFirebase();
