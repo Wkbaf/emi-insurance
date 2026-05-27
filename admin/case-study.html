@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Case Study</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="assets/image/favicon.png?v=2">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="assets/css/giai-ma-thuat-ngu.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+
+    <style>
+        .thumbnail-preview {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .section-box {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 18px;
+            background: #fffaf1;
+            margin-bottom: 18px;
+        }
+
+        .section-box h6 {
+            color: #004c45;
+        }
+
+        .view-section {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+            background: #fffdf8;
+        }
+
+        .view-section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #00594f;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .result-list li,
+        .view-section li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h3 class="mb-4">
+            <i class="bi bi-shield-check"></i>
+            EMI Admin
+        </h3>
+
+        <div id="adminNavbar"></div>
+
+        <a href="#" onclick="logout()">
+            <i class="bi bi-box-arrow-left me-2"></i>
+            Logout
+        </a>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+
+        <!-- Topbar -->
+        <div class="topbar d-flex justify-content-between align-items-center">
+
+            <div>
+                <h3 class="mb-1 fw-bold">
+                    Case Study thực tế
+                </h3>
+
+                <div class="text-muted">
+                    Quản lý nội dung case study hiển thị trên website
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="text-end">
+                    <div class="fw-semibold">
+                        Admin
+                    </div>
+
+                    <small class="text-muted">
+                        Online
+                    </small>
+                </div>
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div class="content-card">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+                <div>
+                    <h4 class="fw-bold mb-1">
+                        Danh sách Case Study
+                    </h4>
+
+                    <div class="text-muted">
+                        Thêm, sửa, xóa và xem chi tiết case study
+                    </div>
+                </div>
+
+                <button class="btn btn-primary-custom" onclick="openAddModal()">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Thêm Case Study
+                </button>
+
+            </div>
+
+            <!-- Search -->
+            <div class="row mb-4">
+
+                <div class="col-md-8 mb-3 mb-md-0">
+
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+
+                        <input id="searchInput" type="text" class="form-control"
+                            placeholder="Tìm theo title, category..." oninput="renderCaseStudies()">
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <select id="categoryFilter" class="form-select" onchange="renderCaseStudies()">
+
+                        <option value="all">
+                            Tất cả category
+                        </option>
+
+                        <option value="Giải cứu hợp đồng cũ">
+                            Giải cứu hợp đồng cũ
+                        </option>
+
+                        <option value="Hành trình bồi thường">
+                            Hành trình bồi thường
+                        </option>
+
+                        <option value="Hoạch định mốc nhân sinh">
+                            Hoạch định mốc nhân sinh
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Thời gian đọc</th>
+                            <th>Cập nhật</th>
+                            <th width="170">Manage</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="caseStudyTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+            <div id="emptyState" class="empty-state d-none">
+
+                <i class="bi bi-folder-x"></i>
+
+                <h5 class="fw-bold">
+                    Chưa có case study
+                </h5>
+
+                <p>
+                    Hãy thêm case study đầu tiên.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal fade" id="caseStudyModal" tabindex="-1">
+
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 id="modalTitle" class="modal-title fw-bold">
+                        Thêm Case Study
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <form id="caseStudyForm">
+
+                    <div class="modal-body">
+
+                        <input id="editId" type="hidden">
+
+
+                        <div class="row">
+
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label fw-semibold">Title</label>
+                                <input id="title" type="text" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Category</label>
+                                <select id="category" class="form-select" required>
+                                    <option value="">Chọn category</option>
+                                    <option value="Giải cứu hợp đồng cũ">Giải cứu hợp đồng cũ</option>
+                                    <option value="Hành trình bồi thường">Hành trình bồi thường</option>
+                                    <option value="Hoạch định mốc nhân sinh">Hoạch định mốc nhân sinh</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Thời gian đọc</label>
+                                <input id="readingTime" type="text" class="form-control" placeholder="4 phút" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Ngày cập nhật</label>
+                                <input id="updatedDate" type="date" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Link ảnh thumbnail</label>
+                                <input id="thumbnailUrl" type="url" class="form-control" placeholder="https://..."
+                                    oninput="updateThumbnailPreview()" required>
+                                <div class="help-text">Nhập URL ảnh. Upload ảnh sẽ làm sau.</div>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 d-flex align-items-center gap-3">
+                            <img id="thumbnailPreview" class="thumbnail-preview" src="" alt="Thumbnail preview">
+                            <div class="text-muted small">
+                                Ảnh này dùng cho card case study và trang chi tiết.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Mô tả ngắn trên card</label>
+                            <textarea id="description" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kết quả nổi bật</label>
+                            <textarea id="keyResults" class="form-control" rows="4"
+                                placeholder="Mỗi dòng là một kết quả, ví dụ:&#10;Giảm hơn 30% phí đóng dự kiến&#10;Gia tăng lớp bảo vệ sinh mạng"
+                                required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label fw-semibold">Quote trong card/trang chi tiết</label>
+                                <textarea id="cardQuote" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold">Người nói quote</label>
+                                <input id="quoteAuthor" type="text" class="form-control" placeholder="EMI">
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="fw-bold mb-3">Nội dung chi tiết khi user click “Xem chi tiết”</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kiểu nội dung chi tiết</label>
+                            <select id="detailContentType" class="form-select" onchange="toggleDetailForm()">
+                                <option value="structured">Form 1 - Nhập theo từng mục</option>
+                                <option value="custom">Form 2 - Text editor custom</option>
+                            </select>
+                            <div class="help-text">Field này sẽ được lưu vào Firestore để frontend biết case study dùng
+                                form nào.</div>
+                        </div>
+
+                        <div id="structuredDetailForm">
+                            <div id="detailSections"></div>
+                        </div>
+
+                        <div id="customDetailForm" class="d-none">
+                            <div class="section-box">
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        onclick="formatEditor('bold')"><strong>B</strong></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        onclick="formatEditor('italic')"><em>I</em></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        onclick="formatEditor('insertUnorderedList')">• List</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        onclick="formatEditor('formatBlock', 'h3')">Heading</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        onclick="formatEditor('formatBlock', 'p')">Paragraph</button>
+                                </div>
+                                <div id="customDetailEditor" class="form-control" contenteditable="true"
+                                    style="min-height: 320px; overflow:auto; background:#fff;"></div>
+                                <div class="help-text">Nội dung này sẽ lưu vào field <strong>customDetailHtml</strong>.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="bi bi-save me-2"></i>
+                            Lưu Case Study
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title fw-bold">
+                        Chi tiết Case Study
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body" id="viewContent"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Shared -->
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/navbar.js"></script>
+    <script src="assets/js/auth-guard.js"></script>
+
+    <script>
+        const MAX_THUMBNAIL_SIZE = 800 * 1024;
+
+        const defaultSections = [
+            {
+                number: "01",
+                title: "Khúc mắc ban đầu",
+                content: "Khách hàng tìm đến EMI với 4 hợp đồng đã tham gia hơn 4 năm. Tổng phí đóng mỗi năm gần 50 triệu đồng, nhưng cả gia đình không ai thực sự hiểu mình đang được bảo vệ điều gì. Người chồng lo lắng khi phát hiện thông tin người thụ hưởng có sai lệch, trong khi người vợ bắt đầu cảm thấy áp lực vì dòng tiền hằng tháng ngày càng nặng nề.",
+                bullets: []
+            },
+            {
+                number: "02",
+                title: "Bắt mạch & bóc tách",
+                content: "Sau khi rà soát toàn bộ điều khoản, EMI phát hiện:",
+                bullets: [
+                    "Trùng lặp quyền lợi nội trú giữa 2 hợp đồng",
+                    "Thiếu lớp bảo vệ sinh mạng cho người trụ cột",
+                    "Mệnh giá học vấn cho con chưa đủ",
+                    "Thông tin người thụ hưởng sai lệch với hồ sơ gốc"
+                ],
+                note: "Quan trọng nhất: Khách hàng chưa từng được giải thích rõ các điểm loại trừ."
+            },
+            {
+                number: "03",
+                title: "Giải pháp 4.0",
+                content: "Đội ngũ EMI làm việc trực tiếp với tổng đài hãng bảo hiểm để điều chỉnh luồng tin người thụ hưởng.",
+                bullets: [
+                    "Loại bỏ các quyền lợi trùng lặp",
+                    "Giữ lại lớp bảo vệ cốt lõi",
+                    "Thiết kế thêm thẻ y tế độc lập để tránh lỗ hổng",
+                    "Tối ưu lại dòng phí đóng hằng năm"
+                ],
+                note: "Toàn bộ quá trình được thực hiện theo đúng triết lý: “Làm chậm mà chắc.”"
+            },
+            {
+                number: "04",
+                title: "Kết quả & bài học kinh nghiệm",
+                content: "Gia đình không chỉ được tối ưu chi phí mà quan trọng hơn là hiểu rõ quyền lợi, tự tin trước mọi rủi ro.",
+                bullets: [],
+                note: "Bài học rút ra: Đừng để rủi ro nhỏ hôm nay trở thành tổn thất lớn."
+            }
+        ];
+
+        const caseStudyModal = new bootstrap.Modal(document.getElementById("caseStudyModal"));
+        const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
+
+        let caseStudies = [];
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            renderDetailSectionInputs(defaultSections);
+            loadCaseStudies();
+        });
+
+        async function loadCaseStudies() {
+            try {
+                const snapshot = await db.collection("caseStudies")
+                    .where("isDeleted", "==", false)
+                    .orderBy("createdAt", "desc")
+                    .get();
+
+                caseStudies = [];
+
+                snapshot.forEach((doc) => {
+                    caseStudies.push({ id: doc.id, ...doc.data() });
+                });
+
+                renderCaseStudies();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        function renderCaseStudies() {
+            const tbody = document.getElementById("caseStudyTableBody");
+            const emptyState = document.getElementById("emptyState");
+
+            const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
+            const categoryFilter = document.getElementById("categoryFilter").value;
+
+            const filtered = caseStudies.filter((item) => {
+                const text = `${item.title || ""} ${item.category || ""} ${item.description || ""}`.toLowerCase();
+                const matchSearch = !keyword || text.includes(keyword);
+                const matchCategory = categoryFilter === "all" || item.category === categoryFilter;
+                return matchSearch && matchCategory;
+            });
+
+            tbody.innerHTML = "";
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove("d-none");
+                return;
+            }
+
+            emptyState.classList.add("d-none");
+
+            filtered.forEach((item) => {
+                const row = document.createElement("tr");
+                const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
+
+                row.innerHTML = `
+                    <td>
+                        <img src="${escapeAttr(thumbnailSrc)}" style="width:70px;height:70px;object-fit:cover;border-radius:16px;">
+                    </td>
+                    <td>
+                        <div class="term-title">${escapeHtml(item.title || "")}</div>
+                        <small class="text-muted">${escapeHtml(shortText(item.description || "", 70))}</small>
+                    </td>
+                    <td><span class="term-category">${escapeHtml(item.category || "")}</span></td>
+                    <td>${escapeHtml(item.readingTime || "")}</td>
+                    <td>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</td>
+                    <td>
+                        <button class="action-btn btn-view" onclick="viewCaseStudy('${item.id}')"><i class="bi bi-eye"></i></button>
+                        <button class="action-btn btn-edit" onclick="editCaseStudy('${item.id}')"><i class="bi bi-pencil"></i></button>
+                        <button class="action-btn btn-delete" onclick="deleteCaseStudy('${item.id}')"><i class="bi bi-trash"></i></button>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderDetailSectionInputs(sections = defaultSections) {
+            const wrapper = document.getElementById("detailSections");
+            wrapper.innerHTML = "";
+
+            sections.forEach((section, index) => {
+                const box = document.createElement("div");
+                box.className = "section-box";
+                box.innerHTML = `
+                    <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tiêu đề mục</label>
+                        <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nội dung chính</label>
+                        <textarea class="form-control section-content" rows="4" required>${escapeHtml(section.content || "")}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Bullet points</label>
+                        <textarea class="form-control section-bullets" rows="4" placeholder="Mỗi dòng là một bullet point">${escapeHtml((section.bullets || []).join("\n"))}</textarea>
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold">Ghi chú / bài học / điểm nhấn</label>
+                        <textarea class="form-control section-note" rows="2">${escapeHtml(section.note || "")}</textarea>
+                    </div>
+                `;
+                wrapper.appendChild(box);
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById("modalTitle").innerText = "Thêm Case Study";
+            document.getElementById("caseStudyForm").reset();
+            document.getElementById("editId").value = "";
+            document.getElementById("thumbnailUrl").value = "";
+            document.getElementById("thumbnailPreview").src = "assets/image/test1.webp";
+
+            document.getElementById("title").value = "Hợp đồng 50 triệu/năm suýt thành giấy lộn vì sai 1 chữ trong hồ sơ";
+            document.getElementById("category").value = "Giải cứu hợp đồng cũ";
+            document.getElementById("readingTime").value = "4 phút";
+            document.getElementById("updatedDate").value = "2024-05-15";
+            document.getElementById("description").value = "Khách hàng tham gia hơn 4 năm, tổng phí gần 50 triệu/năm nhưng chưa hiểu rõ mình đang được bảo vệ điều gì.";
+            document.getElementById("keyResults").value = [
+                "Giảm hơn 30% phí đóng dự kiến",
+                "Gia tăng lớp bảo vệ sinh mạng",
+                "Chuyển hóa hồ sơ phức tạp",
+                "Gia đình hiểu rõ toàn bộ cấu trúc tài chính"
+            ].join("\n");
+            document.getElementById("cardQuote").value = "Một hợp đồng tốt không phải hợp đồng đắt tiền nhất. Mà là hợp đồng bạn thực sự hiểu rõ.";
+            document.getElementById("quoteAuthor").value = "EMI";
+            document.getElementById("detailContentType").value = "structured";
+            document.getElementById("customDetailEditor").innerHTML = "";
+            toggleDetailForm();
+            renderDetailSectionInputs(defaultSections);
+            caseStudyModal.show();
+        }
+
+        function editCaseStudy(id) {
+            const item = caseStudies.find(c => c.id === id);
+            if (!item) return;
+
+            document.getElementById("modalTitle").innerText = "Sửa Case Study";
+            document.getElementById("editId").value = item.id;
+            document.getElementById("title").value = item.title || "";
+            document.getElementById("category").value = item.category || "";
+            document.getElementById("readingTime").value = item.readingTime || "";
+            document.getElementById("updatedDate").value = normalizeDateInput(item.updatedDate);
+            document.getElementById("description").value = item.description || "";
+            document.getElementById("keyResults").value = Array.isArray(item.keyResults) ? item.keyResults.join("\n") : "";
+            document.getElementById("cardQuote").value = item.cardQuote || "";
+            document.getElementById("quoteAuthor").value = item.quoteAuthor || "";
+            document.getElementById("thumbnailUrl").value = item.thumbnail || "";
+            document.getElementById("thumbnailPreview").src = item.thumbnail || "assets/image/test1.webp";
+            document.getElementById("detailContentType").value = item.detailContentType || "structured";
+            document.getElementById("customDetailEditor").innerHTML = item.customDetailHtml || "";
+            toggleDetailForm();
+
+            renderDetailSectionInputs(Array.isArray(item.detailSections) && item.detailSections.length ? item.detailSections : defaultSections);
+            caseStudyModal.show();
+        }
+
+        function updateThumbnailPreview() {
+            const url = document.getElementById("thumbnailUrl").value.trim();
+            document.getElementById("thumbnailPreview").src = url || "assets/image/test1.webp";
+        }
+
+        function toggleDetailForm() {
+            const type = document.getElementById("detailContentType").value;
+            document.getElementById("structuredDetailForm").classList.toggle("d-none", type !== "structured");
+            document.getElementById("customDetailForm").classList.toggle("d-none", type !== "custom");
+        }
+
+        function formatEditor(command, value = null) {
+            document.getElementById("customDetailEditor").focus();
+            document.execCommand(command, false, value);
+        }
+
+        function getDetailSectionsFromForm() {
+            return Array.from(document.querySelectorAll("#detailSections .section-box")).map((box, index) => ({
+                number: String(index + 1).padStart(2, "0"),
+                title: box.querySelector(".section-title").value.trim(),
+                content: box.querySelector(".section-content").value.trim(),
+                bullets: linesToArray(box.querySelector(".section-bullets").value),
+                note: box.querySelector(".section-note").value.trim()
+            }));
+        }
+
+        function viewCaseStudy(id) {
+            const item = caseStudies.find(c => c.id === id);
+            if (!item) return;
+
+            const sections = Array.isArray(item.detailSections) ? item.detailSections : [];
+            const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
+            const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
+
+            document.getElementById("viewContent").innerHTML = `
+                <div class="mb-4">
+                    <img src="${escapeAttr(thumbnailSrc)}" style="width:100%;max-height:320px;object-fit:cover;border-radius:20px;">
+                </div>
+
+                <div class="view-block">
+                    <label>Category</label>
+                    <p>${escapeHtml(item.category || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Title</label>
+                    <p class="fw-bold fs-5">${escapeHtml(item.title || "")}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 view-block">
+                        <label>Thời gian đọc</label>
+                        <p>${escapeHtml(item.readingTime || "")}</p>
+                    </div>
+                    <div class="col-md-6 view-block">
+                        <label>Cập nhật</label>
+                        <p>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</p>
+                    </div>
+                </div>
+
+                <div class="view-block">
+                    <label>Kết quả nổi bật</label>
+                    <ul class="result-list">${keyResults.map(result => `<li>${escapeHtml(result)}</li>`).join("")}</ul>
+                </div>
+
+                <div class="view-block">
+                    <label>Quote</label>
+                    <p><strong>“${escapeHtml(item.cardQuote || "")}”</strong></p>
+                    <small class="text-muted">— ${escapeHtml(item.quoteAuthor || "EMI")}</small>
+                </div>
+
+                ${item.detailContentType === "custom" ? `
+                    <div class="view-section">
+                        ${item.customDetailHtml || ""}
+                    </div>
+                ` : sections.map(section => `
+                    <div class="view-section">
+                        <h5 class="fw-bold mb-3">
+                            <span class="view-section-number">${escapeHtml(section.number || "")}</span>
+                            ${escapeHtml(section.title || "")}
+                        </h5>
+                        <p>${escapeHtml(section.content || "").replaceAll("\n", "<br>")}</p>
+                        ${Array.isArray(section.bullets) && section.bullets.length ? `<ul>${section.bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>` : ""}
+                        ${section.note ? `<p class="mb-0"><strong>${escapeHtml(section.note)}</strong></p>` : ""}
+                    </div>
+                `).join("")}
+            `;
+
+            viewModal.show();
+        }
+
+        async function deleteCaseStudy(id) {
+            const confirmDelete = confirm("Bạn có chắc muốn xóa case study này?");
+            if (!confirmDelete) return;
+
+            try {
+                await db.collection("caseStudies").doc(id).update({
+                    isDeleted: true,
+                    deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadCaseStudies();
+            } catch (error) {
+                console.log(error);
+                alert("Xóa thất bại");
+            }
+        }
+
+        document.getElementById("caseStudyForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const editId = document.getElementById("editId").value;
+            const thumbnail = document.getElementById("thumbnailUrl").value.trim();
+            const detailContentType = document.getElementById("detailContentType").value;
+
+            if (!thumbnail) {
+                alert("Vui lòng nhập link ảnh thumbnail cho case study.");
+                return;
+            }
+
+            const data = {
+                title: document.getElementById("title").value.trim(),
+                category: document.getElementById("category").value.trim(),
+                readingTime: document.getElementById("readingTime").value.trim(),
+                updatedDate: document.getElementById("updatedDate").value,
+                description: document.getElementById("description").value.trim(),
+                keyResults: linesToArray(document.getElementById("keyResults").value),
+                cardQuote: document.getElementById("cardQuote").value.trim(),
+                quoteAuthor: document.getElementById("quoteAuthor").value.trim(),
+                thumbnail: thumbnail,
+                detailContentType: detailContentType,
+                detailSections: detailContentType === "structured" ? getDetailSectionsFromForm() : [],
+                customDetailHtml: detailContentType === "custom" ? sanitizeEditorHtml(document.getElementById("customDetailEditor").innerHTML) : "",
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (editId) {
+                    await db.collection("caseStudies").doc(editId).update(data);
+                } else {
+                    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    data.isDeleted = false;
+                    await db.collection("caseStudies").add(data);
+                }
+
+                hideModalSafely(caseStudyModal, document.getElementById("caseStudyModal"));
+                document.getElementById("caseStudyForm").reset();
+                await loadCaseStudies();
+            } catch (error) {
+                console.log(error);
+                alert(`Lưu thất bại: ${error.message || error.code || "Không rõ lỗi"}`);
+            }
+        });
+
+        function linesToArray(text) {
+            return String(text || "")
+                .split("\n")
+                .map(line => line.trim())
+                .filter(Boolean);
+        }
+
+        function normalizeDateInput(value) {
+            if (!value) return "";
+            if (typeof value === "string") return value.slice(0, 10);
+            if (value.toDate) return value.toDate().toISOString().slice(0, 10);
+            return "";
+        }
+
+        function formatDisplayDate(value) {
+            const dateInput = normalizeDateInput(value);
+            if (!dateInput) return "";
+            const [year, month, day] = dateInput.split("-");
+            return `${day}/${month}/${year}`;
+        }
+
+        function shortText(text, max) {
+            if (!text) return "";
+            return text.length > max ? text.slice(0, max) + "..." : text;
+        }
+
+        function escapeHtml(text) {
+            return String(text)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function escapeAttr(text) {
+            return escapeHtml(text).replaceAll("`", "&#096;");
+        }
+
+        function sanitizeEditorHtml(html) {
+            const template = document.createElement("template");
+            template.innerHTML = html || "";
+
+            template.content.querySelectorAll("script, iframe, object, embed, style").forEach(el => el.remove());
+            template.content.querySelectorAll("*").forEach(el => {
+                [...el.attributes].forEach(attr => {
+                    const name = attr.name.toLowerCase();
+                    const value = attr.value || "";
+
+                    if (name.startsWith("on") || value.toLowerCase().includes("javascript:")) {
+                        el.removeAttribute(attr.name);
+                    }
+                });
+            });
+
+            return template.innerHTML.trim();
+        }
+
+        function clearModalFocus(modalEl) {
+            if (modalEl && modalEl.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+        }
+
+        function hideModalSafely(modalInstance, modalEl) {
+            clearModalFocus(modalEl);
+            requestAnimationFrame(() => {
+                modalInstance.hide();
+            });
+        }
+
+        document.querySelectorAll(".modal").forEach((modalEl) => {
+            modalEl.addEventListener("hide.bs.modal", () => clearModalFocus(modalEl));
+            modalEl.addEventListener("hidden.bs.modal", () => clearModalFocus(modalEl));
+        });
+
+        async function logout() {
+            await auth.signOut();
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+
+</html>

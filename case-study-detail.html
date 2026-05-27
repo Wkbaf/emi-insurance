@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Chi tiết Case Study | EMI Insurance</title>
+    <link rel="icon" href="assets/image/favicon.png?v=2">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+
+    <style>
+        :root {
+            --navy: #033631;
+            --navy-2: #054840;
+            --gold: #bf9b42;
+            --gold-2: #d8b65d;
+            --cream: #faf8f2;
+            --muted: #6b7280;
+            --soft-border: rgba(191, 155, 66, .22);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            background: #fff;
+        }
+
+        .case-detail-hero {
+            min-height: 520px;
+            padding: 150px 0 90px;
+            color: #fff;
+            background:
+                radial-gradient(circle at top right, rgba(216, 182, 93, .22), transparent 34%),
+                linear-gradient(90deg, rgba(0, 48, 43, .96), rgba(0, 48, 43, .84), rgba(0, 48, 43, .38)),
+                url("assets/image/case-study-detail-bg.jpg") center/cover no-repeat;
+        }
+
+        .case-breadcrumb {
+            color: rgba(255, 255, 255, .78);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .case-breadcrumb span {
+            color: var(--gold-2);
+        }
+
+        .case-detail-hero h1 {
+            max-width: 900px;
+            font-size: clamp(36px, 5vw, 66px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .case-hero-desc {
+            max-width: 760px;
+            color: rgba(255, 255, 255, .82);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .case-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            color: rgba(255, 255, 255, .88);
+            font-weight: 700;
+        }
+
+        .case-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(8px);
+        }
+
+        .detail-section {
+            background: linear-gradient(180deg, #fffdf8, #faf8f2);
+            padding: 90px 0;
+        }
+
+        .detail-shell {
+            background: #fff;
+            border: 1px solid var(--soft-border);
+            border-radius: 38px;
+            padding: 42px;
+            box-shadow: 0 30px 80px rgba(15, 23, 42, .08);
+        }
+
+        .detail-thumb {
+            width: 100%;
+            max-height: 520px;
+            object-fit: cover;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .12);
+            border: 1px solid rgba(191, 155, 66, .16);
+            margin-bottom: 42px;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            color: #fff;
+            border-radius: 28px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .result-box h3 {
+            color: var(--gold-2);
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .result-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .result-box li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .result-box li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--gold-2);
+        }
+
+        .quote-box {
+            background: #fffaf0;
+            border: 1px solid rgba(191, 155, 66, .28);
+            border-radius: 28px;
+            padding: 28px;
+            color: var(--navy);
+            font-size: 20px;
+            line-height: 1.6;
+            font-weight: 800;
+        }
+
+        .quote-box span {
+            display: block;
+            margin-top: 14px;
+            color: var(--gold);
+            font-size: 15px;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 22px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 18px;
+            padding: 24px;
+            border-radius: 26px;
+            background: #fffdf8;
+            border: 1px solid rgba(191, 155, 66, .18);
+        }
+
+        .timeline-num {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .timeline-item h3 {
+            color: var(--navy);
+            font-size: 21px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p,
+        .timeline-item li {
+            color: #4b5563;
+            line-height: 1.75;
+        }
+
+        .timeline-item ul {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .custom-content {
+            font-size: 18px;
+            line-height: 1.9;
+            color: #374151;
+        }
+
+        .custom-content h1,
+        .custom-content h2,
+        .custom-content h3,
+        .custom-content h4 {
+            color: var(--navy);
+            font-weight: 900;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            letter-spacing: -.5px;
+        }
+
+        .custom-content p {
+            margin-bottom: 18px;
+        }
+
+        .custom-content ul,
+        .custom-content ol {
+            padding-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .custom-content img {
+            max-width: 100%;
+            border-radius: 24px;
+            margin: 24px 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--navy);
+            font-weight: 800;
+            text-decoration: none;
+            margin-bottom: 24px;
+        }
+
+        .back-link:hover {
+            color: var(--gold);
+        }
+
+        .loading-box,
+        .error-box {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .error-box {
+            background: #fff;
+            border: 1px solid rgba(220, 38, 38, .16);
+            border-radius: 24px;
+            color: #b91c1c;
+        }
+
+        @media(max-width: 992px) {
+            .result-box {
+                position: static;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .case-detail-hero {
+                padding: 130px 0 70px;
+                min-height: auto;
+            }
+
+            .detail-section {
+                padding: 56px 0;
+            }
+
+            .detail-shell {
+                padding: 22px;
+                border-radius: 28px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+            }
+
+            .case-meta span {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <emi-nav active="products"></emi-nav>
+
+    <main id="caseDetailApp">
+        <section class="case-detail-hero">
+            <div class="container">
+                <div id="heroContent" class="loading-box">
+                    Đang tải case study...
+                </div>
+            </div>
+        </section>
+
+        <section class="detail-section">
+            <div class="container">
+                <a href="case-study-thuc-te.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Quay lại danh sách case study
+                </a>
+
+                <div class="detail-shell" id="detailContent">
+                    <div class="loading-box">Đang tải nội dung chi tiết...</div>
+                </div>
+            </div>
+        </section>
+
+        <emi-contact></emi-contact>
+    </main>
+
+    <emi-footer></emi-footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/shared/emi-nav.js"></script>
+    <script src="assets/js/shared/emi-contact.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/shared/footer.js"></script>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="assets/js/shared/firebase.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const heroContent = document.getElementById("heroContent");
+            const detailContent = document.getElementById("detailContent");
+
+            const params = new URLSearchParams(window.location.search);
+            const caseId = params.get("id");
+
+            console.log("Current URL:", window.location.href);
+console.log("Search:", window.location.search);
+console.log("Case ID:", caseId);
+
+            function escapeHtml(text) {
+                return String(text || "")
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            function escapeAttr(text) {
+                return escapeHtml(text).replaceAll("`", "&#096;");
+            }
+
+            function renderList(items) {
+                if (!Array.isArray(items) || !items.length) return "";
+
+                return items.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+            }
+
+            function normalizeDateInput(value) {
+                if (!value) return "";
+                if (typeof value === "string") return value.slice(0, 10);
+                if (value.toDate) return value.toDate().toISOString().slice(0, 10);
+                if (value.seconds) return new Date(value.seconds * 1000).toISOString().slice(0, 10);
+                return "";
+            }
+
+            function formatDisplayDate(value) {
+                const dateInput = normalizeDateInput(value);
+                if (!dateInput) return "";
+                const [year, month, day] = dateInput.split("-");
+                return `${day}/${month}/${year}`;
+            }
+
+            function renderSections(sections) {
+                if (!Array.isArray(sections) || !sections.length) {
+                    return `
+                        <div class="timeline-item">
+                            <div class="timeline-num">01</div>
+                            <div>
+                                <h3>Nội dung đang được cập nhật</h3>
+                                <p>Case study này chưa có nội dung chi tiết.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return sections.map((section, index) => `
+                    <div class="timeline-item">
+                        <div class="timeline-num">${escapeHtml(section.number || String(index + 1).padStart(2, "0"))}</div>
+
+                        <div>
+                            <h3>${escapeHtml(section.title || "")}</h3>
+
+                            ${section.content ? `<p>${escapeHtml(section.content).replaceAll("\n", "<br>")}</p>` : ""}
+
+                            ${Array.isArray(section.bullets) && section.bullets.length ? `
+                                <ul>
+                                    ${renderList(section.bullets)}
+                                </ul>
+                            ` : ""}
+
+                            ${section.note ? `<p><strong>${escapeHtml(section.note)}</strong></p>` : ""}
+                        </div>
+                    </div>
+                `).join("");
+            }
+
+            function sanitizeCustomHtml(html) {
+                const template = document.createElement("template");
+                template.innerHTML = html || "";
+
+                template.content.querySelectorAll("script, iframe, object, embed, style").forEach(el => el.remove());
+                template.content.querySelectorAll("*").forEach(el => {
+                    [...el.attributes].forEach(attr => {
+                        const name = attr.name.toLowerCase();
+                        const value = attr.value || "";
+
+                        if (name.startsWith("on") || value.toLowerCase().includes("javascript:")) {
+                            el.removeAttribute(attr.name);
+                        }
+                    });
+                });
+
+                return template.innerHTML.trim();
+            }
+
+            function renderDetailBody(item) {
+                if (item.detailContentType === "custom") {
+                    return `
+                        <div class="custom-content">
+                            ${sanitizeCustomHtml(item.customDetailHtml || "<p>Nội dung đang được cập nhật.</p>")}
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="timeline">
+                        ${renderSections(item.detailSections || [])}
+                    </div>
+                `;
+            }
+
+            function renderCaseStudy(item) {
+                document.title = `${item.title || "Case Study"} | EMI Insurance`;
+
+                const category = item.category || "Case Study";
+                const updatedDate = formatDisplayDate(item.updatedDate) || formatDisplayDate(item.updatedAt) || "";
+                const readingTime = item.readingTime || "4 phút";
+                const thumbnail = item.thumbnail || "assets/image/case-study-01.png";
+                const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
+
+                heroContent.classList.remove("loading-box");
+                heroContent.innerHTML = `
+                    <div class="case-breadcrumb">
+                        Case Study &gt; <span>${escapeHtml(category)}</span>
+                    </div>
+
+                    <h1>${escapeHtml(item.title || "Case Study")}</h1>
+
+                    ${item.description ? `<p class="case-hero-desc">${escapeHtml(item.description)}</p>` : ""}
+
+                    <div class="case-meta">
+                        <span><i class="fa-regular fa-clock"></i> Thời gian đọc: ${escapeHtml(readingTime)}</span>
+                        ${updatedDate ? `<span><i class="fa-regular fa-calendar"></i> Cập nhật: ${escapeHtml(updatedDate)}</span>` : ""}
+                    </div>
+                `;
+
+                detailContent.innerHTML = `
+                    <img src="${escapeAttr(thumbnail)}" alt="${escapeAttr(item.title || "Case Study")}" class="detail-thumb">
+
+                    <div class="row g-5">
+                        <div class="col-lg-5">
+                            <div class="result-box">
+                                <h3>KẾT QUẢ NỔI BẬT</h3>
+                                ${keyResults.length ? `<ul>${renderList(keyResults)}</ul>` : `<p class="mb-0">Nội dung đang được cập nhật.</p>`}
+                            </div>
+
+                            <div class="quote-box">
+                                “${escapeHtml(item.cardQuote || "Một hợp đồng tốt là hợp đồng bạn thực sự hiểu rõ.")}”
+                                <span>— ${escapeHtml(item.quoteAuthor || "EMI")}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            ${renderDetailBody(item)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderError(message, detail = "") {
+                heroContent.innerHTML = `
+                    <div class="error-box">
+                        <div class="fw-bold mb-2">${escapeHtml(message)}</div>
+                        ${detail ? `<div class="small">${escapeHtml(detail)}</div>` : ""}
+                    </div>
+                `;
+                detailContent.innerHTML = "";
+            }
+
+            async function loadCaseStudy() {
+                if (!caseId) {
+                    renderError("Thiếu ID case study.", "URL cần có dạng case-study-detail.html?id=DOCUMENT_ID");
+                    return;
+                }
+
+                try {
+                    if (typeof firebase === "undefined" || typeof db === "undefined") {
+                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra Firebase SDK và assets/js/shared/firebase.js.");
+                    }
+
+                    const doc = await db.collection("caseStudies").doc(caseId).get();
+
+                    if (!doc.exists) {
+                        renderError("Không tìm thấy case study.");
+                        return;
+                    }
+
+                    const item = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+
+                    if (item.isDeleted === true) {
+                        renderError("Case study này không còn khả dụng.");
+                        return;
+                    }
+
+                    renderCaseStudy(item);
+
+                } catch (error) {
+                    console.error("Firestore Error:", error);
+                    renderError("Không thể tải case study.", error.message || error.code || "Không rõ lỗi");
+                }
+            }
+
+            loadCaseStudy();
+        });
+    </script>
+
+</body>
+
+</html>

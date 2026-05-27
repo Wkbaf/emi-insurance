@@ -31,7 +31,7 @@ const SUPER_ADMIN = {
   permissions: [
     "dashboard:view",
     "terms:manage",
-    "blog:manage",
+    "case-studies:manage",
     "videos:manage",
     "categories:manage",
     "users:manage",
@@ -127,11 +127,11 @@ admin.initializeApp({ credential: admin.credential.cert(require("./serviceAccoun
 
 async function setRole() {
   try {
-    const uid = "YVzDRckntLOO8j8yonsDeesfIWf2";
+    const uid = "0l6aDQHhrHXRjtK5m9jkubLpZjE3";
 
     await admin.auth().setCustomUserClaims(
       uid,
-      EDITOR, // đổi role tại đây
+      SUPER_ADMIN, // đổi role tại đây
     );
 
     console.log("✅ Set role success");

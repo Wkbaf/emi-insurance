@@ -12,10 +12,10 @@ const NAV_ITEMS = [
     permission: "terms:manage",
   },
   {
-    label: "Blog",
-    href: "#",
+    label: "Case study",
+    href: "case-study.html",
     icon: "bi-journal-text",
-    permission: "blog:manage",
+    permission: "case-studies:manage",
   },
   {
     label: "Videos",
