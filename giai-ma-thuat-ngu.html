@@ -318,6 +318,10 @@
 
                     article.innerHTML = `
             <div class="term-thumb">
+                <img 
+                    src="${escapeHtml(item.termThumb || "assets/image/default-thumbnail.jpg")}" 
+                    alt="${escapeHtml(item.termName || "")}"
+                    class="term-thumb-img" >
               <button class="thumb-play" type="button" aria-label="Xem video">
                 <i class="bi bi-play-fill"></i>
               </button>

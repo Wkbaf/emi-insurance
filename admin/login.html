@@ -308,6 +308,13 @@
 
         });
 
+        const ADMIN_SESSION_TIME = 2 * 60 * 60 * 1000; // 2 giờ
+
+        function setAdminSession() {
+            const expiredAt = Date.now() + ADMIN_SESSION_TIME;
+            localStorage.setItem("adminExpiredAt", expiredAt);
+        }
+
         // Login Function
         async function login() {
 
@@ -329,6 +336,8 @@
                     <span class="spinner-border spinner-border-sm me-2"></span>
                     Đang đăng nhập...
                 `;
+
+                setAdminSession();
 
                 await auth.signInWithEmailAndPassword(email, password);
 

@@ -73,7 +73,7 @@ section {
 
 .hero-content h1 {
     max-width: 760px;
-    font-size: clamp(34px, 4.8vw, 62px);
+    font-size: clamp(34px, 4.8vw, 52px);
     line-height: 1.05;
     font-weight: 900;
     letter-spacing: -1.8px;

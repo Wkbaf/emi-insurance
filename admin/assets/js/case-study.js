@@ -555,8 +555,3 @@ document.querySelectorAll(".modal").forEach((modalEl) => {
   modalEl.addEventListener("hide.bs.modal", () => clearModalFocus(modalEl));
   modalEl.addEventListener("hidden.bs.modal", () => clearModalFocus(modalEl));
 });
-
-async function logout() {
-  await auth.signOut();
-  window.location.href = "login.html";
-}

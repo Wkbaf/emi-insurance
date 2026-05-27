@@ -28,11 +28,33 @@ function getFirstAllowedPage(permissions) {
   return null;
 }
 
+function isAdminSessionExpired() {
+  const expiredAt = Number(localStorage.getItem("adminExpiredAt"));
+
+  if (!expiredAt) return true;
+
+  return Date.now() > expiredAt;
+}
+
+async function logoutAdmin() {
+  localStorage.removeItem("adminExpiredAt");
+  await firebase.auth().signOut();
+  window.location.replace("/admin/login");
+}
+
 auth.onAuthStateChanged(async (user) => {
   if (!user) {
     window.location.replace("/admin/login");
     return;
   }
+
+  if (isAdminSessionExpired()) {
+    alert("Phiên đăng nhập đã hết hạn.");
+    await logoutAdmin();
+    return;
+  }
+
+  // phần check role / permission ở dưới
 
   try {
     const tokenResult = await user.getIdTokenResult(true);

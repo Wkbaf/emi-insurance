@@ -1,6 +1,8 @@
 body {
-    background: #f4f7fb;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: #fff;
+    overflow-x: hidden;
 }
 
 .sidebar {
@@ -138,11 +140,6 @@ body {
     }
 }
 
-body {
-    background: #f4f7fb;
-    font-family: Arial, sans-serif;
-}
-
 .sidebar {
     width: 260px;
     height: 100vh;
@@ -246,7 +243,7 @@ body {
 }
 
 .dashboard-section-title {
-    font-weight: 800;
+    font-weight: 600;
     color: #111827;
 }
 
