@@ -299,7 +299,8 @@
                     <i class="bi bi-search"></i>
                     <input type="text" id="caseSearchInput" class="form-control"
                         placeholder="Tìm theo tiêu đề, category hoặc mô tả...">
-                    <button type="button" id="clearCaseSearch" class="case-search-clear" aria-label="Xóa tìm kiếm">&times;</button>
+                    <button type="button" id="clearCaseSearch" class="case-search-clear"
+                        aria-label="Xóa tìm kiếm">&times;</button>
                 </div>
                 <div id="caseResultCount" class="case-result-count" aria-live="polite"></div>
             </div>
@@ -461,6 +462,7 @@
             const loadMoreWrap = document.getElementById("caseLoadMoreWrap");
             const loadMoreBtn = document.getElementById("caseLoadMoreBtn");
             const clearSearchBtn = document.getElementById("clearCaseSearch");
+            const searchInput = document.getElementById("caseSearchInput");
 
             const PAGE_SIZE = 6;
             let caseStudies = [];
@@ -482,18 +484,25 @@
                 return text.length > max ? text.slice(0, max) + "..." : text;
             }
 
-            function normalizeCategory(category) {
-                const text = String(category || "").toLowerCase();
+            function normalizeText(text) {
+                return String(text || "")
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+            }
 
-                if (text.includes("giải cứu") || text.includes("hop dong") || text.includes("hợp đồng")) {
+            function normalizeCategory(category) {
+                const text = normalizeText(category);
+
+                if (text.includes("giai cuu") || text.includes("hop dong")) {
                     return "old-contract";
                 }
 
-                if (text.includes("bồi thường") || text.includes("boi thuong")) {
+                if (text.includes("boi thuong")) {
                     return "claim";
                 }
 
-                if (text.includes("hoạch định") || text.includes("nhân sinh") || text.includes("nhan sinh")) {
+                if (text.includes("hoach dinh") || text.includes("nhan sinh")) {
                     return "planning";
                 }
 
@@ -501,15 +510,18 @@
             }
 
             function getFilteredStudies() {
+                const keyword = normalizeText(searchKeyword);
+
                 return caseStudies.filter(item => {
-                    const text = `
+                    const text = normalizeText(`
                         ${item.title || ""}
                         ${item.category || ""}
                         ${item.description || ""}
                         ${item.cardQuote || ""}
-                    `.toLowerCase();
+                        ${item.quote || ""}
+                    `);
 
-                    const matchSearch = !searchKeyword || text.includes(searchKeyword);
+                    const matchSearch = !keyword || text.includes(keyword);
                     const categoryKey = normalizeCategory(item.category);
                     const matchCategory = activeCategory === "all" || categoryKey === activeCategory;
 
@@ -517,9 +529,14 @@
                 });
             }
 
-            function updateResultCount(total, showing) {
+            function updateResultCount() {
                 // Không hiển thị dòng số lượng case study theo yêu cầu UI.
                 if (caseResultCount) caseResultCount.innerText = "";
+            }
+
+            function updateClearSearchButton() {
+                if (!clearSearchBtn) return;
+                clearSearchBtn.classList.toggle("show", Boolean(searchKeyword));
             }
 
             function renderCards(resetVisible = false) {
@@ -534,41 +551,45 @@
 
                 visibleStudies.forEach(item => {
                     const categoryKey = normalizeCategory(item.category);
-
                     const col = document.createElement("div");
+
                     col.className = "col-lg-4 col-md-6 case-item";
                     col.dataset.category = categoryKey;
 
                     col.innerHTML = `
                         <article class="case-card h-100">
                             <div class="case-card-img">
-                                <img src="${escapeHtml(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeHtml(item.title)}">
+                                <img src="${escapeHtml(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeHtml(item.title || "Case Study")}">
+
                                 <button class="card-play" type="button" aria-label="Xem case study">
                                     <i class="fa-solid fa-play"></i>
                                 </button>
                             </div>
-                
+
                             <div class="case-card-body">
                                 <span class="solution-badge">
                                     <i class="${escapeHtml(item.icon || "fa-solid fa-file-shield")}"></i>
                                     ${escapeHtml(item.category || "Case Study")}
                                 </span>
-                
-                                <h3>${escapeHtml(item.title)}</h3>
-                
-                                <p>${escapeHtml(shortText(item.description))}</p>
-                
+
+                                <h3>${escapeHtml(item.title || "")}</h3>
+
+                                <p>${escapeHtml(shortText(item.description || ""))}</p>
+
                                 <div class="case-quote">
-                                     “${escapeHtml(item.cardQuote || item.quote || "")}”
+                                    “${escapeHtml(item.cardQuote || item.quote || "")}”
                                 </div>
-                
-                                <a href="/case-study-detail/${encodeURIComponent(item.id)}" class="case-link">
-                                    "Xem chi tiết"
+
+                                <a href="/case-study-detail#${encodeURIComponent(item.id)}" class="case-link">
+                                    Xem chi tiết
                                     <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>
                         </article>
                     `;
+
+                    caseGrid.appendChild(col);
+                });
 
                 const hasMore = filteredStudies.length > visibleCount;
 
@@ -576,27 +597,26 @@
                     loadMoreWrap.classList.toggle("d-none", !hasMore);
                 }
 
-                caseEmpty.classList.toggle("show", filteredStudies.length === 0);
-                updateResultCount(filteredStudies.length, visibleStudies.length);
-                updateClearSearchButton();
-            }
+                if (caseEmpty) {
+                    caseEmpty.classList.toggle("show", filteredStudies.length === 0);
+                }
 
-            function updateClearSearchButton() {
-                if (!clearSearchBtn) return;
-                clearSearchBtn.classList.toggle("show", Boolean(searchKeyword));
+                updateResultCount();
+                updateClearSearchButton();
             }
 
             async function loadCaseStudiesFromFirebase() {
                 try {
                     caseGrid.innerHTML = `
-                <div class="col-12 text-center py-5">
-                  Đang tải case study...
-                </div>
-              `;
-                    if (caseResultCount) caseResultCount.innerText = "Đang tải case study...";
+                        <div class="col-12 text-center py-5">
+                            Đang tải case study...
+                        </div>
+                    `;
+
+                    updateResultCount();
 
                     if (typeof firebase === "undefined" || typeof db === "undefined") {
-                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra assets/js/firebase.js và Firebase SDK.");
+                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra assets/js/shared/firebase.js và Firebase SDK.");
                     }
 
                     const snapshot = await db.collection("caseStudies")
@@ -618,15 +638,7 @@
                         return timeB - timeA;
                     });
 
-                    if (!caseStudies.length) {
-                        caseGrid.innerHTML = "";
-                        caseEmpty.classList.add("show");
-                        updateResultCount(0, 0);
-                        return;
-                    }
-
                     renderCards(true);
-
                 } catch (error) {
                     console.error("Firestore Error:", error);
 
@@ -635,21 +647,21 @@
                         : "Không rõ lỗi";
 
                     caseGrid.innerHTML = `
-                <div class="col-12 text-center py-5 text-danger">
-                  <div class="fw-bold mb-2">Không thể tải case study.</div>
-                  <div class="small">${escapeHtml(errorMessage)}</div>
-                </div>
-              `;
-                    if (caseResultCount) caseResultCount.innerText = "Không thể tải case study.";
+                        <div class="col-12 text-center py-5 text-danger">
+                            <div class="fw-bold mb-2">Không thể tải case study.</div>
+                            <div class="small">${escapeHtml(errorMessage)}</div>
+                        </div>
+                    `;
+
+                    if (loadMoreWrap) {
+                        loadMoreWrap.classList.add("d-none");
+                    }
                 }
             }
 
-            const searchInput = document.getElementById("caseSearchInput");
-
             if (searchInput) {
                 searchInput.addEventListener("input", (e) => {
-                    searchKeyword = e.target.value.toLowerCase().trim();
-                    updateClearSearchButton();
+                    searchKeyword = e.target.value.trim();
                     renderCards(true);
                 });
             }
@@ -658,7 +670,6 @@
                 clearSearchBtn.addEventListener("click", () => {
                     searchInput.value = "";
                     searchKeyword = "";
-                    updateClearSearchButton();
                     renderCards(true);
                     searchInput.focus();
                 });
@@ -676,8 +687,7 @@
                     filterButtons.forEach(btn => btn.classList.remove("active"));
                     button.classList.add("active");
 
-                    activeCategory = button.dataset.filter;
-
+                    activeCategory = button.dataset.filter || "all";
                     renderCards(true);
                 });
             });
