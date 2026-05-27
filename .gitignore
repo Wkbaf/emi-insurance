@@ -1,4 +1,12 @@
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+
 node_modules/
 emi-admin-tools/node_modules/
 .env
 .DS_Store
+emi-admin-tools/serviceAccountKey.json
