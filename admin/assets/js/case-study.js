@@ -53,9 +53,72 @@ const caseStudyModal = new bootstrap.Modal(
 const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
 let caseStudies = [];
-
 let caseStudyCategories = [];
 let defaultBlogCategory = "";
+
+// =========================
+// CATEGORY HELPERS
+// =========================
+
+function normalizeText(text) {
+  return String(text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .trim();
+}
+
+function toSlug(text) {
+  return normalizeText(text)
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getCategoryName(category) {
+  return category.name || category.title || category.categoryName || "";
+}
+
+function getCategorySlug(category) {
+  return category.slug || toSlug(getCategoryName(category));
+}
+
+function getCaseStudyCategory(item) {
+  const categoryId = item.categoryId || "";
+
+  let matchedCategory = caseStudyCategories.find((category) => {
+    return category.id === categoryId;
+  });
+
+  if (!matchedCategory) {
+    matchedCategory = caseStudyCategories.find((category) => {
+      const slug = getCategorySlug(category);
+      const name = getCategoryName(category);
+
+      return (
+        slug === item.categorySlug ||
+        slug === item.category ||
+        name === item.category
+      );
+    });
+  }
+
+  if (matchedCategory) {
+    return {
+      id: matchedCategory.id,
+      name: getCategoryName(matchedCategory),
+      slug: getCategorySlug(matchedCategory),
+    };
+  }
+
+  return {
+    id: categoryId,
+    name: item.category || "",
+    slug: item.categorySlug || item.category || "",
+  };
+}
 
 async function loadCaseStudyCategories() {
   try {
@@ -70,28 +133,43 @@ async function loadCaseStudyCategories() {
       .orderBy("position", "asc")
       .get();
 
+    caseStudyCategories = [];
+    defaultBlogCategory = "";
+
     filterSelect.innerHTML = `<option value="all">Tất cả category</option>`;
     formSelect.innerHTML = `<option value="">Chọn category</option>`;
 
     snapshot.forEach((doc) => {
-      const data = doc.data();
+      const data = {
+        id: doc.id,
+        ...doc.data(),
+      };
 
-      if(!defaultBlogCategory) {
-        defaultBlogCategory = data.slug
+      const name = getCategoryName(data);
+      const slug = getCategorySlug(data);
+
+      if (!name) return;
+
+      caseStudyCategories.push(data);
+
+      if (!defaultBlogCategory) {
+        defaultBlogCategory = data.id;
       }
 
       filterSelect.innerHTML += `
-        <option value="${data.slug}">
-          ${data.name}
+        <option value="${escapeAttr(data.id)}" data-slug="${escapeAttr(slug)}">
+          ${escapeHtml(name)}
         </option>
       `;
 
       formSelect.innerHTML += `
-        <option value="${data.slug}">
-          ${data.name}
+        <option value="${escapeAttr(data.id)}" data-slug="${escapeAttr(slug)}">
+          ${escapeHtml(name)}
         </option>
       `;
     });
+
+    renderCaseStudies();
   } catch (error) {
     console.error("loadCaseStudyCategories error:", error);
   }
@@ -102,6 +180,7 @@ auth.onAuthStateChanged((user) => {
     window.location.href = "login.html";
     return;
   }
+
   renderDetailSectionInputs(defaultSections);
   loadCaseStudyCategories();
   loadCaseStudies();
@@ -135,14 +214,26 @@ function renderCaseStudies() {
     .getElementById("searchInput")
     .value.toLowerCase()
     .trim();
+
   const categoryFilter = document.getElementById("categoryFilter").value;
 
   const filtered = caseStudies.filter((item) => {
-    const text =
-      `${item.title || ""} ${item.category || ""} ${item.description || ""}`.toLowerCase();
+    const categoryData = getCaseStudyCategory(item);
+
+    const text = `
+      ${item.title || ""}
+      ${categoryData.name || ""}
+      ${categoryData.slug || ""}
+      ${item.category || ""}
+      ${item.categorySlug || ""}
+      ${item.description || ""}
+    `.toLowerCase();
+
     const matchSearch = !keyword || text.includes(keyword);
+
     const matchCategory =
-      categoryFilter === "all" || item.category === categoryFilter;
+      categoryFilter === "all" || categoryData.id === categoryFilter;
+
     return matchSearch && matchCategory;
   });
 
@@ -157,6 +248,12 @@ function renderCaseStudies() {
 
   emptyState.classList.add("d-none");
 
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+
+  if (currentPage > totalPages) {
+    currentPage = 1;
+  }
+
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const paginatedCaseStudies = filtered.slice(startIndex, endIndex);
@@ -164,24 +261,32 @@ function renderCaseStudies() {
   paginatedCaseStudies.forEach((item) => {
     const row = document.createElement("tr");
     const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
+    const categoryData = getCaseStudyCategory(item);
 
     row.innerHTML = `
-                    <td>
-                        <img src="${escapeAttr(thumbnailSrc)}" style="width:70px;height:70px;object-fit:cover;border-radius:16px;">
-                    </td>
-                    <td>
-                        <div class="term-title">${escapeHtml(item.title || "")}</div>
-                        <small class="text-muted">${escapeHtml(shortText(item.description || "", 70))}</small>
-                    </td>
-                    <td><span class="term-category">${escapeHtml(item.category || "")}</span></td>
-                    <td>${escapeHtml(item.readingTime || "")}</td>
-                    <td>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</td>
-                    <td>
-                        <button class="action-btn btn-view" onclick="viewCaseStudy('${item.id}')"><i class="bi bi-eye"></i></button>
-                        <button class="action-btn btn-edit" onclick="editCaseStudy('${item.id}')"><i class="bi bi-pencil"></i></button>
-                        <button class="action-btn btn-delete" onclick="deleteCaseStudy('${item.id}')"><i class="bi bi-trash"></i></button>
-                    </td>
-                `;
+      <td>
+        <img src="${escapeAttr(thumbnailSrc)}" style="width:70px;height:70px;object-fit:cover;border-radius:16px;">
+      </td>
+
+      <td>
+        <div class="term-title">${escapeHtml(item.title || "")}</div>
+        <small class="text-muted">${escapeHtml(shortText(item.description || "", 70))}</small>
+      </td>
+
+      <td>
+        <span class="term-category">${escapeHtml(categoryData.name || "")}</span>
+      </td>
+
+      <td>${escapeHtml(item.readingTime || "")}</td>
+
+      <td>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</td>
+
+      <td>
+        <button class="action-btn btn-view" onclick="viewCaseStudy('${item.id}')"><i class="bi bi-eye"></i></button>
+        <button class="action-btn btn-edit" onclick="editCaseStudy('${item.id}')"><i class="bi bi-pencil"></i></button>
+        <button class="action-btn btn-delete" onclick="deleteCaseStudy('${item.id}')"><i class="bi bi-trash"></i></button>
+      </td>
+    `;
 
     tbody.appendChild(row);
   });
@@ -206,30 +311,30 @@ function renderPagination(totalItems) {
   if (totalPages <= 1) return;
 
   pagination.innerHTML += `
-                <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
-                    <button class="page-link" onclick="changePage(${currentPage - 1})">
-                        Prev
-                    </button>
-                </li>
-            `;
+    <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+      <button class="page-link" onclick="changePage(${currentPage - 1})">
+        Prev
+      </button>
+    </li>
+  `;
 
   for (let i = 1; i <= totalPages; i++) {
     pagination.innerHTML += `
-                    <li class="page-item ${currentPage === i ? "active" : ""}">
-                        <button class="page-link" onclick="changePage(${i})">
-                            ${i}
-                        </button>
-                    </li>
-                `;
+      <li class="page-item ${currentPage === i ? "active" : ""}">
+        <button class="page-link" onclick="changePage(${i})">
+          ${i}
+        </button>
+      </li>
+    `;
   }
 
   pagination.innerHTML += `
-                <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
-                    <button class="page-link" onclick="changePage(${currentPage + 1})">
-                        Next
-                    </button>
-                </li>
-            `;
+    <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
+      <button class="page-link" onclick="changePage(${currentPage + 1})">
+        Next
+      </button>
+    </li>
+  `;
 }
 
 function changePage(page) {
@@ -244,25 +349,31 @@ function renderDetailSectionInputs(sections = defaultSections) {
   sections.forEach((section, index) => {
     const box = document.createElement("div");
     box.className = "section-box";
+
     box.innerHTML = `
-                    <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Tiêu đề mục</label>
-                        <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Nội dung chính</label>
-                        <textarea class="form-control section-content" rows="4" required>${escapeHtml(section.content || "")}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Bullet points</label>
-                        <textarea class="form-control section-bullets" rows="4" placeholder="Mỗi dòng là một bullet point">${escapeHtml((section.bullets || []).join("\n"))}</textarea>
-                    </div>
-                    <div>
-                        <label class="form-label fw-semibold">Ghi chú / bài học / điểm nhấn</label>
-                        <textarea class="form-control section-note" rows="2">${escapeHtml(section.note || "")}</textarea>
-                    </div>
-                `;
+      <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Tiêu đề mục</label>
+        <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Nội dung chính</label>
+        <textarea class="form-control section-content" rows="4" required>${escapeHtml(section.content || "")}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Bullet points</label>
+        <textarea class="form-control section-bullets" rows="4" placeholder="Mỗi dòng là một bullet point">${escapeHtml((section.bullets || []).join("\n"))}</textarea>
+      </div>
+
+      <div>
+        <label class="form-label fw-semibold">Ghi chú / bài học / điểm nhấn</label>
+        <textarea class="form-control section-note" rows="2">${escapeHtml(section.note || "")}</textarea>
+      </div>
+    `;
+
     wrapper.appendChild(box);
   });
 }
@@ -276,22 +387,29 @@ function openAddModal() {
 
   document.getElementById("title").value =
     "Hợp đồng 50 triệu/năm suýt thành giấy lộn vì sai 1 chữ trong hồ sơ";
+
   document.getElementById("category").value = defaultBlogCategory;
+
   document.getElementById("readingTime").value = "4 phút";
   document.getElementById("updatedDate").value = "2024-05-15";
+
   document.getElementById("description").value =
     "Khách hàng tham gia hơn 4 năm, tổng phí gần 50 triệu/năm nhưng chưa hiểu rõ mình đang được bảo vệ điều gì.";
+
   document.getElementById("keyResults").value = [
     "Giảm hơn 30% phí đóng dự kiến",
     "Gia tăng lớp bảo vệ sinh mạng",
     "Chuyển hóa hồ sơ phức tạp",
     "Gia đình hiểu rõ toàn bộ cấu trúc tài chính",
   ].join("\n");
+
   document.getElementById("cardQuote").value =
     "Một hợp đồng tốt không phải hợp đồng đắt tiền nhất. Mà là hợp đồng bạn thực sự hiểu rõ.";
+
   document.getElementById("quoteAuthor").value = "EMI";
   document.getElementById("detailContentType").value = "structured";
   document.getElementById("customDetailEditor").innerHTML = "";
+
   toggleDetailForm();
   renderDetailSectionInputs(defaultSections);
   caseStudyModal.show();
@@ -301,27 +419,36 @@ function editCaseStudy(id) {
   const item = caseStudies.find((c) => c.id === id);
   if (!item) return;
 
+  const categoryData = getCaseStudyCategory(item);
+
   document.getElementById("modalTitle").innerText = "Sửa Case Study";
   document.getElementById("editId").value = item.id;
   document.getElementById("title").value = item.title || "";
-  document.getElementById("category").value = item.category || "";
+  document.getElementById("category").value = categoryData.id || "";
   document.getElementById("readingTime").value = item.readingTime || "";
+
   document.getElementById("updatedDate").value = normalizeDateInput(
     item.updatedDate,
   );
+
   document.getElementById("description").value = item.description || "";
+
   document.getElementById("keyResults").value = Array.isArray(item.keyResults)
     ? item.keyResults.join("\n")
     : "";
+
   document.getElementById("cardQuote").value = item.cardQuote || "";
   document.getElementById("quoteAuthor").value = item.quoteAuthor || "";
   document.getElementById("thumbnailUrl").value = item.thumbnail || "";
   document.getElementById("thumbnailPreview").src =
     item.thumbnail || "assets/image/test1.webp";
+
   document.getElementById("detailContentType").value =
     item.detailContentType || "structured";
+
   document.getElementById("customDetailEditor").innerHTML =
     item.customDetailHtml || "";
+
   toggleDetailForm();
 
   renderDetailSectionInputs(
@@ -329,20 +456,24 @@ function editCaseStudy(id) {
       ? item.detailSections
       : defaultSections,
   );
+
   caseStudyModal.show();
 }
 
 function updateThumbnailPreview() {
   const url = document.getElementById("thumbnailUrl").value.trim();
+
   document.getElementById("thumbnailPreview").src =
     url || "assets/image/test1.webp";
 }
 
 function toggleDetailForm() {
   const type = document.getElementById("detailContentType").value;
+
   document
     .getElementById("structuredDetailForm")
     .classList.toggle("d-none", type !== "structured");
+
   document
     .getElementById("customDetailForm")
     .classList.toggle("d-none", type !== "custom");
@@ -369,73 +500,100 @@ function viewCaseStudy(id) {
   const item = caseStudies.find((c) => c.id === id);
   if (!item) return;
 
+  const categoryData = getCaseStudyCategory(item);
+
   const sections = Array.isArray(item.detailSections)
     ? item.detailSections
     : [];
+
   const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
   const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
 
   document.getElementById("viewContent").innerHTML = `
-                <div class="mb-4">
-                    <img src="${escapeAttr(thumbnailSrc)}" style="width:100%;max-height:320px;object-fit:cover;border-radius:20px;">
-                </div>
+    <div class="mb-4">
+      <img src="${escapeAttr(thumbnailSrc)}" style="width:100%;max-height:320px;object-fit:cover;border-radius:20px;">
+    </div>
 
-                <div class="view-block">
-                    <label>Category</label>
-                    <p>${escapeHtml(item.category || "")}</p>
-                </div>
+    <div class="view-block">
+      <label>Category</label>
+      <p>${escapeHtml(categoryData.name || "")}</p>
+    </div>
 
-                <div class="view-block">
-                    <label>Title</label>
-                    <p class="fw-bold fs-5">${escapeHtml(item.title || "")}</p>
-                </div>
+    <div class="view-block">
+      <label>Category ID</label>
+      <p>${escapeHtml(categoryData.id || "")}</p>
+    </div>
 
-                <div class="row">
-                    <div class="col-md-6 view-block">
-                        <label>Thời gian đọc</label>
-                        <p>${escapeHtml(item.readingTime || "")}</p>
-                    </div>
-                    <div class="col-md-6 view-block">
-                        <label>Cập nhật</label>
-                        <p>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</p>
-                    </div>
-                </div>
+    <div class="view-block">
+      <label>Category Slug</label>
+      <p>${escapeHtml(categoryData.slug || "")}</p>
+    </div>
 
-                <div class="view-block">
-                    <label>Kết quả nổi bật</label>
-                    <ul class="result-list">${keyResults.map((result) => `<li>${escapeHtml(result)}</li>`).join("")}</ul>
-                </div>
+    <div class="view-block">
+      <label>Title</label>
+      <p class="fw-bold fs-5">${escapeHtml(item.title || "")}</p>
+    </div>
 
-                <div class="view-block">
-                    <label>Quote</label>
-                    <p><strong>“${escapeHtml(item.cardQuote || "")}”</strong></p>
-                    <small class="text-muted">— ${escapeHtml(item.quoteAuthor || "EMI")}</small>
-                </div>
+    <div class="row">
+      <div class="col-md-6 view-block">
+        <label>Thời gian đọc</label>
+        <p>${escapeHtml(item.readingTime || "")}</p>
+      </div>
 
-                ${
-                  item.detailContentType === "custom"
-                    ? `
-                    <div class="view-section">
-                        ${item.customDetailHtml || ""}
-                    </div>
-                `
-                    : sections
-                        .map(
-                          (section) => `
-                    <div class="view-section">
-                        <h5 class="fw-bold mb-3">
-                            <span class="view-section-number">${escapeHtml(section.number || "")}</span>
-                            ${escapeHtml(section.title || "")}
-                        </h5>
-                        <p>${escapeHtml(section.content || "").replaceAll("\n", "<br>")}</p>
-                        ${Array.isArray(section.bullets) && section.bullets.length ? `<ul>${section.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>` : ""}
-                        ${section.note ? `<p class="mb-0"><strong>${escapeHtml(section.note)}</strong></p>` : ""}
-                    </div>
-                `,
-                        )
-                        .join("")
-                }
-            `;
+      <div class="col-md-6 view-block">
+        <label>Cập nhật</label>
+        <p>${escapeHtml(formatDisplayDate(item.updatedDate) || "")}</p>
+      </div>
+    </div>
+
+    <div class="view-block">
+      <label>Kết quả nổi bật</label>
+      <ul class="result-list">
+        ${keyResults.map((result) => `<li>${escapeHtml(result)}</li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="view-block">
+      <label>Quote</label>
+      <p><strong>“${escapeHtml(item.cardQuote || "")}”</strong></p>
+      <small class="text-muted">— ${escapeHtml(item.quoteAuthor || "EMI")}</small>
+    </div>
+
+    ${
+      item.detailContentType === "custom"
+        ? `
+          <div class="view-section">
+            ${item.customDetailHtml || ""}
+          </div>
+        `
+        : sections
+            .map(
+              (section) => `
+                <div class="view-section">
+                  <h5 class="fw-bold mb-3">
+                    <span class="view-section-number">${escapeHtml(section.number || "")}</span>
+                    ${escapeHtml(section.title || "")}
+                  </h5>
+
+                  <p>${escapeHtml(section.content || "").replaceAll("\n", "<br>")}</p>
+
+                  ${
+                    Array.isArray(section.bullets) && section.bullets.length
+                      ? `<ul>${section.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>`
+                      : ""
+                  }
+
+                  ${
+                    section.note
+                      ? `<p class="mb-0"><strong>${escapeHtml(section.note)}</strong></p>`
+                      : ""
+                  }
+                </div>
+              `,
+            )
+            .join("")
+    }
+  `;
 
   viewModal.show();
 }
@@ -450,6 +608,7 @@ async function deleteCaseStudy(id) {
       deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
+
     await loadCaseStudies();
   } catch (error) {
     console.log(error);
@@ -464,17 +623,36 @@ document
 
     const editId = document.getElementById("editId").value;
     const thumbnail = document.getElementById("thumbnailUrl").value.trim();
+
     const detailContentType =
       document.getElementById("detailContentType").value;
+
+    const categoryId = document.getElementById("category").value;
+
+    const selectedCategory = caseStudyCategories.find((category) => {
+      return category.id === categoryId;
+    });
+
+    if (!selectedCategory) {
+      alert("Vui lòng chọn category");
+      return;
+    }
 
     if (!thumbnail) {
       alert("Vui lòng nhập link ảnh thumbnail cho case study.");
       return;
     }
 
+    const categoryName = getCategoryName(selectedCategory);
+    const categorySlug = getCategorySlug(selectedCategory);
+
     const data = {
       title: document.getElementById("title").value.trim(),
-      category: document.getElementById("category").value.trim(),
+
+      categoryId: categoryId,
+      category: categoryName,
+      categorySlug: categorySlug,
+
       readingTime: document.getElementById("readingTime").value.trim(),
       updatedDate: document.getElementById("updatedDate").value,
       description: document.getElementById("description").value.trim(),
@@ -483,14 +661,17 @@ document
       quoteAuthor: document.getElementById("quoteAuthor").value.trim(),
       thumbnail: thumbnail,
       detailContentType: detailContentType,
+
       detailSections:
         detailContentType === "structured" ? getDetailSectionsFromForm() : [],
+
       customDetailHtml:
         detailContentType === "custom"
           ? sanitizeEditorHtml(
               document.getElementById("customDetailEditor").innerHTML,
             )
           : "",
+
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
@@ -500,6 +681,7 @@ document
       } else {
         data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
         data.isDeleted = false;
+
         await db.collection("caseStudies").add(data);
       }
 
@@ -507,7 +689,9 @@ document
         caseStudyModal,
         document.getElementById("caseStudyModal"),
       );
+
       document.getElementById("caseStudyForm").reset();
+
       await loadCaseStudies();
     } catch (error) {
       console.log(error);
@@ -532,17 +716,20 @@ function normalizeDateInput(value) {
 function formatDisplayDate(value) {
   const dateInput = normalizeDateInput(value);
   if (!dateInput) return "";
+
   const [year, month, day] = dateInput.split("-");
+
   return `${day}/${month}/${year}`;
 }
 
 function shortText(text, max) {
   if (!text) return "";
+
   return text.length > max ? text.slice(0, max) + "..." : text;
 }
 
 function escapeHtml(text) {
-  return String(text)
+  return String(text || "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -561,6 +748,7 @@ function sanitizeEditorHtml(html) {
   template.content
     .querySelectorAll("script, iframe, object, embed, style")
     .forEach((el) => el.remove());
+
   template.content.querySelectorAll("*").forEach((el) => {
     [...el.attributes].forEach((attr) => {
       const name = attr.name.toLowerCase();
@@ -590,6 +778,7 @@ function clearModalFocus(modalEl) {
 
 function hideModalSafely(modalInstance, modalEl) {
   clearModalFocus(modalEl);
+
   requestAnimationFrame(() => {
     modalInstance.hide();
   });
