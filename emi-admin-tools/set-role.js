@@ -51,7 +51,7 @@ const ADMIN = {
   permissions: [
     "dashboard:view",
     "terms:manage",
-    "blog:manage",
+    "blogs:manage",
     "videos:manage",
     "categories:manage",
   ],
@@ -66,7 +66,7 @@ const ADMIN = {
 
 const EDITOR = {
   role: "editor",
-  permissions: ["dashboard:view", "terms:manage"],
+  permissions: ["dashboard:view", "terms:manage", "blogs:manage", "categories:manage", "case-studies:manage"],
 };
 
 /**
