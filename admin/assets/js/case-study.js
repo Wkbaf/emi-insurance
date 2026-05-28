@@ -110,6 +110,10 @@ function getCaseStudyCategory(item) {
       id: matchedCategory.id,
       name: getCategoryName(matchedCategory),
       slug: getCategorySlug(matchedCategory),
+
+      // NEW
+      isDeleted: matchedCategory.isDeleted === true,
+      status: matchedCategory.status || "active",
     };
   }
 
@@ -117,6 +121,10 @@ function getCaseStudyCategory(item) {
     id: categoryId,
     name: item.category || "",
     slug: item.categorySlug || item.category || "",
+
+    // fallback snapshot
+    isDeleted: item.categoryIsDeleted === true,
+    status: item.categoryStatus || "active",
   };
 }
 
@@ -191,6 +199,7 @@ async function loadCaseStudies() {
     const snapshot = await db
       .collection("caseStudies")
       .where("isDeleted", "==", false)
+      .where("categoryIsDeleted", "==", false)
       .orderBy("createdAt", "desc")
       .get();
 
@@ -275,6 +284,7 @@ function renderCaseStudies() {
 
       <td>
         <span class="term-category">${escapeHtml(categoryData.name || "")}</span>
+        ${categoryData.status && categoryData.status !== "active" ? ` <span class="term-category text-warning"> ${escapeHtml(categoryData.status)} </span>` : ""}
       </td>
 
       <td>${escapeHtml(item.readingTime || "")}</td>
@@ -648,11 +658,14 @@ document
 
     const data = {
       title: document.getElementById("title").value.trim(),
-
+    
+      // CATEGORY SNAPSHOT
       categoryId: categoryId,
       category: categoryName,
       categorySlug: categorySlug,
-
+      categoryIsDeleted: selectedCategory.isDeleted === true,
+      categoryStatus: selectedCategory.status || "active",
+    
       readingTime: document.getElementById("readingTime").value.trim(),
       updatedDate: document.getElementById("updatedDate").value,
       description: document.getElementById("description").value.trim(),
@@ -661,17 +674,19 @@ document
       quoteAuthor: document.getElementById("quoteAuthor").value.trim(),
       thumbnail: thumbnail,
       detailContentType: detailContentType,
-
+    
       detailSections:
-        detailContentType === "structured" ? getDetailSectionsFromForm() : [],
-
+        detailContentType === "structured"
+          ? getDetailSectionsFromForm()
+          : [],
+    
       customDetailHtml:
         detailContentType === "custom"
           ? sanitizeEditorHtml(
               document.getElementById("customDetailEditor").innerHTML,
             )
           : "",
-
+    
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 

@@ -483,6 +483,7 @@
         const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
         let blogs = [];
+        let blogCategories = [];
         let defaultBlogCategory = "";
 
         auth.onAuthStateChanged((user) => {
@@ -490,15 +491,108 @@
                 window.location.href = "login.html";
                 return;
             }
+
             renderDetailSectionInputs(defaultSections);
             loadBlogCategories();
             loadBlogs();
         });
 
+        // =========================
+        // Category helpers
+        // =========================
+
+        function getCategoryName(category) {
+            return category.name || category.title || category.categoryName || "";
+        }
+
+        function getCategorySlug(category) {
+            return category.slug || createSlug(getCategoryName(category));
+        }
+
+        function getCategoryStatus(category) {
+            return category.status || "active";
+        }
+
+        function isCategoryDeleted(category) {
+            return category.isDeleted === true || category.deleted === true;
+        }
+
+        function getBlogCategory(item) {
+            const categoryId = item.categoryId || "";
+
+            let matchedCategory = blogCategories.find((category) => {
+                return category.id === categoryId;
+            });
+
+            if (!matchedCategory) {
+                matchedCategory = blogCategories.find((category) => {
+                    const slug = getCategorySlug(category);
+                    const name = getCategoryName(category);
+
+                    return (
+                        slug === item.categorySlug ||
+                        slug === item.category ||
+                        name === item.category
+                    );
+                });
+            }
+
+            if (matchedCategory) {
+                return {
+                    id: matchedCategory.id,
+                    name: getCategoryName(matchedCategory),
+                    slug: getCategorySlug(matchedCategory),
+                    isDeleted: isCategoryDeleted(matchedCategory),
+                    status: getCategoryStatus(matchedCategory)
+                };
+            }
+
+            return {
+                id: categoryId,
+                name: item.category || "",
+                slug: item.categorySlug || item.category || "",
+                isDeleted: item.categoryIsDeleted === true,
+                status: item.categoryStatus || ""
+            };
+        }
+
+        function renderCategoryLabel(categoryData) {
+            const name = categoryData.name || "Không có category";
+
+            if (categoryData.isDeleted) {
+                return `
+                    <span class="term-category bg-danger text-white">
+                        ${escapeHtml(name)}
+                    </span>
+                    <div class="small text-danger mt-1">
+                        Category đã xóa
+                    </div>
+                `;
+            }
+
+            if (categoryData.status && categoryData.status !== "active") {
+                return `
+                    <span class="term-category">
+                        ${escapeHtml(name)}
+                    </span>
+                    <span class="term-category text-warning mt-1">
+                        ${escapeHtml(categoryData.status)}
+                    </span>
+                `;
+            }
+
+            return `
+                <span class="term-category">
+                    ${escapeHtml(name)}
+                </span>
+            `;
+        }
+
         async function loadBlogs() {
             try {
                 const snapshot = await db.collection("blogs")
                     .where("isDeleted", "==", false)
+                    .where("categoryIsDeleted", "==", false)
                     .orderBy("createdAt", "desc")
                     .get();
 
@@ -527,36 +621,52 @@
                     .orderBy("position", "asc")
                     .get();
 
+                blogCategories = [];
+                defaultBlogCategory = "";
+
                 filterSelect.innerHTML = `
-            <option value="all">Tất cả category</option>
-        `;
+                    <option value="all">
+                        Tất cả category
+                    </option>
+                `;
 
                 formSelect.innerHTML = `
-            <option value="">Chọn category</option>
-        `;
-
+                    <option value="">
+                        Chọn category
+                    </option>
+                `;
 
                 snapshot.forEach((doc) => {
-                    const data = doc.data();
+                    const data = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+
+                    const name = getCategoryName(data);
+                    const slug = getCategorySlug(data);
+
+                    if (!name) return;
+
+                    blogCategories.push(data);
 
                     if (!defaultBlogCategory) {
-                        defaultBlogCategory = data.slug;
+                        defaultBlogCategory = data.id;
                     }
 
                     filterSelect.innerHTML += `
-                <option value="${escapeAttr(data.slug)}">
-                    ${escapeHtml(data.name)}
-                </option>
-            `;
+                        <option value="${escapeAttr(data.id)}" data-slug="${escapeAttr(slug)}">
+                            ${escapeHtml(name)}
+                        </option>
+                    `;
 
                     formSelect.innerHTML += `
-                <option value="${escapeAttr(data.slug)}">
-                    ${escapeHtml(data.name)}
-                </option>
-            `;
+                        <option value="${escapeAttr(data.id)}" data-slug="${escapeAttr(slug)}">
+                            ${escapeHtml(name)}
+                        </option>
+                    `;
                 });
 
-
+                renderBlogs();
             } catch (error) {
                 console.error("loadBlogCategories error:", error);
             }
@@ -570,9 +680,20 @@
             const categoryFilter = document.getElementById("categoryFilter").value;
 
             const filtered = blogs.filter((item) => {
-                const text = `${item.title || ""} ${item.category || ""} ${item.description || ""}`.toLowerCase();
+                const categoryData = getBlogCategory(item);
+
+                const text = `
+                    ${item.title || ""}
+                    ${categoryData.name || ""}
+                    ${categoryData.slug || ""}
+                    ${item.category || ""}
+                    ${item.categorySlug || ""}
+                    ${item.description || ""}
+                `.toLowerCase();
+
                 const matchSearch = !keyword || text.includes(keyword);
-                const matchCategory = categoryFilter === "all" || item.category === categoryFilter;
+                const matchCategory = categoryFilter === "all" || categoryData.id === categoryFilter;
+
                 return matchSearch && matchCategory;
             });
 
@@ -588,6 +709,7 @@
             filtered.forEach((item) => {
                 const row = document.createElement("tr");
                 const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
+                const categoryData = getBlogCategory(item);
 
                 row.innerHTML = `
                     <td>
@@ -597,7 +719,7 @@
                         <div class="term-title">${escapeHtml(item.title || "")}</div>
                         <small class="text-muted">${escapeHtml(shortText(item.description || "", 70))}</small>
                     </td>
-                    <td><span class="term-category">${escapeHtml(item.category || "")}</span></td>
+                    <td>${renderCategoryLabel(categoryData)}</td>
                     <td>${item.featured ? `<span class="featured-badge"><i class="bi bi-star-fill"></i> Nổi bật</span>` : `<span class="text-muted">Bài thường</span>`}</td>
                     <td>${escapeHtml(item.author || "EMI")}</td>
                     <td>${escapeHtml(item.readingTime || "")}</td>
@@ -677,10 +799,12 @@
             const item = blogs.find(c => c.id === id);
             if (!item) return;
 
+            const categoryData = getBlogCategory(item);
+
             document.getElementById("modalTitle").innerText = "Sửa Blog";
             document.getElementById("editId").value = item.id;
             document.getElementById("title").value = item.title || "";
-            document.getElementById("category").value = item.category || "";
+            document.getElementById("category").value = categoryData.id || "";
             document.getElementById("slug").value = item.slug || "";
             document.getElementById("featured").value = item.featured ? "true" : "false";
             document.getElementById("author").value = item.author || "EMI";
@@ -730,6 +854,7 @@
             const item = blogs.find(c => c.id === id);
             if (!item) return;
 
+            const categoryData = getBlogCategory(item);
             const sections = Array.isArray(item.detailSections) ? item.detailSections : [];
             const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
             const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
@@ -741,7 +866,29 @@
 
                 <div class="view-block">
                     <label>Category</label>
-                    <p>${escapeHtml(item.category || "")}</p>
+                    <p>${escapeHtml(categoryData.name || "")}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 view-block">
+                        <label>Category ID</label>
+                        <p>${escapeHtml(categoryData.id || "")}</p>
+                    </div>
+                    <div class="col-md-6 view-block">
+                        <label>Category Slug</label>
+                        <p>${escapeHtml(categoryData.slug || "")}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 view-block">
+                        <label>Category isDeleted</label>
+                        <p>${categoryData.isDeleted ? "true" : "false"}</p>
+                    </div>
+                    <div class="col-md-6 view-block">
+                        <label>Category Status</label>
+                        <p>${escapeHtml(categoryData.status || "")}</p>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -829,15 +976,37 @@
             const editId = document.getElementById("editId").value;
             const thumbnail = document.getElementById("thumbnailUrl").value.trim();
             const detailContentType = document.getElementById("detailContentType").value;
+            const categoryId = document.getElementById("category").value;
+
+            const selectedCategory = blogCategories.find((category) => {
+                return category.id === categoryId;
+            });
+
+            if (!selectedCategory) {
+                alert("Vui lòng chọn category");
+                return;
+            }
 
             if (!thumbnail) {
                 alert("Vui lòng nhập link ảnh thumbnail cho blog.");
                 return;
             }
 
+            const categoryName = getCategoryName(selectedCategory);
+            const categorySlug = getCategorySlug(selectedCategory);
+            const categoryIsDeleted = isCategoryDeleted(selectedCategory);
+            const categoryStatus = getCategoryStatus(selectedCategory);
+
             const data = {
                 title: document.getElementById("title").value.trim(),
-                category: document.getElementById("category").value.trim(),
+
+                // Category snapshot + mapping
+                category: categoryName,
+                categoryId: categoryId,
+                categorySlug: categorySlug,
+                categoryIsDeleted: categoryIsDeleted,
+                categoryStatus: categoryStatus,
+
                 slug: document.getElementById("slug").value.trim() || createSlug(document.getElementById("title").value.trim()),
                 featured: document.getElementById("featured").value === "true",
                 author: document.getElementById("author").value.trim() || "EMI",
@@ -899,7 +1068,7 @@
         }
 
         function escapeHtml(text) {
-            return String(text)
+            return String(text || "")
                 .replaceAll("&", "&amp;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(">", "&gt;")
@@ -958,7 +1127,8 @@
                 .trim()
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
-                .replace(/-+/g, "-");
+                .replace(/-+/g, "-")
+                .replace(/^-|-$/g, "");
         }
 
         async function logout() {

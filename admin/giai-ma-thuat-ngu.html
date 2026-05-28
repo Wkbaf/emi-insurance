@@ -390,14 +390,18 @@
                 return {
                     id: category.id || "",
                     name: getCategoryName(category),
-                    slug: getCategorySlug(category)
+                    slug: getCategorySlug(category),
+                    isDeleted: category.isDeleted === true,
+                    status: category.status || "active"
                 };
             }
 
             return {
                 id: term.categoryId || "",
                 name: term.category || "",
-                slug: term.categorySlug || toSlug(term.category || "")
+                slug: term.categorySlug || toSlug(term.category || ""),
+                isDeleted: term.categoryIsDeleted === true,
+                status: term.categoryStatus || "active"
             };
         }
 
@@ -444,6 +448,7 @@
             try {
                 db.collection("explainCards")
                     .where("isDeleted", "==", false)
+                    .where("categoryIsDeleted", "==", false)
                     .orderBy("createdAt", "desc")
                     .onSnapshot((snapshot) => {
                         terms = [];
@@ -593,6 +598,7 @@
                         <span class="term-category">
                             ${escapeHtml(categoryData.name || "")}
                         </span>
+                        ${categoryData.status && categoryData.status !== "active" ? ` <span class="term-category text-warning"> ${escapeHtml(categoryData.status)} </span>` : ""}
                     </td>
 
                     <td>
@@ -733,6 +739,16 @@
                 </div>
 
                 <div class="view-block">
+                    <label>Category Is Deleted</label>
+                    <p>${categoryData.isDeleted ? "true" : "false"}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Category Status</label>
+                    <p>${escapeHtml(categoryData.status || "")}</p>
+                </div>
+
+                <div class="view-block">
                     <label>Video</label>
                     <p>${escapeHtml(item.video || "")}</p>
                 </div>
@@ -811,6 +827,8 @@
                 categoryId: categoryId,
                 category: categoryName,
                 categorySlug: categorySlug,
+                categoryIsDeleted: selectedCategory.isDeleted === true,
+                categoryStatus: selectedCategory.status || "active",
                 video: document.getElementById("video").value.trim(),
                 definition: document.getElementById("definition").value.trim(),
                 simple: document.getElementById("simple").value.trim(),

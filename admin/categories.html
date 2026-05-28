@@ -38,8 +38,8 @@
 
         .category-tab-btn:hover,
         .category-tab-btn.active {
-            background: #0d6efd;
-            border-color: #0d6efd;
+            background: #0f766e;
+            border-color: #0f766ec9;
             color: #fff;
             box-shadow: 0 8px 20px rgba(13, 110, 253, .18);
         }
@@ -559,13 +559,31 @@
             const confirmDelete = confirm("Bạn có chắc muốn xóa category này không?");
             if (!confirmDelete) return;
 
+            const item = categories.find((category) => category.id === id);
+
+            if (!item) {
+                alert("Không tìm thấy category");
+                return;
+            }
+
+            const deletedCategoryData = {
+                name: item.name || "",
+                slug: item.slug || "",
+                type: item.type || currentType,
+                status: item.status || "active",
+                isDeleted: true
+            };
+
             try {
                 await db.collection(COLLECTION_NAME)
                     .doc(id)
                     .update({
                         isDeleted: true,
-                        deletedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
+
+                await syncCategoryToRelatedContent(id, deletedCategoryData);
             } catch (error) {
                 console.log(error);
                 alert("Xóa thất bại");
@@ -587,6 +605,7 @@
             const editId = document.getElementById("editId").value;
             const selectedType = document.getElementById("categoryType").value;
             const selectedSlug = createSlug(document.getElementById("categorySlug").value.trim());
+            const oldCategory = editId ? categories.find((item) => item.id === editId) : null;
 
             const duplicate = categories.find((item) => {
                 return item.id !== editId &&
@@ -613,6 +632,11 @@
             try {
                 if (editId) {
                     await db.collection(COLLECTION_NAME).doc(editId).update(data);
+
+                    await syncCategoryToRelatedContent(editId, {
+                        ...data,
+                        isDeleted: oldCategory?.isDeleted === true
+                    }, oldCategory?.type);
                 } else {
                     data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     data.isDeleted = false;
@@ -628,6 +652,57 @@
                 alert("Lưu thất bại");
             }
         });
+
+        function getRelatedCollectionByCategoryType(type) {
+            if (type === "term") return "explainCards";
+            if (type === "blog") return "blogs";
+            if (type === "case_study") return "caseStudies";
+            return "";
+        }
+
+        async function updateRelatedContentBatch(collectionName, categoryId, payload) {
+            if (!collectionName || !categoryId) return;
+
+            const snapshot = await db.collection(collectionName)
+                .where("categoryId", "==", categoryId)
+                .get();
+
+            if (snapshot.empty) return;
+
+            const docs = snapshot.docs;
+            const CHUNK_SIZE = 450;
+
+            for (let i = 0; i < docs.length; i += CHUNK_SIZE) {
+                const batch = db.batch();
+                const chunk = docs.slice(i, i + CHUNK_SIZE);
+
+                chunk.forEach((doc) => {
+                    batch.update(doc.ref, payload);
+                });
+
+                await batch.commit();
+            }
+        }
+
+        async function syncCategoryToRelatedContent(categoryId, categoryData, previousType = "") {
+            const currentCollection = getRelatedCollectionByCategoryType(categoryData.type);
+            const previousCollection = getRelatedCollectionByCategoryType(previousType);
+
+            const payload = {
+                category: categoryData.name || "",
+                categoryId: categoryId,
+                categorySlug: categoryData.slug || "",
+                categoryIsDeleted: categoryData.isDeleted === true,
+                categoryStatus: categoryData.status || "active",
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            await updateRelatedContentBatch(currentCollection, categoryId, payload);
+
+            if (previousCollection && previousCollection !== currentCollection) {
+                await updateRelatedContentBatch(previousCollection, categoryId, payload);
+            }
+        }
 
         function getNextPosition(type) {
             const items = categories.filter((item) => item.type === type);
