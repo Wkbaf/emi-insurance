@@ -5,6 +5,7 @@ const PAGE_PERMISSIONS = {
   "giai-ma-thuat-ngu": "terms:manage",
   "case-study": "case-studies:manage",
   blog: "blogs:manage",
+  categories: "categories:manage",
 };
 
 function getCurrentPage() {
@@ -92,6 +93,7 @@ auth.onAuthStateChanged(async (user) => {
 
     // page không tồn tại trong config
     if (!requiredPermission) {
+      console.log("Page khong ton tai");
       return;
     }
 
@@ -113,7 +115,7 @@ auth.onAuthStateChanged(async (user) => {
       if (currentPath !== fallbackPage) {
         window.location.replace(fallbackPage);
       }
-
+      console.log("KHong co quyen");
       return;
     }
 

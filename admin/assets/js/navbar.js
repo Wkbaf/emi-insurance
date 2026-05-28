@@ -63,6 +63,7 @@ function getCurrentPageKey() {
 }
 
 function renderNavbar(permissions = []) {
+  console.log("rendering")
   const navbar = document.getElementById("adminNavbar");
   if (!navbar) return;
 

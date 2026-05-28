@@ -98,11 +98,8 @@
                     </div>
 
                 </div>
-                <div class="glossary-tabs" aria-label="Nhóm thuật ngữ">
+                <div class="glossary-tabs" id="categoryTabs" aria-label="Nhóm thuật ngữ">
                     <button class="term-tab active" data-category="all">Tất cả</button>
-                    <button class="term-tab" data-category="cashflow">Dòng tiền & Chi phí</button>
-                    <button class="term-tab" data-category="medical">Quyền lợi Y tế</button>
-                    <button class="term-tab" data-category="legal">Pháp lý & Hợp đồng</button>
                 </div>
 
                 <div class="row g-4 align-items-start">
@@ -251,7 +248,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const tabs = Array.from(document.querySelectorAll(".term-tab"));
+            const tabsWrap = document.getElementById("categoryTabs");
             const searchInput = document.getElementById("termSearch");
             const clearBtn = document.getElementById("clearTermSearch");
             const empty = document.getElementById("termEmpty");
@@ -263,13 +260,10 @@
             const iframe = document.getElementById("modalYoutube");
 
             let terms = [];
+            let categories = [];
             let activeCategory = "all";
-
-            const categoryMap = {
-                "Dòng tiền & Chi phí": "cashflow",
-                "Quyền lợi Y tế": "medical",
-                "Pháp lý & Hợp đồng": "legal"
-            };
+            let unsubscribeTerms = null;
+            let unsubscribeCategories = null;
 
             function normalize(text) {
                 return String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -280,65 +274,98 @@
             }
 
             function shortText(text, max = 90) {
-                if (!text)
-                    return "";
-
-
-
+                if (!text) return "";
                 return text.length > max ? text.slice(0, max) + "..." : text;
+            }
+
+            function createSlug(text) {
+                return String(text || "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/đ/g, "d")
+                    .replace(/Đ/g, "D")
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9\s-]/g, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .replace(/^-|-$/g, "");
+            }
+
+            function getCategorySlug(term) {
+                // Ưu tiên field categorySlug nếu admin explainCards đã lưu sẵn.
+                if (term.categorySlug) return term.categorySlug;
+
+                // Fallback cho data cũ: explainCards đang lưu category bằng tên tiếng Việt.
+                const matched = categories.find(category => category.name === term.category);
+                return matched ? matched.slug : createSlug(term.category || "other");
+            }
+
+            function renderCategoryTabs() {
+                const activeExists = activeCategory === "all" || categories.some(category => category.slug === activeCategory);
+                if (!activeExists) activeCategory = "all";
+
+                tabsWrap.innerHTML = `
+                    <button class="term-tab ${activeCategory === "all" ? "active" : ""}" data-category="all">
+                        Tất cả
+                    </button>
+                    ${categories.map(category => `
+                        <button class="term-tab ${activeCategory === category.slug ? "active" : ""}" data-category="${escapeHtml(category.slug)}">
+                            ${escapeHtml(category.name)}
+                        </button>
+                    `).join("")}
+                `;
+
+                tabsWrap.querySelectorAll(".term-tab").forEach(tab => {
+                    tab.addEventListener("click", () => {
+                        tabsWrap.querySelectorAll(".term-tab").forEach(item => item.classList.remove("active"));
+                        tab.classList.add("active");
+                        activeCategory = tab.dataset.category;
+                        visibleLimit = ITEMS_PER_PAGE;
+                        filterTerms();
+                    });
+                });
             }
 
             function renderCards() {
                 grid.innerHTML = "";
 
                 terms.forEach((item, index) => {
-                    const categoryKey = categoryMap[item.category] || "other";
-
                     const article = document.createElement("article");
-
                     article.className = index === 0 ? "term-card active" : "term-card";
 
                     article.dataset.id = item.id;
-                    article.dataset.category = categoryKey;
+                    article.dataset.category = getCategorySlug(item);
                     article.dataset.title = item.termName || "";
                     article.dataset.keywords = normalize(`
-            ${item.termName || ""
-                        }
-            ${item.category || ""
-                        }
-            ${item.video || ""
-                        }
-            ${item.definition || ""
-                        }
-            ${item.simple || ""
-                        }
-            ${item.description || ""
-                        }
-          `);
+                        ${item.termName || ""}
+                        ${item.category || ""}
+                        ${item.categorySlug || ""}
+                        ${item.video || ""}
+                        ${item.definition || ""}
+                        ${item.simple || ""}
+                        ${item.description || ""}
+                    `);
 
                     article.innerHTML = `
-            <div class="term-thumb">
-                <img 
-                    src="${escapeHtml(item.termThumb || "assets/image/default-thumbnail.jpg")}" 
-                    alt="${escapeHtml(item.termName || "")}"
-                    class="term-thumb-img" >
-              <button class="thumb-play" type="button" aria-label="Xem video">
-                <i class="bi bi-play-fill"></i>
-              </button>
-            </div>
-  
-            <div class="term-body">
-              <h3>${escapeHtml(item.termName || "")
-                        }</h3>
-  
-              <p>${escapeHtml(shortText(item.description || item.simple || item.definition || ""))
-                        }</p>
-  
-              <button class="term-open-modal" type="button">
-                Xem giải mã <i class="bi bi-arrow-right"></i>
-              </button>
-            </div>
-          `;
+                        <div class="term-thumb">
+                            <img
+                                src="${escapeHtml(item.termThumb || "assets/image/default-thumbnail.jpg")}"
+                                alt="${escapeHtml(item.termName || "")}"
+                                class="term-thumb-img">
+                            <button class="thumb-play" type="button" aria-label="Xem video">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                        </div>
+
+                        <div class="term-body">
+                            <h3>${escapeHtml(item.termName || "")}</h3>
+                            <p>${escapeHtml(shortText(item.description || item.simple || item.definition || ""))}</p>
+                            <button class="term-open-modal" type="button">
+                                Xem giải mã <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    `;
 
                     article.addEventListener("click", () => {
                         openTermModal(item.id);
@@ -352,29 +379,22 @@
 
             function openTermModal(id) {
                 const item = terms.find(term => term.id === id);
-                if (!item)
-                    return;
-
-
+                if (!item) return;
 
                 document.querySelectorAll(".term-card").forEach(card => {
                     card.classList.toggle("active", card.dataset.id === id);
                 });
 
                 document.getElementById("modalCategory").textContent = item.category || "";
-                document.getElementById("modalTitle").textContent = `${item.termName || ""
-                    } là gì?`;
+                document.getElementById("modalTitle").textContent = `${item.termName || ""} là gì?`;
                 document.getElementById("modalDescription").textContent = item.description || "";
                 document.getElementById("modalDefinition").textContent = item.definition || "";
                 document.getElementById("modalSimple").textContent = item.simple || "";
 
                 const notes = Array.isArray(item.notes) ? item.notes : [];
-
-                document.getElementById("modalNotes").innerHTML = notes.map(note => `<li>${escapeHtml(note)
-                    }</li>`).join("");
+                document.getElementById("modalNotes").innerHTML = notes.map(note => `<li>${escapeHtml(note)}</li>`).join("");
 
                 const youtubeUrl = item.youtube || "";
-
                 iframe.src = youtubeUrl ? `${youtubeUrl}` : "";
 
                 modal.classList.add("show");
@@ -392,17 +412,15 @@
             function filterTerms() {
                 const keyword = normalize(searchInput.value.trim());
                 let matchedCards = [];
-
                 const cards = Array.from(document.querySelectorAll(".term-card"));
 
                 cards.forEach(card => {
                     const matchCategory = activeCategory === "all" || card.dataset.category === activeCategory;
                     const text = normalize(card.innerText + " " + card.dataset.keywords);
                     const matchSearch = !keyword || text.includes(keyword);
-
                     const matched = matchCategory && matchSearch;
-                    card.hidden = true;
 
+                    card.hidden = true;
                     if (matched) matchedCards.push(card);
                 });
 
@@ -412,19 +430,46 @@
 
                 clearBtn.classList.toggle("show", searchInput.value.length > 0);
                 empty.classList.toggle("show", matchedCards.length === 0);
-
                 loadMoreBtn.style.display = matchedCards.length > visibleLimit ? "inline-flex" : "none";
             }
 
-            async function loadTermsFromFirebase() {
+            function loadCategoriesFromFirebase() {
+                try {
+                    unsubscribeCategories = db.collection("categories")
+                        .where("isDeleted", "==", false)
+                        .where("type", "==", "term")
+                        .where("status", "==", "active")
+                        .orderBy("position", "asc")
+                        .onSnapshot((snapshot) => {
+                            categories = [];
+
+                            snapshot.forEach((doc) => {
+                                categories.push({
+                                    id: doc.id,
+                                    ...doc.data()
+                                });
+                            });
+
+                            renderCategoryTabs();
+                            renderCards();
+                        }, (error) => {
+                            console.log(error);
+                            tabsWrap.innerHTML = `<button class="term-tab active" data-category="all">Tất cả</button>`;
+                        });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            function loadTermsFromFirebase() {
                 try {
                     grid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align:center; padding:40px;">
-              Đang tải thuật ngữ...
-            </div>
-          `;
+                        <div style="grid-column: 1 / -1; text-align:center; padding:40px;">
+                            Đang tải thuật ngữ...
+                        </div>
+                    `;
 
-                    db.collection("explainCards")
+                    unsubscribeTerms = db.collection("explainCards")
                         .where("isDeleted", "==", false)
                         .orderBy("createdAt", "desc")
                         .onSnapshot((snapshot) => {
@@ -438,16 +483,21 @@
                             });
 
                             renderCards();
+                        }, (error) => {
+                            console.log(error);
+                            grid.innerHTML = `
+                                <div style="grid-column: 1 / -1; text-align:center; padding:40px; color:red;">
+                                    Không thể tải dữ liệu thuật ngữ.
+                                </div>
+                            `;
                         });
-
                 } catch (error) {
                     console.log(error);
-
                     grid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align:center; padding:40px; color:red;">
-              Không thể tải dữ liệu thuật ngữ.
-            </div>
-          `;
+                        <div style="grid-column: 1 / -1; text-align:center; padding:40px; color:red;">
+                            Không thể tải dữ liệu thuật ngữ.
+                        </div>
+                    `;
                 }
             }
 
@@ -456,25 +506,7 @@
             });
 
             document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape")
-                    closeTermModal();
-
-
-
-            });
-
-            tabs.forEach(tab => {
-                tab.addEventListener("click", () => {
-                    tabs.forEach(item => item.classList.remove("active"));
-
-                    tab.classList.add("active");
-
-                    activeCategory = tab.dataset.category;
-
-                    visibleLimit = ITEMS_PER_PAGE;
-
-                    filterTerms();
-                });
+                if (event.key === "Escape") closeTermModal();
             });
 
             searchInput.addEventListener("input", () => {
@@ -493,6 +525,12 @@
                 filterTerms();
             });
 
+            window.addEventListener("beforeunload", () => {
+                if (typeof unsubscribeTerms === "function") unsubscribeTerms();
+                if (typeof unsubscribeCategories === "function") unsubscribeCategories();
+            });
+
+            loadCategoriesFromFirebase();
             loadTermsFromFirebase();
         });
     </script>

@@ -98,13 +98,14 @@
 
                 <div class="col-md-4">
                     <select id="categoryFilter" class="form-select" onchange="currentPage = 1; renderTerms()">
-                        <option value="all">Tất cả danh mục</option>
-                        <option value="Dòng tiền & Chi phí">Dòng tiền & Chi phí</option>
-                        <option value="Quyền lợi Y tế">Quyền lợi Y tế</option>
-                        <option value="Pháp lý & Hợp đồng">Pháp lý & Hợp đồng</option>
+                        <option value="all">Đang tải danh mục...</option>
                     </select>
                 </div>
 
+            </div>
+
+            <div id="categoryWarning" class="alert alert-warning d-none">
+                Chưa có category cho trang Giải mã thuật ngữ. Hãy vào trang Manage Categories và thêm category có type là <strong>term</strong>.
             </div>
 
             <div class="table-responsive">
@@ -122,6 +123,7 @@
                     <tbody id="termTableBody"></tbody>
                 </table>
             </div>
+
             <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
                 <div id="paginationInfo" class="text-muted small"></div>
 
@@ -182,11 +184,12 @@
                                 </label>
 
                                 <select id="category" class="form-select" required>
-                                    <option value="">Chọn category</option>
-                                    <option value="Dòng tiền & Chi phí">Dòng tiền & Chi phí</option>
-                                    <option value="Quyền lợi Y tế">Quyền lợi Y tế</option>
-                                    <option value="Pháp lý & Hợp đồng">Pháp lý & Hợp đồng</option>
+                                    <option value="">Đang tải category...</option>
                                 </select>
+
+                                <small class="text-muted">
+                                    Category được load từ Firebase collection <strong>categories</strong> với <strong>categoryType = term</strong>.
+                                </small>
                             </div>
 
                         </div>
@@ -240,14 +243,9 @@
                             <label class="form-label fw-semibold">
                                 Thumbnail image link
                             </label>
-                        
-                            <input
-                                id="termThumb"
-                                type="text"
-                                class="form-control"
-                                placeholder="https://..."
-                            >
-                        
+
+                            <input id="termThumb" type="text" class="form-control" placeholder="https://...">
+
                             <small class="text-muted">
                                 Link ảnh hiển thị thumbnail cho thuật ngữ
                             </small>
@@ -318,7 +316,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // PAGINATE
         let currentPage = 1;
         const ITEMS_PER_PAGE = 10;
 
@@ -326,6 +323,9 @@
         const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
         let terms = [];
+        let categories = [];
+        let categoriesLoaded = false;
+        let termsLoaded = false;
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -333,8 +333,85 @@
                 return;
             }
 
+            loadCategories();
             loadTerms();
         });
+
+        function normalizeText(text) {
+            return String(text || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .trim();
+        }
+
+        function toSlug(text) {
+            return normalizeText(text)
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-")
+                .replace(/^-|-$/g, "");
+        }
+
+        function getCategoryName(category) {
+            return category.name || category.title || category.categoryName || "";
+        }
+
+        function getCategorySlug(category) {
+            return category.slug || toSlug(getCategoryName(category));
+        }
+
+        function getCategoryType(category) {
+            return category.categoryType || category.category_type || category.type || "";
+        }
+
+        function isCategoryDeleted(category) {
+            return category.isDeleted === true || category.deleted === true;
+        }
+
+        function isTermCategory(category) {
+            return getCategoryType(category) === "term" && !isCategoryDeleted(category);
+        }
+
+        async function loadCategories() {
+            try {
+                db.collection("categories")
+                    .onSnapshot((snapshot) => {
+                        categories = [];
+
+                        snapshot.forEach((doc) => {
+                            const data = {
+                                id: doc.id,
+                                ...doc.data()
+                            };
+
+                            if (isTermCategory(data)) {
+                                categories.push(data);
+                            }
+                        });
+
+                        categories.sort((a, b) => {
+                            const posA = Number(a.position || 0);
+                            const posB = Number(b.position || 0);
+
+                            if (posA !== posB) return posA - posB;
+
+                            return getCategoryName(a).localeCompare(getCategoryName(b), "vi");
+                        });
+
+                        categoriesLoaded = true;
+                        renderCategoryOptions();
+                        renderTerms();
+                    }, (error) => {
+                        console.log("Load categories error:", error);
+                        document.getElementById("categoryWarning").classList.remove("d-none");
+                    });
+            } catch (error) {
+                console.log(error);
+                document.getElementById("categoryWarning").classList.remove("d-none");
+            }
+        }
 
         async function loadTerms() {
             try {
@@ -351,27 +428,93 @@
                             });
                         });
 
+                        termsLoaded = true;
                         renderTerms();
+                    }, (error) => {
+                        console.log("Load terms error:", error);
                     });
             } catch (error) {
                 console.log(error);
             }
         }
 
+        function renderCategoryOptions() {
+            const categorySelect = document.getElementById("category");
+            const categoryFilter = document.getElementById("categoryFilter");
+            const warning = document.getElementById("categoryWarning");
+
+            categorySelect.innerHTML = `
+                <option value="">
+                    Chọn category
+                </option>
+            `;
+
+            categoryFilter.innerHTML = `
+                <option value="all">
+                    Tất cả danh mục
+                </option>
+            `;
+
+            if (categories.length === 0) {
+                warning.classList.remove("d-none");
+                return;
+            }
+
+            warning.classList.add("d-none");
+
+            categories.forEach((category) => {
+                const name = getCategoryName(category);
+                const slug = getCategorySlug(category);
+
+                if (!name) return;
+
+                categorySelect.innerHTML += `
+                    <option value="${escapeHtml(name)}" data-slug="${escapeHtml(slug)}">
+                        ${escapeHtml(name)}
+                    </option>
+                `;
+
+                categoryFilter.innerHTML += `
+                    <option value="${escapeHtml(name)}">
+                        ${escapeHtml(name)}
+                    </option>
+                `;
+            });
+        }
+
         function renderTerms() {
             const tbody = document.getElementById("termTableBody");
             const emptyState = document.getElementById("emptyState");
+            const pagination = document.getElementById("pagination");
+            const paginationInfo = document.getElementById("paginationInfo");
 
-            const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
+            if (!termsLoaded) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            Đang tải thuật ngữ...
+                        </td>
+                    </tr>
+                `;
+                emptyState.classList.add("d-none");
+                pagination.innerHTML = "";
+                paginationInfo.innerText = "";
+                return;
+            }
+
+            const keyword = normalizeText(document.getElementById("searchInput").value);
             const categoryFilter = document.getElementById("categoryFilter").value;
 
             const filteredTerms = terms.filter((item) => {
-                const text = `
-                                                        ${item.termName || ""}
-                                                        ${item.category || ""}
-                                                        ${item.video || ""}
-                                                        ${item.definition || ""}
-                                                    `.toLowerCase();
+                const text = normalizeText(`
+                    ${item.termName || ""}
+                    ${item.category || ""}
+                    ${item.categorySlug || ""}
+                    ${item.video || ""}
+                    ${item.definition || ""}
+                    ${item.simple || ""}
+                    ${item.description || ""}
+                `);
 
                 const matchSearch = !keyword || text.includes(keyword);
                 const matchCategory = categoryFilter === "all" || item.category === categoryFilter;
@@ -380,6 +523,8 @@
             });
 
             tbody.innerHTML = "";
+            pagination.innerHTML = "";
+            paginationInfo.innerText = "";
 
             if (filteredTerms.length === 0) {
                 emptyState.classList.remove("d-none");
@@ -387,6 +532,12 @@
             }
 
             emptyState.classList.add("d-none");
+
+            const totalPages = Math.ceil(filteredTerms.length / ITEMS_PER_PAGE);
+
+            if (currentPage > totalPages) {
+                currentPage = 1;
+            }
 
             const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
             const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -396,46 +547,46 @@
                 const row = document.createElement("tr");
 
                 row.innerHTML = `
-                                                        <td>
-                                                            <div class="term-title">
-                                                                ${escapeHtml(item.termName || "")}
-                                                            </div>
-                                    
-                                                            <small class="text-muted">
-                                                                ${escapeHtml(shortText(item.description || "", 70))}
-                                                            </small>
-                                                        </td>
-                                    
-                                                        <td>
-                                                            <span class="term-category">
-                                                                ${escapeHtml(item.category || "")}
-                                                            </span>
-                                                        </td>
-                                    
-                                                        <td>
-                                                            ${escapeHtml(shortText(item.video || "", 35))}
-                                                        </td>
-                                    
-                                                        <td>
-                                                            <small class="text-muted">
-                                                                ${item.youtube ? "Có link" : "Chưa có"}
-                                                            </small>
-                                                        </td>
-                                    
-                                                        <td>
-                                                            <button class="action-btn btn-view" onclick="viewTerm('${item.id}')" title="View">
-                                                                <i class="bi bi-eye"></i>
-                                                            </button>
-                                    
-                                                            <button class="action-btn btn-edit" onclick="editTerm('${item.id}')" title="Edit">
-                                                                <i class="bi bi-pencil"></i>
-                                                            </button>
-                                    
-                                                            <button class="action-btn btn-delete" onclick="deleteTerm('${item.id}')" title="Delete">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    `;
+                    <td>
+                        <div class="term-title">
+                            ${escapeHtml(item.termName || "")}
+                        </div>
+
+                        <small class="text-muted">
+                            ${escapeHtml(shortText(item.description || "", 70))}
+                        </small>
+                    </td>
+
+                    <td>
+                        <span class="term-category">
+                            ${escapeHtml(item.category || "")}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(shortText(item.video || "", 35))}
+                    </td>
+
+                    <td>
+                        <small class="text-muted">
+                            ${item.youtube ? "Có link" : "Chưa có"}
+                        </small>
+                    </td>
+
+                    <td>
+                        <button class="action-btn btn-view" onclick="viewTerm('${item.id}')" title="View">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        <button class="action-btn btn-edit" onclick="editTerm('${item.id}')" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="action-btn btn-delete" onclick="deleteTerm('${item.id}')" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
 
                 tbody.appendChild(row);
             });
@@ -448,10 +599,6 @@
             const paginationInfo = document.getElementById("paginationInfo");
 
             const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-
-            if (currentPage > totalPages) {
-                currentPage = 1;
-            }
 
             pagination.innerHTML = "";
 
@@ -497,16 +644,9 @@
             document.getElementById("termForm").reset();
             document.getElementById("editId").value = "";
 
-            // Data mẫu theo yêu cầu của bạn
-            document.getElementById("termName").value = "Phí ban đầu";
-            document.getElementById("category").value = "Dòng tiền & Chi phí";
-            document.getElementById("video").value = "PHÍ BAN ĐẦU LÀ GÌ?";
-            document.getElementById("definition").value = "Phí ban đầu là khoản phí được khấu trừ từ phí bảo hiểm mà bên mua bảo hiểm đóng vào hợp đồng trong những năm đầu. Khoản phí này thường dùng để bù đắp chi phí phát hành, thẩm định và vận hành hợp đồng.";
-            document.getElementById("simple").value = "Hãy tưởng tượng bạn mở một ngôi nhà mới. Phí ban đầu chính là “chi phí setup” để hệ thống sẵn sàng phục vụ hợp đồng của bạn.";
-            document.getElementById("description").value = "Phí ban đầu là khoản phí thường xuất hiện trong các hợp đồng bảo hiểm nhân thọ, đặc biệt ở những năm đầu.";
-            document.getElementById("youtube").value = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-            document.getElementById("notes").value = "Phí ban đầu thường cao hơn trong những năm đầu.\nKhông nên hủy hợp đồng quá sớm nếu chưa hiểu rõ giá trị hoàn lại.";
-            document.getElementById("termThumb").value = "https://images.unsplash.com/photo-1450101499163-c8848c66ca85";
+            if (categories.length === 0) {
+                alert("Chưa có category type term. Hãy thêm category trước.");
+            }
 
             termModal.show();
         }
@@ -537,68 +677,74 @@
             if (!item) return;
 
             document.getElementById("viewContent").innerHTML = `
-                                                    <div class="view-block">
-                                                        <label>Tên thuật ngữ</label>
-                                                        <p>${escapeHtml(item.termName || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Category</label>
-                                                        <p>${escapeHtml(item.category || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Video</label>
-                                                        <p>${escapeHtml(item.video || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Definition</label>
-                                                        <p>${escapeHtml(item.definition || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Simple</label>
-                                                        <p>${escapeHtml(item.simple || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Description</label>
-                                                        <p>${escapeHtml(item.description || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Youtube</label>
-                                                        <p>${escapeHtml(item.youtube || "")}</p>
-                                                    </div>
-                                    
-                                                    <div class="view-block">
-                                                        <label>Notes</label>
-                                                        <ul class="mb-0">
-                                                            ${(item.notes || []).map(note => `<li>${escapeHtml(note)}</li>`).join("")}
-                                                        </ul>
-                                                    </div>
-                                                `;
+                <div class="view-block">
+                    <label>Tên thuật ngữ</label>
+                    <p>${escapeHtml(item.termName || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Category</label>
+                    <p>${escapeHtml(item.category || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Category Slug</label>
+                    <p>${escapeHtml(item.categorySlug || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Video</label>
+                    <p>${escapeHtml(item.video || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Definition</label>
+                    <p>${escapeHtml(item.definition || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Simple</label>
+                    <p>${escapeHtml(item.simple || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Description</label>
+                    <p>${escapeHtml(item.description || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Youtube</label>
+                    <p>${escapeHtml(item.youtube || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Thumbnail</label>
+                    <p>${escapeHtml(item.termThumb || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Notes</label>
+                    <ul class="mb-0">
+                        ${(item.notes || []).map(note => `<li>${escapeHtml(note)}</li>`).join("")}
+                    </ul>
+                </div>
+            `;
 
             viewModal.show();
         }
 
         async function deleteTerm(id) {
-            const confirmDelete = confirm(
-                "Bạn có chắc muốn xóa thuật ngữ này không?"
-            );
+            const confirmDelete = confirm("Bạn có chắc muốn xóa thuật ngữ này không?");
 
             if (!confirmDelete) return;
 
             try {
-
                 await db.collection("explainCards")
                     .doc(id)
                     .update({
                         isDeleted: true,
                         deletedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-
             } catch (error) {
                 console.log(error);
                 alert("Xóa thất bại");
@@ -609,10 +755,19 @@
             e.preventDefault();
 
             const editId = document.getElementById("editId").value;
+            const categoryName = document.getElementById("category").value;
+            const selectedCategory = categories.find((category) => getCategoryName(category) === categoryName);
+            const categorySlug = selectedCategory ? getCategorySlug(selectedCategory) : toSlug(categoryName);
+
+            if (!categoryName) {
+                alert("Vui lòng chọn category");
+                return;
+            }
 
             const data = {
                 termName: document.getElementById("termName").value.trim(),
-                category: document.getElementById("category").value,
+                category: categoryName,
+                categorySlug: categorySlug,
                 video: document.getElementById("video").value.trim(),
                 definition: document.getElementById("definition").value.trim(),
                 simple: document.getElementById("simple").value.trim(),
@@ -637,7 +792,6 @@
                 }
 
                 termModal.hide();
-
                 document.getElementById("termForm").reset();
             } catch (error) {
                 console.log(error);
@@ -647,12 +801,11 @@
 
         function shortText(text, max) {
             if (!text) return "";
-
             return text.length > max ? text.slice(0, max) + "..." : text;
         }
 
         function escapeHtml(text) {
-            return String(text)
+            return String(text || "")
                 .replaceAll("&", "&amp;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(">", "&gt;")
