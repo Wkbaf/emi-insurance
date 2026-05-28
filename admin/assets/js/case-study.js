@@ -54,12 +54,56 @@ const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
 let caseStudies = [];
 
+let caseStudyCategories = [];
+let defaultBlogCategory = "";
+
+async function loadCaseStudyCategories() {
+  try {
+    const filterSelect = document.getElementById("categoryFilter");
+    const formSelect = document.getElementById("category");
+
+    const snapshot = await db
+      .collection("categories")
+      .where("type", "==", "case_study")
+      .where("isDeleted", "==", false)
+      .where("status", "==", "active")
+      .orderBy("position", "asc")
+      .get();
+
+    filterSelect.innerHTML = `<option value="all">Tất cả category</option>`;
+    formSelect.innerHTML = `<option value="">Chọn category</option>`;
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+
+      if(!defaultBlogCategory) {
+        defaultBlogCategory = data.slug
+      }
+
+      filterSelect.innerHTML += `
+        <option value="${data.slug}">
+          ${data.name}
+        </option>
+      `;
+
+      formSelect.innerHTML += `
+        <option value="${data.slug}">
+          ${data.name}
+        </option>
+      `;
+    });
+  } catch (error) {
+    console.error("loadCaseStudyCategories error:", error);
+  }
+}
+
 auth.onAuthStateChanged((user) => {
   if (!user) {
     window.location.href = "login.html";
     return;
   }
   renderDetailSectionInputs(defaultSections);
+  loadCaseStudyCategories();
   loadCaseStudies();
 });
 
@@ -232,7 +276,7 @@ function openAddModal() {
 
   document.getElementById("title").value =
     "Hợp đồng 50 triệu/năm suýt thành giấy lộn vì sai 1 chữ trong hồ sơ";
-  document.getElementById("category").value = "Giải cứu hợp đồng cũ";
+  document.getElementById("category").value = defaultBlogCategory;
   document.getElementById("readingTime").value = "4 phút";
   document.getElementById("updatedDate").value = "2024-05-15";
   document.getElementById("description").value =

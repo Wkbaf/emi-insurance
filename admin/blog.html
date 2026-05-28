@@ -173,19 +173,6 @@
                         <option value="all">
                             Tất cả category
                         </option>
-
-                        <option value="Tài Chính Gia Đình">
-                            Tài Chính Gia Đình
-                        </option>
-
-                        <option value="Phân Tích Giải Pháp">
-                            Phân Tích Giải Pháp
-                        </option>
-
-                        <option value="Nhật Ký Làm Nghề">
-                            Nhật Ký Làm Nghề
-                        </option>
-
                     </select>
 
                 </div>
@@ -269,9 +256,6 @@
                                 <label class="form-label fw-semibold">Category</label>
                                 <select id="category" class="form-select" required>
                                     <option value="">Chọn category</option>
-                                    <option value="Tài Chính Gia Đình">Tài Chính Gia Đình</option>
-                                    <option value="Phân Tích Giải Pháp">Phân Tích Giải Pháp</option>
-                                    <option value="Nhật Ký Làm Nghề">Nhật Ký Làm Nghề</option>
                                 </select>
                             </div>
 
@@ -499,6 +483,7 @@
         const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
 
         let blogs = [];
+        let defaultBlogCategory = "";
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -506,6 +491,7 @@
                 return;
             }
             renderDetailSectionInputs(defaultSections);
+            loadBlogCategories();
             loadBlogs();
         });
 
@@ -525,6 +511,54 @@
                 renderBlogs();
             } catch (error) {
                 console.log(error);
+            }
+        }
+
+        async function loadBlogCategories() {
+            try {
+                const filterSelect = document.getElementById("categoryFilter");
+                const formSelect = document.getElementById("category");
+
+                const snapshot = await db
+                    .collection("categories")
+                    .where("type", "==", "blog")
+                    .where("isDeleted", "==", false)
+                    .where("status", "==", "active")
+                    .orderBy("position", "asc")
+                    .get();
+
+                filterSelect.innerHTML = `
+            <option value="all">Tất cả category</option>
+        `;
+
+                formSelect.innerHTML = `
+            <option value="">Chọn category</option>
+        `;
+
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+
+                    if (!defaultBlogCategory) {
+                        defaultBlogCategory = data.slug;
+                    }
+
+                    filterSelect.innerHTML += `
+                <option value="${escapeAttr(data.slug)}">
+                    ${escapeHtml(data.name)}
+                </option>
+            `;
+
+                    formSelect.innerHTML += `
+                <option value="${escapeAttr(data.slug)}">
+                    ${escapeHtml(data.name)}
+                </option>
+            `;
+                });
+
+
+            } catch (error) {
+                console.error("loadBlogCategories error:", error);
             }
         }
 
@@ -617,7 +651,7 @@
             document.getElementById("thumbnailPreview").src = "assets/image/test1.webp";
 
             document.getElementById("title").value = "Tại sao 80% người trẻ thất bại khi lập quỹ hưu trí tự nguyện?";
-            document.getElementById("category").value = "Tài Chính Gia Đình";
+            document.getElementById("category").value = defaultBlogCategory;
             document.getElementById("slug").value = "tai-sao-80-nguoi-tre-that-bai-khi-lap-quy-huu-tri";
             document.getElementById("featured").value = "true";
             document.getElementById("author").value = "EMI";

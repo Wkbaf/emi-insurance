@@ -469,13 +469,13 @@
                 if (!name) return;
 
                 categorySelect.innerHTML += `
-                    <option value="${escapeHtml(name)}" data-slug="${escapeHtml(slug)}">
+                    <option value="${escapeHtml(slug)}" data-slug="${escapeHtml(slug)}">
                         ${escapeHtml(name)}
                     </option>
                 `;
 
                 categoryFilter.innerHTML += `
-                    <option value="${escapeHtml(name)}">
+                    <option value="${escapeHtml(slug)}">
                         ${escapeHtml(name)}
                     </option>
                 `;
