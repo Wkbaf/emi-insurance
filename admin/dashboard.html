@@ -89,7 +89,7 @@
 
         <!-- Stats -->
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="stat-box d-flex justify-content-between align-items-center">
                     <div>
                         <div class="text-muted">Thuật ngữ</div>
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="stat-box d-flex justify-content-between align-items-center">
                     <div>
                         <div class="text-muted">Case Study</div>
@@ -109,13 +109,22 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="stat-box d-flex justify-content-between align-items-center">
                     <div>
-                        <div class="text-muted">Tổng nội dung</div>
-                        <h3 id="totalContentCount" class="fw-bold mt-2 mb-0">0</h3>
+                        <div class="text-muted">Góc Chuyên Gia</div>
+                        <h3 id="blogCount" class="fw-bold mt-2 mb-0">0</h3>
                     </div>
                     <div class="stat-icon"><i class="bi bi-collection"></i></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted">Lượt truy cập emi-insurance.com</div>
+                        <h3 id="indexVisitCount" class="fw-bold mt-2 mb-0">0</h3>
+                    </div>
+                    <div class="stat-icon"><i class="bi bi-eye"></i></div>
                 </div>
             </div>
         </div>
@@ -294,17 +303,19 @@
 
         async function loadDashboardStats() {
             try {
-                const [termsSnapshot, caseStudiesSnapshot] = await Promise.all([
+                const [termsSnapshot, caseStudiesSnapshot, blogsSnapshot] = await Promise.all([
                     db.collection("explainCards").where("isDeleted", "==", false).get(),
-                    db.collection("caseStudies").where("isDeleted", "==", false).get()
+                    db.collection("caseStudies").where("isDeleted", "==", false).get(),
+                    db.collection("blogs").where("isDeleted", "==", false).get()
                 ]);
 
                 const termCount = termsSnapshot.size || 0;
                 const caseStudyCount = caseStudiesSnapshot.size || 0;
+                const blogCount = blogsSnapshot.size || 0;
 
                 document.getElementById("termCount").innerText = termCount;
                 document.getElementById("caseStudyCount").innerText = caseStudyCount;
-                document.getElementById("totalContentCount").innerText = termCount + caseStudyCount;
+                document.getElementById("blogCount").innerText = blogCount;
             } catch (error) {
                 console.log("Stats Error:", error);
             }
@@ -457,6 +468,38 @@
 
         function escapeAttr(text) {
             return escapeHtml(text).replaceAll("`", "&#096;");
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const [
+                    termsSnapshot,
+                    caseStudiesSnapshot,
+                    blogsSnapshot,
+                    indexCounterDoc
+                ] = await Promise.all([
+                    db.collection("explainCards").where("isDeleted", "==", false).get(),
+                    db.collection("caseStudies").where("isDeleted", "==", false).get(),
+                    db.collection("blogs").where("isDeleted", "==", false).get(),
+                    db.collection("siteCounters").doc("indexVisits").get()
+                ]);
+
+                const termCount = termsSnapshot.size || 0;
+                const caseStudyCount = caseStudiesSnapshot.size || 0;
+                const blogCount = blogsSnapshot.size || 0;
+                const indexVisitCount = indexCounterDoc.exists
+                    ? Number(indexCounterDoc.data().count || 0)
+                    : 0;
+
+                document.getElementById("termCount").innerText = termCount;
+                document.getElementById("caseStudyCount").innerText = caseStudyCount;
+                document.getElementById("blogCount").innerText = blogCount;
+
+                document.getElementById("indexVisitCount").innerText =
+                    indexVisitCount.toLocaleString("vi-VN");
+            } catch (error) {
+                console.log("Stats Error:", error);
+            }
         }
     </script>
 </body>
