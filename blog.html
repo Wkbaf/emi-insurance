@@ -206,7 +206,8 @@
         <div class="container">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
-                    <span class="case-kicker">Tài chính dưới lăng kính rành mạch - Đọc để hiểu - Hiểu để hành động</span>
+                    <span class="case-kicker">Tài chính dưới lăng kính rành mạch - Đọc để hiểu - Hiểu để hành
+                        động</span>
 
                     <h1>GÓC NHÌN CHUYÊN GIA</h1>
 
@@ -281,13 +282,7 @@
                 <div id="blogResultCount" class="case-result-count" aria-live="polite"></div>
             </div>
 
-            <div class="case-tabs">
-                <button class="case-tab-btn active" data-filter="all">Tất cả</button>
-                <button class="case-tab-btn" data-filter="firebase">Firebase</button>
-                <button class="case-tab-btn" data-filter="firestore">Firestore</button>
-                <button class="case-tab-btn" data-filter="performance">Performance</button>
-                <button class="case-tab-btn" data-filter="security">Security Rules</button>
-            </div>
+            <div class="case-tabs" id="blogCategoryTabs"></div>
 
             <div class="row g-4 case-grid" id="blogGrid"></div>
 
@@ -335,6 +330,9 @@
             const clearSearchBtn = document.getElementById("clearBlogSearch");
             const searchInput = document.getElementById("blogSearchInput");
 
+            const blogCategoryTabs = document.getElementById("blogCategoryTabs");
+            let blogCategories = [];
+
             const PAGE_SIZE = 6;
             let blogs = [];
             let activeCategory = "all";
@@ -350,6 +348,54 @@
                     .replaceAll("'", "&#039;");
             }
 
+            async function loadBlogCategories() {
+                const snapshot = await db.collection("categories")
+                    .where("type", "==", "blog")
+                    .where("isDeleted", "==", false)
+                    .where("status", "==", "active")
+                    .orderBy("position", "asc")
+                    .get();
+
+                blogCategories = [];
+
+                snapshot.forEach(doc => {
+                    blogCategories.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                renderBlogCategoryTabs();
+            }
+
+            function renderBlogCategoryTabs() {
+                blogCategoryTabs.innerHTML = `
+                    <button class="case-tab-btn active" data-filter="all">
+                        Tất cả
+                    </button>
+                `;
+
+                blogCategories.forEach(category => {
+                    blogCategoryTabs.innerHTML += `
+                        <button class="case-tab-btn" data-filter="${escapeHtml(category.slug || category.id)}">
+                            ${escapeHtml(category.name || "")}
+                        </button>
+                    `;
+                });
+
+                blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(button => {
+                    button.addEventListener("click", () => {
+                        blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(btn => {
+                            btn.classList.remove("active");
+                        });
+
+                        button.classList.add("active");
+                        activeCategory = button.dataset.filter || "all";
+                        renderCards(true);
+                    });
+                });
+            }
+
             function shortText(text, max = 130) {
                 if (!text) return "";
                 return text.length > max ? text.slice(0, max) + "..." : text;
@@ -360,28 +406,6 @@
                     .toLowerCase()
                     .normalize("NFD")
                     .replace(/[\u0300-\u036f]/g, "");
-            }
-
-            function normalizeCategory(category) {
-                const text = normalizeText(category);
-
-                if (text.includes("firebase")) {
-                    return "firebase";
-                }
-
-                if (text.includes("firestore")) {
-                    return "firestore";
-                }
-
-                if (text.includes("performance") || text.includes("toi uu") || text.includes("query") || text.includes("index")) {
-                    return "performance";
-                }
-
-                if (text.includes("security") || text.includes("rule") || text.includes("bao mat")) {
-                    return "security";
-                }
-
-                return "other";
             }
 
             function formatDate(value) {
@@ -419,7 +443,7 @@
                     `);
 
                     const matchSearch = !keyword || text.includes(keyword);
-                    const categoryKey = normalizeCategory(item.category);
+                    const categoryKey = item.categorySlug || "";
                     const matchCategory = activeCategory === "all" || categoryKey === activeCategory;
 
                     return matchSearch && matchCategory;
@@ -482,7 +506,7 @@
                 const visibleBlogs = filteredBlogs.slice(0, visibleCount);
 
                 visibleBlogs.forEach(item => {
-                    const categoryKey = normalizeCategory(item.category);
+                    const categoryKey = item.categorySlug || "";
                     const col = document.createElement("div");
                     const detailUrl = `/blog-detail#${encodeURIComponent(item.id)}`;
                     const thumbnail = getThumbnail(item);
@@ -497,8 +521,6 @@
                         <article class="case-card h-100">
                             <div class="case-card-img">
                                 <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Blog")}">
-                                <div class="blog-video-icon" aria-hidden="true">
-                                    <i class="fa-solid fa-play"></i>
                                 </div>
                             </div>
 
@@ -646,7 +668,10 @@
                 });
             });
 
-            loadBlogsFromFirebase();
+            Promise.all([
+                loadBlogCategories(),
+                loadBlogsFromFirebase()
+            ]);
         });
     </script>
 

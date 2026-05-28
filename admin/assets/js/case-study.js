@@ -257,17 +257,19 @@ function renderCaseStudies() {
 
   emptyState.classList.add("d-none");
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  // PAGINATE
+  const { paginatedItems } = createPagination({
+    items: filtered,
+    currentPage,
+    itemsPerPage: ITEMS_PER_PAGE,
+    itemName: "case study",
+    onPageChange: (page) => {
+      currentPage = page;
+      renderCaseStudies();
+    },
+  });
 
-  if (currentPage > totalPages) {
-    currentPage = 1;
-  }
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedCaseStudies = filtered.slice(startIndex, endIndex);
-
-  paginatedCaseStudies.forEach((item) => {
+  paginatedItems.forEach((item) => {
     const row = document.createElement("tr");
     const thumbnailSrc = item.thumbnail || "assets/image/test1.webp";
     const categoryData = getCaseStudyCategory(item);
@@ -300,56 +302,6 @@ function renderCaseStudies() {
 
     tbody.appendChild(row);
   });
-
-  renderPagination(filtered.length);
-}
-
-function renderPagination(totalItems) {
-  const pagination = document.getElementById("pagination");
-  const paginationInfo = document.getElementById("paginationInfo");
-
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-
-  if (currentPage > totalPages) {
-    currentPage = 1;
-  }
-
-  pagination.innerHTML = "";
-
-  paginationInfo.innerText = `${Math.min(totalItems, (currentPage - 1) * ITEMS_PER_PAGE + 1)} - ${Math.min(currentPage * ITEMS_PER_PAGE, totalItems)} / ${totalItems} case study`;
-
-  if (totalPages <= 1) return;
-
-  pagination.innerHTML += `
-    <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
-      <button class="page-link" onclick="changePage(${currentPage - 1})">
-        Prev
-      </button>
-    </li>
-  `;
-
-  for (let i = 1; i <= totalPages; i++) {
-    pagination.innerHTML += `
-      <li class="page-item ${currentPage === i ? "active" : ""}">
-        <button class="page-link" onclick="changePage(${i})">
-          ${i}
-        </button>
-      </li>
-    `;
-  }
-
-  pagination.innerHTML += `
-    <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
-      <button class="page-link" onclick="changePage(${currentPage + 1})">
-        Next
-      </button>
-    </li>
-  `;
-}
-
-function changePage(page) {
-  currentPage = page;
-  renderCaseStudies();
 }
 
 function renderDetailSectionInputs(sections = defaultSections) {
@@ -658,14 +610,14 @@ document
 
     const data = {
       title: document.getElementById("title").value.trim(),
-    
+
       // CATEGORY SNAPSHOT
       categoryId: categoryId,
       category: categoryName,
       categorySlug: categorySlug,
       categoryIsDeleted: selectedCategory.isDeleted === true,
       categoryStatus: selectedCategory.status || "active",
-    
+
       readingTime: document.getElementById("readingTime").value.trim(),
       updatedDate: document.getElementById("updatedDate").value,
       description: document.getElementById("description").value.trim(),
@@ -674,19 +626,17 @@ document
       quoteAuthor: document.getElementById("quoteAuthor").value.trim(),
       thumbnail: thumbnail,
       detailContentType: detailContentType,
-    
+
       detailSections:
-        detailContentType === "structured"
-          ? getDetailSectionsFromForm()
-          : [],
-    
+        detailContentType === "structured" ? getDetailSectionsFromForm() : [],
+
       customDetailHtml:
         detailContentType === "custom"
           ? sanitizeEditorHtml(
               document.getElementById("customDetailEditor").innerHTML,
             )
           : "",
-    
+
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 

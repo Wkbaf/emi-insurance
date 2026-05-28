@@ -472,7 +472,7 @@
 
         <section class="blog-section">
             <div class="container">
-                <a href="blog-firestore.html" class="back-link">
+                <a href="blog.html" class="back-link">
                     <i class="fa-solid fa-arrow-left"></i>
                     Quay lại danh sách blog
                 </a>
@@ -695,7 +695,7 @@
                 heroContent.classList.remove("loading-box");
                 heroContent.innerHTML = `
                     <div class="breadcrumb-emi-detail">
-                        <a href="blog-firestore.html" class="text-white text-decoration-none">Blog</a>
+                        <a href="blog.html" class="text-white text-decoration-none">Blog</a>
                         <i class="fa-solid fa-chevron-right" style="font-size:11px"></i>
                         <span>${escapeHtml(item.category || "Chuỗi Video Thực Chiến")}</span>
                     </div>
@@ -770,7 +770,7 @@
 
                 categoryCloud.innerHTML = categories.length
                     ? categories.map(category => `
-                        <a href="blog-firestore.html?category=${encodeURIComponent(category)}">${escapeHtml(category)}</a>
+                        <a href="blog.html?category=${encodeURIComponent(category)}">${escapeHtml(category)}</a>
                     `).join("")
                     : `<span class="text-muted small">Chưa có category.</span>`;
 
