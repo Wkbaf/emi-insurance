@@ -150,8 +150,7 @@
                     <div class="quick-card">
                         <div class="quick-icon"><i class="bi bi-shield-check"></i></div>
                         <h5 class="fw-bold">Case Study thực tế</h5>
-                        <p class="text-muted mb-0">Xem trang case study phía user. Quản lý case study đang tạm ẩn khỏi
-                            quick action.</p>
+                        <p class="text-muted mb-0">Quản lý và xem trang case study thực tế.</p>
                         <div class="quick-card-actions">
                             <a href="case-study.html" class="btn btn-success">
                                 <i class="bi bi-pencil-square me-1"></i> Quản lý
@@ -165,10 +164,17 @@
 
                 <div class="col-md-6 col-xl-4">
                     <div class="quick-card">
-                        <div class="quick-icon"><i class="bi bi-plus-circle"></i></div>
-                        <h5 class="fw-bold">Sẵn sàng mở rộng</h5>
-                        <p class="text-muted mb-0">Sau này khi thêm bảng mới, chỉ cần thêm source vào cấu hình
-                            dashboard.</p>
+                        <div class="quick-icon"><i class="bi bi-shield-check"></i></div>
+                        <h5 class="fw-bold">Góc độ chuyên gia</h5>
+                        <p class="text-muted mb-0">Quản lý và xem trang góc độ chuyên gia.</p>
+                        <div class="quick-card-actions">
+                            <a href="blog.html" class="btn btn-success">
+                                <i class="bi bi-pencil-square me-1"></i> Quản lý
+                            </a>
+                            <a href="../blog.html" class="btn btn-outline-success" target="_blank">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Trang user
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,7 +182,21 @@
 
         <!-- Recent History Widgets -->
         <div class="row g-4">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
+                <div class="content-card h-100">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                        <div>
+                            <h4 class="dashboard-section-title mb-1">Lịch sử Giải mã thuật ngữ</h4>
+                            <div class="text-muted">Log gần đây từ bảng <strong>explainCards</strong></div>
+                        </div>
+                    </div>
+
+                    <div id="termHistory" class="history-widget">
+                        <div class="history-empty">Đang tải lịch sử thuật ngữ...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <div class="content-card h-100">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                         <div>
@@ -191,17 +211,17 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="content-card h-100">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                         <div>
-                            <h4 class="dashboard-section-title mb-1">Lịch sử Giải mã thuật ngữ</h4>
-                            <div class="text-muted">Log gần đây từ bảng <strong>explainCards</strong></div>
+                            <h4 class="dashboard-section-title mb-1">Lịch sử Góc nhìn chuyên gia</h4>
+                            <div class="text-muted">Log gần đây từ bảng <strong>blogs</strong></div>
                         </div>
                     </div>
 
-                    <div id="termHistory" class="history-widget">
-                        <div class="history-empty">Đang tải lịch sử thuật ngữ...</div>
+                    <div id="blogHistory" class="history-widget">
+                        <div class="history-empty">Đang tải lịch sử góc nhìn chuyên gia...</div>
                     </div>
                 </div>
             </div>
@@ -237,6 +257,15 @@
                 titleFields: ["termName", "title", "term", "name"],
                 subtitleFields: ["category", "definition", "description"],
                 showUrl: (id) => `giai-ma-thuat-ngu.html?show=${encodeURIComponent(id)}`
+            },
+            {
+                collection: "blogs",
+                label: "Góc nhìn chuyên gia",
+                icon: "bi-book",
+                wrapperId: "blogHistory",
+                titleFields: ["blogName", "title", "blog", "name"],
+                subtitleFields: ["category", "definition", "description"],
+                showUrl: (id) => `blog.html?show=${encodeURIComponent(id)}`
             }
         ];
 
