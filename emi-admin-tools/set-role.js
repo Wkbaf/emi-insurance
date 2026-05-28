@@ -29,9 +29,10 @@
 const SUPER_ADMIN = {
   role: "super_admin",
   permissions: [
+    "all",
     "dashboard:view",
     "terms:manage",
-    "blog:manage",
+    "case-studies:manage",
     "videos:manage",
     "categories:manage",
     "users:manage",
@@ -65,7 +66,7 @@ const ADMIN = {
 
 const EDITOR = {
   role: "editor",
-  permissions: ["dashboard:view", "terms:manage", "blog:manage"],
+  permissions: ["dashboard:view", "terms:manage"],
 };
 
 /**

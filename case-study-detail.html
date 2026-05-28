@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Chi tiết Case Study | EMI Insurance</title>
+    <link rel="icon" href="assets/image/favicon.png?v=2">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+
+    <style>
+        :root {
+            --navy: #033631;
+            --navy-2: #054840;
+            --gold: #bf9b42;
+            --gold-2: #d8b65d;
+            --cream: #faf8f2;
+            --muted: #6b7280;
+            --border: rgba(15, 23, 42, .08);
+            --gold-border: rgba(191, 155, 66, .22);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            background: linear-gradient(180deg, #fffdf8 0%, #faf8f2 100%);
+        }
+
+        .case-detail-hero {
+            min-height: 520px;
+            padding: 150px 0 76px;
+            color: #fff;
+            background-image:
+                radial-gradient(circle at 82% 18%, rgba(216, 182, 93, .26), transparent 32%),
+                linear-gradient(90deg, rgba(0, 48, 43, .97), rgba(0, 48, 43, .88), rgba(0, 48, 43, .52)),
+                var(--hero-bg, url("assets/image/case-study-detail-bg.jpg"));
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .breadcrumb-emi-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            color: rgba(255, 255, 255, .76);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .breadcrumb-emi-detail span { color: var(--gold-2); }
+
+        .case-detail-hero h1 {
+            max-width: 980px;
+            margin: 0 0 18px;
+            font-size: clamp(34px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -1.8px;
+        }
+
+        .case-hero-desc {
+            max-width: 780px;
+            color: rgba(255, 255, 255, .84);
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .case-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .case-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            background: rgba(255, 255, 255, .08);
+            color: rgba(255, 255, 255, .9);
+            font-weight: 700;
+            font-size: 14px;
+            backdrop-filter: blur(8px);
+        }
+
+        .blog-section { padding: 64px 0 92px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .back-link:hover { color: var(--gold); }
+
+        .blog-card,
+        .sidebar-card {
+            background: rgba(255, 255, 255, .94);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, .06);
+        }
+
+        .blog-card { overflow: hidden; }
+
+        .article-body { padding: 38px; }
+
+        .article-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #fff6df;
+            border: 1px solid rgba(191, 155, 66, .2);
+            color: #8a6b24;
+            font-size: 13px;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+
+        .article-title {
+            color: var(--navy);
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 1.12;
+            font-weight: 900;
+            letter-spacing: -1.2px;
+            margin-bottom: 14px;
+        }
+
+        .article-description {
+            color: #4b5563;
+            font-size: 17px;
+            line-height: 1.85;
+            margin-bottom: 24px;
+        }
+
+        .article-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding-bottom: 26px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .article-meta-line span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .timeline { display: grid; gap: 22px; }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 54px 1fr;
+            gap: 18px;
+            padding: 24px;
+            border-radius: 24px;
+            background: #fffdf8;
+            border: 1px solid rgba(191, 155, 66, .18);
+        }
+
+        .timeline-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .timeline-item h3 {
+            color: var(--navy);
+            font-size: 21px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p,
+        .timeline-item li {
+            color: #4b5563;
+            line-height: 1.75;
+        }
+
+        .timeline-item ul {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .custom-content {
+            font-size: 18px;
+            line-height: 1.9;
+            color: #374151;
+        }
+
+        .custom-content h1,
+        .custom-content h2,
+        .custom-content h3,
+        .custom-content h4 {
+            color: var(--navy);
+            font-weight: 900;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            letter-spacing: -.5px;
+        }
+
+        .custom-content p { margin-bottom: 18px; }
+        .custom-content ul,
+        .custom-content ol { padding-left: 24px; margin-bottom: 20px; }
+        .custom-content img { max-width: 100%; border-radius: 24px; margin: 24px 0; }
+
+        .detail-sidebar {
+            position: sticky;
+            top: 104px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .sidebar-card { padding: 24px; }
+
+        .sidebar-title {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: .5px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .result-inline {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top right, rgba(216, 182, 93, .2), transparent 36%),
+                linear-gradient(145deg, var(--navy), var(--navy-2));
+            color: #fff;
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: 0 18px 45px rgba(3, 54, 49, .18);
+        }
+
+        .result-inline h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f4d48a;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .result-inline h3::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #f4d48a;
+            box-shadow: 0 0 16px rgba(244, 212, 138, .65);
+        }
+
+        .result-inline ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-inline li {
+            position: relative;
+            padding-left: 30px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, .92);
+            font-size: 15px;
+        }
+
+        .result-inline li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 21px;
+            height: 21px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(244, 212, 138, .16);
+            color: #f4d48a;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .quote-inline {
+            position: relative;
+            background: #fffaf0;
+            border: 1px solid rgba(191, 155, 66, .18);
+            border-radius: 26px;
+            padding: 28px;
+            color: var(--navy);
+            font-size: 18px;
+            line-height: 1.75;
+            font-weight: 800;
+            box-shadow: 0 14px 36px rgba(15, 23, 42, .05);
+        }
+
+        .quote-inline::before {
+            content: "“";
+            position: absolute;
+            top: -10px;
+            left: 18px;
+            font-size: 76px;
+            line-height: 1;
+            color: rgba(191, 155, 66, .16);
+            font-family: Georgia, serif;
+        }
+
+        .quote-inline span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            color: var(--gold);
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .quote-inline span::before {
+            content: "";
+            width: 28px;
+            height: 1px;
+            background: var(--gold-2);
+        }
+
+        .category-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-cloud a {
+            display: inline-flex;
+            padding: 7px 11px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--navy);
+            background: #fff7e8;
+            border: 1px solid rgba(191, 155, 66, .18);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .category-cloud a:hover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .popular-list { display: grid; gap: 14px; }
+
+        .popular-item {
+            display: grid;
+            grid-template-columns: 74px 1fr;
+            gap: 12px;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .popular-item img {
+            width: 74px;
+            height: 58px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #d9edf8;
+        }
+
+        .popular-item strong {
+            display: block;
+            color: var(--navy);
+            line-height: 1.35;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .popular-item small {
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .loading-box,
+        .error-box {
+            text-align: center;
+            padding: 70px 20px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .error-box {
+            background: #fff;
+            border: 1px solid rgba(220, 38, 38, .16);
+            border-radius: 24px;
+            color: #b91c1c;
+        }
+
+        @media(max-width: 992px) {
+            .detail-sidebar { position: static; }
+        }
+
+        @media(max-width: 768px) {
+            .case-detail-hero { padding: 126px 0 64px; min-height: auto; }
+            .blog-section { padding: 44px 0 70px; }
+            .article-body { padding: 24px; }
+            .timeline-item { grid-template-columns: 1fr; }
+            .case-meta span { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+
+<body>
+    <emi-nav active="products"></emi-nav>
+
+    <main id="caseDetailApp">
+        <section class="case-detail-hero" id="caseDetailHero">
+            <div class="container">
+                <div id="heroContent" class="loading-box">Đang tải case study...</div>
+            </div>
+        </section>
+
+        <section class="blog-section">
+            <div class="container">
+                <a href="case-study-thuc-te.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Quay lại danh sách case study
+                </a>
+
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-8">
+                        <article class="blog-card" id="articleContent">
+                            <div class="loading-box">Đang tải nội dung chi tiết...</div>
+                        </article>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <aside class="detail-sidebar" id="detailSidebar">
+                            <div class="sidebar-card result-inline" id="sidebarResults">
+                                <h3>Kết quả nổi bật</h3>
+                                <p class="mb-0 text-white-50">Đang tải...</p>
+                            </div>
+
+                            <div class="sidebar-card quote-inline" id="sidebarQuote">
+                                Đang tải quote...
+                                <span>— EMI</span>
+                            </div>
+
+                            <div class="sidebar-card">
+                                <div class="sidebar-title">Categories Cloud</div>
+                                <div class="category-cloud" id="categoryCloud">
+                                    <span class="text-muted small">Đang tải...</span>
+                                </div>
+                            </div>
+
+                            <div class="sidebar-card">
+                                <div class="sidebar-title">Popular Posts</div>
+                                <div class="popular-list" id="popularPosts">
+                                    <span class="text-muted small">Đang tải...</span>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <emi-contact></emi-contact>
+    </main>
+
+    <emi-footer></emi-footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/shared/emi-nav.js"></script>
+    <script src="assets/js/shared/emi-contact.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/shared/footer.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="assets/js/shared/firebase.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hero = document.getElementById("caseDetailHero");
+            const heroContent = document.getElementById("heroContent");
+            const articleContent = document.getElementById("articleContent");
+            const sidebarResults = document.getElementById("sidebarResults");
+            const sidebarQuote = document.getElementById("sidebarQuote");
+            const categoryCloud = document.getElementById("categoryCloud");
+            const popularPosts = document.getElementById("popularPosts");
+
+            const params = new URLSearchParams(window.location.search);
+            let caseId = params.get("id");
+
+            if (!caseId && window.location.hash) {
+                caseId = decodeURIComponent(window.location.hash.replace("#", ""));
+            }
+
+            function escapeHtml(text) {
+                return String(text || "")
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            function escapeAttr(text) {
+                return escapeHtml(text).replaceAll("`", "&#096;");
+            }
+
+            function shortText(text, max = 72) {
+                text = String(text || "");
+                return text.length > max ? text.slice(0, max) + "..." : text;
+            }
+
+            function renderList(items) {
+                if (!Array.isArray(items) || !items.length) return "";
+                return items.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+            }
+
+            function normalizeDateInput(value) {
+                if (!value) return "";
+                if (typeof value === "string") return value.slice(0, 10);
+                if (value.toDate) return value.toDate().toISOString().slice(0, 10);
+                if (value.seconds) return new Date(value.seconds * 1000).toISOString().slice(0, 10);
+                return "";
+            }
+
+            function formatDisplayDate(value) {
+                const dateInput = normalizeDateInput(value);
+                if (!dateInput) return "";
+                const [year, month, day] = dateInput.split("-");
+                return `${day}/${month}/${year}`;
+            }
+
+            function sanitizeCustomHtml(html) {
+                const template = document.createElement("template");
+                template.innerHTML = html || "";
+
+                template.content.querySelectorAll("script, iframe, object, embed, style").forEach(el => el.remove());
+                template.content.querySelectorAll("*").forEach(el => {
+                    [...el.attributes].forEach(attr => {
+                        const name = attr.name.toLowerCase();
+                        const value = attr.value || "";
+                        if (name.startsWith("on") || value.toLowerCase().includes("javascript:")) {
+                            el.removeAttribute(attr.name);
+                        }
+                    });
+                });
+
+                return template.innerHTML.trim();
+            }
+
+            function renderSections(sections) {
+                if (!Array.isArray(sections) || !sections.length) {
+                    return `
+                        <div class="timeline-item">
+                            <div class="timeline-num">01</div>
+                            <div>
+                                <h3>Nội dung đang được cập nhật</h3>
+                                <p>Case study này chưa có nội dung chi tiết.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return sections.map((section, index) => `
+                    <div class="timeline-item">
+                        <div class="timeline-num">${escapeHtml(section.number || String(index + 1).padStart(2, "0"))}</div>
+                        <div>
+                            <h3>${escapeHtml(section.title || "")}</h3>
+                            ${section.content ? `<p>${escapeHtml(section.content).replaceAll("\n", "<br>")}</p>` : ""}
+                            ${Array.isArray(section.bullets) && section.bullets.length ? `<ul>${renderList(section.bullets)}</ul>` : ""}
+                            ${section.note ? `<p><strong>${escapeHtml(section.note)}</strong></p>` : ""}
+                        </div>
+                    </div>
+                `).join("");
+            }
+
+            function renderDetailBody(item) {
+                if (item.detailContentType === "custom") {
+                    return `
+                        <div class="custom-content">
+                            ${sanitizeCustomHtml(item.customDetailHtml || "<p>Nội dung đang được cập nhật.</p>")}
+                        </div>
+                    `;
+                }
+
+                return `<div class="timeline">${renderSections(item.detailSections || [])}</div>`;
+            }
+
+            function renderHero(item) {
+                const updatedDate = formatDisplayDate(item.updatedDate) || formatDisplayDate(item.updatedAt) || "";
+                const readingTime = item.readingTime || "4 phút";
+                const thumbnail = item.thumbnail || "assets/image/case-study-detail-bg.jpg";
+
+                hero.style.setProperty("--hero-bg", `url("${String(thumbnail).replaceAll('"', '%22')}")`);
+
+                heroContent.classList.remove("loading-box");
+                heroContent.innerHTML = `
+                    <div class="breadcrumb-emi-detail">
+                        <a href="case-study-thuc-te.html" class="text-white text-decoration-none">Case Study</a>
+                        <i class="fa-solid fa-chevron-right" style="font-size:11px"></i>
+                        <span>${escapeHtml(item.category || "Case Study")}</span>
+                    </div>
+                    <h1>${escapeHtml(item.title || "Case Study")}</h1>
+                    ${item.description ? `<p class="case-hero-desc">${escapeHtml(item.description)}</p>` : ""}
+                    <div class="case-meta">
+                        <span><i class="fa-regular fa-clock"></i> ${escapeHtml(readingTime)}</span>
+                        ${updatedDate ? `<span><i class="fa-regular fa-calendar"></i> ${escapeHtml(updatedDate)}</span>` : ""}
+                    </div>
+                `;
+            }
+
+            function renderArticle(item) {
+                const updatedDate = formatDisplayDate(item.updatedDate) || formatDisplayDate(item.updatedAt) || "";
+                const readingTime = item.readingTime || "4 phút";
+
+                articleContent.innerHTML = `
+                    <div class="article-body">
+                        <div class="article-category">
+                            <i class="fa-solid fa-file-shield"></i>
+                            ${escapeHtml(item.category || "Case Study")}
+                        </div>
+
+                        <h2 class="article-title">${escapeHtml(item.title || "Case Study")}</h2>
+                        ${item.description ? `<p class="article-description">${escapeHtml(item.description)}</p>` : ""}
+
+                        <div class="article-meta-line">
+                            <span><i class="fa-regular fa-clock"></i> Thời gian đọc: ${escapeHtml(readingTime)}</span>
+                            ${updatedDate ? `<span><i class="fa-regular fa-calendar"></i> Cập nhật: ${escapeHtml(updatedDate)}</span>` : ""}
+                        </div>
+
+                        ${renderDetailBody(item)}
+                    </div>
+                `;
+            }
+
+            function renderCurrentSidebar(item) {
+                const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
+
+                sidebarResults.innerHTML = `
+                    <h3>Kết quả nổi bật</h3>
+                    ${keyResults.length ? `<ul>${renderList(keyResults)}</ul>` : `<p class="mb-0 text-white-50">Nội dung đang được cập nhật.</p>`}
+                `;
+
+                sidebarQuote.innerHTML = `
+                    “${escapeHtml(item.cardQuote || "Một hợp đồng tốt là hợp đồng bạn thực sự hiểu rõ.")}”
+                    <span>— ${escapeHtml(item.quoteAuthor || "EMI")}</span>
+                `;
+            }
+
+            function renderError(message, detail = "") {
+                heroContent.innerHTML = `
+                    <div class="error-box">
+                        <div class="fw-bold mb-2">${escapeHtml(message)}</div>
+                        ${detail ? `<div class="small">${escapeHtml(detail)}</div>` : ""}
+                    </div>
+                `;
+                articleContent.innerHTML = "";
+                sidebarResults.innerHTML = `<h3>Kết quả nổi bật</h3><p class="mb-0 text-white-50">Không có dữ liệu.</p>`;
+                sidebarQuote.innerHTML = `Không có dữ liệu.<span>— EMI</span>`;
+            }
+
+            function detailHref(id) {
+                return `case-study-detail.html#${encodeURIComponent(id)}`;
+            }
+
+            function renderSidebar(caseStudies, currentId) {
+                const categories = [...new Set(caseStudies.map(item => item.category).filter(Boolean))];
+
+                categoryCloud.innerHTML = categories.length
+                    ? categories.map(category => `
+                        <a href="case-study-thuc-te.html?category=${encodeURIComponent(category)}">${escapeHtml(category)}</a>
+                    `).join("")
+                    : `<span class="text-muted small">Chưa có category.</span>`;
+
+                const popular = caseStudies
+                    .filter(item => item.id !== currentId)
+                    .slice(0, 4);
+
+                popularPosts.innerHTML = popular.length
+                    ? popular.map(item => `
+                        <a href="${detailHref(item.id)}" class="popular-item">
+                            <img src="${escapeAttr(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeAttr(item.title || "Case Study")}">
+                            <div>
+                                <strong>${escapeHtml(shortText(item.title || "Case Study", 54))}</strong>
+                                <small>${escapeHtml(item.category || "Case Study")}</small>
+                            </div>
+                        </a>
+                    `).join("")
+                    : `<span class="text-muted small">Chưa có bài liên quan.</span>`;
+            }
+
+            async function loadSidebar(currentId) {
+                try {
+                    const snapshot = await db.collection("caseStudies")
+                        .where("isDeleted", "==", false)
+                        .get();
+
+                    const caseStudies = [];
+                    snapshot.forEach(doc => caseStudies.push({ id: doc.id, ...doc.data() }));
+
+                    caseStudies.sort((a, b) => {
+                        const timeA = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+                        const timeB = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+                        return timeB - timeA;
+                    });
+
+                    renderSidebar(caseStudies, currentId);
+                } catch (error) {
+                    console.error("Sidebar Error:", error);
+                    categoryCloud.innerHTML = `<span class="text-muted small">Không tải được category.</span>`;
+                    popularPosts.innerHTML = `<span class="text-muted small">Không tải được bài liên quan.</span>`;
+                }
+            }
+
+            async function loadCaseStudy() {
+                if (!caseId) {
+                    renderError("Thiếu ID case study.", "URL cần có dạng case-study-detail.html#DOCUMENT_ID hoặc case-study-detail.html?id=DOCUMENT_ID");
+                    return;
+                }
+
+                try {
+                    if (typeof firebase === "undefined" || typeof db === "undefined") {
+                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra Firebase SDK và assets/js/shared/firebase.js.");
+                    }
+
+                    const doc = await db.collection("caseStudies").doc(caseId).get();
+
+                    if (!doc.exists) {
+                        renderError("Không tìm thấy case study.");
+                        return;
+                    }
+
+                    const item = { id: doc.id, ...doc.data() };
+
+                    if (item.isDeleted === true) {
+                        renderError("Case study này không còn khả dụng.");
+                        return;
+                    }
+
+                    document.title = `${item.title || "Case Study"} | EMI Insurance`;
+                    renderHero(item);
+                    renderArticle(item);
+                    renderCurrentSidebar(item);
+                    loadSidebar(item.id);
+                } catch (error) {
+                    console.error("Firestore Error:", error);
+                    renderError("Không thể tải case study.", error.message || error.code || "Không rõ lỗi");
+                }
+            }
+
+            loadCaseStudy();
+        });
+    </script>
+</body>
+
+</html>

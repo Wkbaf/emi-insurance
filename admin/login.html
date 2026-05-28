@@ -7,6 +7,7 @@
     <title>Admin Login</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/image/favicon.png?v=2">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -307,6 +308,13 @@
 
         });
 
+        const ADMIN_SESSION_TIME = 2 * 60 * 60 * 1000; // 2 giờ
+
+        function setAdminSession() {
+            const expiredAt = Date.now() + ADMIN_SESSION_TIME;
+            localStorage.setItem("adminExpiredAt", expiredAt);
+        }
+
         // Login Function
         async function login() {
 
@@ -328,6 +336,8 @@
                     <span class="spinner-border spinner-border-sm me-2"></span>
                     Đang đăng nhập...
                 `;
+
+                setAdminSession();
 
                 await auth.signInWithEmailAndPassword(email, password);
 

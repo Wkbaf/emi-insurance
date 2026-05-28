@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Chuỗi Video Thực Chiến | EMI Insurance</title>
+
+    <link rel="icon" href="assets/image/favicon.png?v=2">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Duplicate style from case-study page -->
+    <link rel="stylesheet" href="assets/css/case-study-thuc-te.css">
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+
+    <style>
+        .case-search-wrap {
+            max-width: 680px;
+            margin: 24px auto 18px;
+        }
+
+        .case-search-box {
+            position: relative;
+            background: #fff;
+            border: 1px solid rgba(0, 89, 79, 0.12);
+            border-radius: 999px;
+            box-shadow: 0 10px 28px rgba(0, 76, 69, 0.08);
+            overflow: hidden;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .case-search-box:focus-within {
+            border-color: rgba(185, 150, 85, 0.45);
+            box-shadow: 0 12px 32px rgba(0, 76, 69, 0.11);
+        }
+
+        .case-search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a88a4d;
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .case-search-box .form-control {
+            height: 50px;
+            border: 0;
+            border-radius: 999px;
+            padding-left: 48px;
+            padding-right: 54px;
+            font-size: 14px;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .case-search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border: 0;
+            border-radius: 999px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f3ea;
+            color: #6b5d3a;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .case-search-clear.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .case-search-clear:hover {
+            background: #efe3cc;
+            color: #004c45;
+        }
+
+        .case-result-count {
+            display: none !important;
+        }
+
+        .case-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 18px auto 30px;
+        }
+
+        .case-tab-btn {
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .case-load-more-wrap {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .case-load-more {
+            border: 0;
+            border-radius: 999px;
+            padding: 11px 24px;
+            background: linear-gradient(135deg, #00594f, #003f39);
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: 0 12px 26px rgba(0, 76, 69, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .case-load-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 38px rgba(0, 76, 69, 0.25);
+        }
+
+        .case-load-more i {
+            margin-left: 8px;
+        }
+
+        .blog-video-icon {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 0;
+            background: rgba(3, 54, 49, .88);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 18px 40px rgba(3, 54, 49, .25);
+        }
+
+        .blog-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 14px;
+            margin-bottom: 14px;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .blog-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 575px) {
+            .case-search-wrap {
+                margin-top: 18px;
+            }
+
+            .case-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 6px;
+            }
+
+            .case-tab-btn {
+                flex: 0 0 auto;
+                font-size: 12px;
+                padding: 7px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <emi-nav active="knowledge"></emi-nav>
+
+    <section class="case-hero">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="case-kicker">Tài chính dưới lăng kính rành mạch - Đọc để hiểu - Hiểu để hành
+                        động</span>
+
+                    <h1>GÓC NHÌN CHUYÊN GIA</h1>
+
+                    <p>
+                        <strong>Tại sao 80% người trẻ thất bại khi lập quỹ hưu trí tự nguyện?</strong> <br>
+                        Phân tích 5 nguyên nhân cốt lõi và chia sẻ giải pháp xây dựng quỹ hưu trí bền vững, linh hoạt.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#blogGrid" class="btn btn-gold">Xem bài viết mới nhất</a>
+                        <a href="#contact" class="btn btn-outline-emi">Liên hệ tư vấn</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="hero-advisor">
+                        <div class="advisor-visual">
+                            <div class="advisor-ring"></div>
+
+                            <img src="assets/image/person1.png" alt="Chuỗi video thực chiến Firestore">
+
+                            <div class="advisor-chip chip-top">
+                                <i class="bi bi-camera-video"></i>
+                                <div>
+                                    <strong>Bài viết thực tế</strong>
+                                    <span>Dễ hiểu, dễ áp dụng</span>
+                                </div>
+                            </div>
+
+                            <div class="advisor-chip chip-middle">
+                                <i class="bi bi-database-check"></i>
+                                <div>
+                                    <strong>Kinh nghiệm</strong>
+                                    <span>Thực chiến</span>
+                                </div>
+                            </div>
+
+                            <div class="advisor-chip chip-bottom">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                                <div>
+                                    <strong>Cam đoan</strong>
+                                    <span>Tối ưu & bảo mật</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="eco-title">
+                    Bài Viết
+                    <span class="text-gold">Thực Chiến</span>
+                </h2>
+                <p class="eco-intro">
+                    Tìm nhanh các nội dung và kinh nghiệm triển khai thực tế.
+                </p>
+            </div>
+
+            <div class="case-search-wrap">
+                <div class="case-search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="blogSearchInput" class="form-control"
+                        placeholder="Tìm theo tiêu đề, category hoặc mô tả...">
+                    <button type="button" id="clearBlogSearch" class="case-search-clear"
+                        aria-label="Xóa tìm kiếm">&times;</button>
+                </div>
+                <div id="blogResultCount" class="case-result-count" aria-live="polite"></div>
+            </div>
+
+            <div class="case-tabs" id="blogCategoryTabs"></div>
+
+            <div class="row g-4 case-grid" id="blogGrid"></div>
+
+            <div class="case-empty" id="blogEmpty">
+                <i class="bi bi-search-heart"></i>
+                <h3>Không tìm thấy bài viết phù hợp</h3>
+                <p>Thử đổi từ khóa hoặc chọn nhóm khác.</p>
+            </div>
+
+            <div id="blogLoadMoreWrap" class="case-load-more-wrap d-none">
+                <button type="button" id="blogLoadMoreBtn" class="case-load-more">
+                    Xem thêm video
+                    <i class="fa-solid fa-arrow-down"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <emi-contact></emi-contact>
+
+    <emi-footer></emi-footer>
+
+    <!-- FOR FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- shared firebase -->
+    <script src="assets/js/shared/firebase.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/shared/emi-nav.js"></script>
+    <script src="assets/js/shared/emi-contact.js"></script>
+    <script src="assets/js/shared/footer.js"></script>
+    <script src="assets/js/nav.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const filterButtons = Array.from(document.querySelectorAll(".case-tab-btn"));
+            const blogGrid = document.getElementById("blogGrid");
+            const blogEmpty = document.getElementById("blogEmpty");
+            const blogResultCount = document.getElementById("blogResultCount");
+            const loadMoreWrap = document.getElementById("blogLoadMoreWrap");
+            const loadMoreBtn = document.getElementById("blogLoadMoreBtn");
+            const clearSearchBtn = document.getElementById("clearBlogSearch");
+            const searchInput = document.getElementById("blogSearchInput");
+
+            const blogCategoryTabs = document.getElementById("blogCategoryTabs");
+            let blogCategories = [];
+
+            const PAGE_SIZE = 6;
+            let blogs = [];
+            let activeCategory = "all";
+            let searchKeyword = "";
+            let visibleCount = PAGE_SIZE;
+
+            function escapeHtml(text) {
+                return String(text || "")
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            async function loadBlogCategories() {
+                const snapshot = await db.collection("categories")
+                    .where("type", "==", "blog")
+                    .where("isDeleted", "==", false)
+                    .where("status", "==", "active")
+                    .orderBy("position", "asc")
+                    .get();
+
+                blogCategories = [];
+
+                snapshot.forEach(doc => {
+                    blogCategories.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                renderBlogCategoryTabs();
+            }
+
+            function renderBlogCategoryTabs() {
+                blogCategoryTabs.innerHTML = `
+                    <button class="case-tab-btn active" data-filter="all">
+                        Tất cả
+                    </button>
+                `;
+
+                blogCategories.forEach(category => {
+                    blogCategoryTabs.innerHTML += `
+                        <button class="case-tab-btn" data-filter="${escapeHtml(category.slug || category.id)}">
+                            ${escapeHtml(category.name || "")}
+                        </button>
+                    `;
+                });
+
+                blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(button => {
+                    button.addEventListener("click", () => {
+                        blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(btn => {
+                            btn.classList.remove("active");
+                        });
+
+                        button.classList.add("active");
+                        activeCategory = button.dataset.filter || "all";
+                        renderCards(true);
+                    });
+                });
+            }
+
+            function shortText(text, max = 130) {
+                if (!text) return "";
+                return text.length > max ? text.slice(0, max) + "..." : text;
+            }
+
+            function normalizeText(text) {
+                return String(text || "")
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+            }
+
+            function formatDate(value) {
+                if (!value) return "";
+
+                let date = null;
+
+                if (value.toDate && typeof value.toDate === "function") {
+                    date = value.toDate();
+                } else if (value.seconds) {
+                    date = new Date(value.seconds * 1000);
+                } else {
+                    date = new Date(value);
+                }
+
+                if (!date || Number.isNaN(date.getTime())) return "";
+
+                return date.toLocaleDateString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+            }
+
+            function getFilteredBlogs() {
+                const keyword = normalizeText(searchKeyword);
+
+                return blogs.filter(item => {
+                    const text = normalizeText(`
+                        ${item.title || ""}
+                        ${item.category || ""}
+                        ${item.description || ""}
+                        ${item.excerpt || ""}
+                        ${item.author || ""}
+                    `);
+
+                    const matchSearch = !keyword || text.includes(keyword);
+                    const categoryKey = item.categorySlug || "";
+                    const matchCategory = activeCategory === "all" || categoryKey === activeCategory;
+
+                    return matchSearch && matchCategory;
+                });
+            }
+
+            function updateResultCount() {
+                if (blogResultCount) blogResultCount.innerText = "";
+            }
+
+            function updateClearSearchButton() {
+                if (!clearSearchBtn) return;
+                clearSearchBtn.classList.toggle("show", Boolean(searchKeyword));
+            }
+
+            function getYoutubeId(url) {
+                if (!url) return "";
+
+                try {
+                    const parsedUrl = new URL(url);
+
+                    if (parsedUrl.hostname.includes("youtu.be")) {
+                        return parsedUrl.pathname.replace("/", "");
+                    }
+
+                    if (parsedUrl.searchParams.get("v")) {
+                        return parsedUrl.searchParams.get("v");
+                    }
+
+                    const embedMatch = parsedUrl.pathname.match(/\/embed\/([^/?]+)/);
+                    if (embedMatch && embedMatch[1]) {
+                        return embedMatch[1];
+                    }
+                } catch (error) {
+                    return "";
+                }
+
+                return "";
+            }
+
+            function getThumbnail(item) {
+                if (item.thumbnail) return item.thumbnail;
+
+                const youtubeId = getYoutubeId(item.youtubeUrl || item.videoUrl || "");
+                if (youtubeId) {
+                    return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+                }
+
+                return "assets/image/case-study-01.png";
+            }
+
+            function renderCards(resetVisible = false) {
+                if (resetVisible) {
+                    visibleCount = PAGE_SIZE;
+                }
+
+                blogGrid.innerHTML = "";
+
+                const filteredBlogs = getFilteredBlogs();
+                const visibleBlogs = filteredBlogs.slice(0, visibleCount);
+
+                visibleBlogs.forEach(item => {
+                    const categoryKey = item.categorySlug || "";
+                    const col = document.createElement("div");
+                    const detailUrl = `/blog-detail#${encodeURIComponent(item.id)}`;
+                    const thumbnail = getThumbnail(item);
+                    const publishedDate = formatDate(item.publishedAt || item.createdAt);
+                    const author = item.author || "EMI Team";
+                    const duration = item.videoDuration || item.duration || "";
+
+                    col.className = "col-lg-4 col-md-6 case-item";
+                    col.dataset.category = categoryKey;
+
+                    col.innerHTML = `
+                        <article class="case-card h-100">
+                            <div class="case-card-img">
+                                <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Blog")}">
+                                </div>
+                            </div>
+
+                            <div class="case-card-body">
+                                <span class="solution-badge">
+                                    ${escapeHtml(item.category || "Blog")}
+                                </span>
+
+                                <h3>${escapeHtml(item.title || "")}</h3>
+
+                                <div class="blog-meta">
+                                    ${publishedDate ? `<span><i class="bi bi-calendar3"></i>${escapeHtml(publishedDate)}</span>` : ""}
+                                    ${author ? `<span><i class="bi bi-person-circle"></i>${escapeHtml(author)}</span>` : ""}
+                                    ${duration ? `<span><i class="bi bi-clock"></i>${escapeHtml(duration)}</span>` : ""}
+                                </div>
+
+                                <p>${escapeHtml(shortText(item.description || item.excerpt || ""))}</p>
+
+                                ${item.cardQuote || item.quote ? `
+                                    <div class="case-quote">
+                                        “${escapeHtml(item.cardQuote || item.quote || "Start small, build real.")}”
+                                    </div>
+                                ` : ""}
+
+                                <a href="${detailUrl}" class="case-link">
+                                    Xem chi tiết
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    `;
+
+                    blogGrid.appendChild(col);
+                });
+
+                const hasMore = filteredBlogs.length > visibleCount;
+
+                if (loadMoreWrap) {
+                    loadMoreWrap.classList.toggle("d-none", !hasMore);
+                }
+
+                if (blogEmpty) {
+                    blogEmpty.classList.toggle("show", filteredBlogs.length === 0);
+                }
+
+                updateResultCount();
+                updateClearSearchButton();
+            }
+
+            async function loadBlogsFromFirebase() {
+                try {
+                    blogGrid.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            Đang tải bài viết...
+                        </div>
+                    `;
+
+                    updateResultCount();
+
+                    if (typeof firebase === "undefined" || typeof db === "undefined") {
+                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra assets/js/shared/firebase.js và Firebase SDK.");
+                    }
+
+                    const snapshot = await db.collection("blogs")
+                        .where("isDeleted", "==", false)
+                        .where("categoryIsDeleted", "==", false)
+                        .where("categoryStatus", "==", "active")
+                        .get();
+
+                    blogs = [];
+
+                    snapshot.forEach(doc => {
+                        blogs.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    blogs.sort((a, b) => {
+                        const getTime = (item) => {
+                            const value = item.publishedAt || item.createdAt;
+
+                            if (!value) return 0;
+                            if (value.toMillis && typeof value.toMillis === "function") return value.toMillis();
+                            if (value.seconds) return value.seconds * 1000;
+
+                            const date = new Date(value);
+                            return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+                        };
+
+                        return getTime(b) - getTime(a);
+                    });
+
+                    renderCards(true);
+                } catch (error) {
+                    console.error("Firestore Error:", error);
+
+                    const errorMessage = error && (error.message || error.code)
+                        ? `${error.code ? error.code + ": " : ""}${error.message || ""}`
+                        : "Không rõ lỗi";
+
+                    blogGrid.innerHTML = `
+                        <div class="col-12 text-center py-5 text-danger">
+                            <div class="fw-bold mb-2">Không thể tải bài viết.</div>
+                            <div class="small">${escapeHtml(errorMessage)}</div>
+                        </div>
+                    `;
+
+                    if (loadMoreWrap) {
+                        loadMoreWrap.classList.add("d-none");
+                    }
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener("input", (e) => {
+                    searchKeyword = e.target.value.trim();
+                    renderCards(true);
+                });
+            }
+
+            if (clearSearchBtn && searchInput) {
+                clearSearchBtn.addEventListener("click", () => {
+                    searchInput.value = "";
+                    searchKeyword = "";
+                    renderCards(true);
+                    searchInput.focus();
+                });
+            }
+
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener("click", () => {
+                    visibleCount += PAGE_SIZE;
+                    renderCards(false);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    filterButtons.forEach(btn => btn.classList.remove("active"));
+                    button.classList.add("active");
+
+                    activeCategory = button.dataset.filter || "all";
+                    renderCards(true);
+                });
+            });
+
+            Promise.all([
+                loadBlogCategories(),
+                loadBlogsFromFirebase()
+            ]);
+        });
+    </script>
+
+</body>
+
+</html>
