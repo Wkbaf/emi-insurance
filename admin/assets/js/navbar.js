@@ -21,7 +21,7 @@ const NAV_ITEMS = [
     key: "case-study",
   },
   {
-    label: "Chuỗi Video Thực Chiến",
+    label: "Góc nhìn chuyên gia",
     href: "/admin/blog",
     icon: "bi-play-circle",
     permission: "blogs:manage",

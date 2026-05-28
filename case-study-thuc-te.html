@@ -241,7 +241,7 @@
 
 <body>
 
-    <emi-nav active="products"></emi-nav>
+    <emi-nav active="knowledge"></emi-nav>
 
     <section class="case-hero">
         <div class="container">
@@ -525,6 +525,8 @@
 
                     const snapshot = await db.collection("caseStudies")
                         .where("isDeleted", "==", false)
+                        .where("categoryIsDeleted", "==", false)
+                        .where("categoryStatus", "==", "active")
                         .get();
 
                     caseStudies = [];

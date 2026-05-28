@@ -200,23 +200,23 @@
 
 <body>
 
-    <emi-nav active="products"></emi-nav>
+    <emi-nav active="knowledge"></emi-nav>
 
     <section class="case-hero">
         <div class="container">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
-                    <span class="case-kicker">Chuỗi video thực chiến</span>
+                    <span class="case-kicker">Tài chính dưới lăng kính rành mạch - Đọc để hiểu - Hiểu để hành động</span>
 
-                    <h1>FIRESTORE THỰC CHIẾN</h1>
+                    <h1>GÓC NHÌN CHUYÊN GIA</h1>
 
                     <p>
-                        Tổng hợp các bài viết và video chia sẻ kinh nghiệm thực tế khi làm việc với
-                        <strong>Firebase, Firestore và hệ thống production</strong>.
+                        <strong>Tại sao 80% người trẻ thất bại khi lập quỹ hưu trí tự nguyện?</strong> <br>
+                        Phân tích 5 nguyên nhân cốt lõi và chia sẻ giải pháp xây dựng quỹ hưu trí bền vững, linh hoạt.
                     </p>
 
                     <div class="hero-actions">
-                        <a href="#blogGrid" class="btn btn-gold">Xem video mới nhất</a>
+                        <a href="#blogGrid" class="btn btn-gold">Xem bài viết mới nhất</a>
                         <a href="#contact" class="btn btn-outline-emi">Liên hệ tư vấn</a>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
                             <div class="advisor-chip chip-top">
                                 <i class="bi bi-camera-video"></i>
                                 <div>
-                                    <strong>Video thực tế</strong>
+                                    <strong>Bài viết thực tế</strong>
                                     <span>Dễ hiểu, dễ áp dụng</span>
                                 </div>
                             </div>
@@ -239,15 +239,15 @@
                             <div class="advisor-chip chip-middle">
                                 <i class="bi bi-database-check"></i>
                                 <div>
-                                    <strong>Firestore</strong>
-                                    <span>Kinh nghiệm thực chiến</span>
+                                    <strong>Kinh nghiệm</strong>
+                                    <span>Thực chiến</span>
                                 </div>
                             </div>
 
                             <div class="advisor-chip chip-bottom">
                                 <i class="bi bi-lightning-charge-fill"></i>
                                 <div>
-                                    <strong>Production</strong>
+                                    <strong>Cam đoan</strong>
                                     <span>Tối ưu & bảo mật</span>
                                 </div>
                             </div>
@@ -262,11 +262,11 @@
         <div class="container">
             <div class="text-center">
                 <h2 class="eco-title">
-                    Chuỗi Video
+                    Bài Viết
                     <span class="text-gold">Thực Chiến</span>
                 </h2>
                 <p class="eco-intro">
-                    Tìm nhanh các nội dung về Firebase, Firestore, tối ưu truy vấn, security rules và kinh nghiệm triển khai thực tế.
+                    Tìm nhanh các nội dung và kinh nghiệm triển khai thực tế.
                 </p>
             </div>
 
@@ -564,6 +564,8 @@
 
                     const snapshot = await db.collection("blogs")
                         .where("isDeleted", "==", false)
+                        .where("categoryIsDeleted", "==", false)
+                        .where("categoryStatus", "==", "active")
                         .get();
 
                     blogs = [];

@@ -471,6 +471,8 @@
 
                     unsubscribeTerms = db.collection("explainCards")
                         .where("isDeleted", "==", false)
+                        .where("categoryIsDeleted", "==", false)
+                        .where("categoryStatus", "==", "active")
                         .orderBy("createdAt", "desc")
                         .onSnapshot((snapshot) => {
                             terms = [];
