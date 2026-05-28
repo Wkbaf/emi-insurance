@@ -374,6 +374,33 @@
             return getCategoryType(category) === "term" && !isCategoryDeleted(category);
         }
 
+        function findCategoryByTerm(term) {
+            if (!term) return null;
+
+            return categories.find((category) => category.id === term.categoryId)
+                || categories.find((category) => getCategorySlug(category) === term.categorySlug)
+                || categories.find((category) => getCategoryName(category) === term.category)
+                || null;
+        }
+
+        function getTermCategoryData(term) {
+            const category = findCategoryByTerm(term);
+
+            if (category) {
+                return {
+                    id: category.id || "",
+                    name: getCategoryName(category),
+                    slug: getCategorySlug(category)
+                };
+            }
+
+            return {
+                id: term.categoryId || "",
+                name: term.category || "",
+                slug: term.categorySlug || toSlug(term.category || "")
+            };
+        }
+
         async function loadCategories() {
             try {
                 db.collection("categories")
@@ -469,13 +496,13 @@
                 if (!name) return;
 
                 categorySelect.innerHTML += `
-                    <option value="${escapeHtml(slug)}" data-slug="${escapeHtml(slug)}">
+                    <option value="${escapeHtml(category.id)}" data-slug="${escapeHtml(slug)}">
                         ${escapeHtml(name)}
                     </option>
                 `;
 
                 categoryFilter.innerHTML += `
-                    <option value="${escapeHtml(slug)}">
+                    <option value="${escapeHtml(category.id)}">
                         ${escapeHtml(name)}
                     </option>
                 `;
@@ -506,8 +533,12 @@
             const categoryFilter = document.getElementById("categoryFilter").value;
 
             const filteredTerms = terms.filter((item) => {
+                const categoryData = getTermCategoryData(item);
+
                 const text = normalizeText(`
                     ${item.termName || ""}
+                    ${categoryData.name || ""}
+                    ${categoryData.slug || ""}
                     ${item.category || ""}
                     ${item.categorySlug || ""}
                     ${item.video || ""}
@@ -517,7 +548,7 @@
                 `);
 
                 const matchSearch = !keyword || text.includes(keyword);
-                const matchCategory = categoryFilter === "all" || item.category === categoryFilter;
+                const matchCategory = categoryFilter === "all" || categoryData.id === categoryFilter;
 
                 return matchSearch && matchCategory;
             });
@@ -544,6 +575,7 @@
             const paginatedTerms = filteredTerms.slice(startIndex, endIndex);
 
             paginatedTerms.forEach((item) => {
+                const categoryData = getTermCategoryData(item);
                 const row = document.createElement("tr");
 
                 row.innerHTML = `
@@ -559,7 +591,7 @@
 
                     <td>
                         <span class="term-category">
-                            ${escapeHtml(item.category || "")}
+                            ${escapeHtml(categoryData.name || "")}
                         </span>
                     </td>
 
@@ -659,7 +691,8 @@
             document.getElementById("modalTitle").innerText = "Sửa thuật ngữ";
             document.getElementById("editId").value = item.id;
             document.getElementById("termName").value = item.termName || "";
-            document.getElementById("category").value = item.category || "";
+            const categoryData = getTermCategoryData(item);
+            document.getElementById("category").value = categoryData.id || "";
             document.getElementById("video").value = item.video || "";
             document.getElementById("definition").value = item.definition || "";
             document.getElementById("simple").value = item.simple || "";
@@ -676,6 +709,8 @@
 
             if (!item) return;
 
+            const categoryData = getTermCategoryData(item);
+
             document.getElementById("viewContent").innerHTML = `
                 <div class="view-block">
                     <label>Tên thuật ngữ</label>
@@ -684,12 +719,17 @@
 
                 <div class="view-block">
                     <label>Category</label>
-                    <p>${escapeHtml(item.category || "")}</p>
+                    <p>${escapeHtml(categoryData.name || "")}</p>
+                </div>
+
+                <div class="view-block">
+                    <label>Category ID</label>
+                    <p>${escapeHtml(categoryData.id || item.categoryId || "")}</p>
                 </div>
 
                 <div class="view-block">
                     <label>Category Slug</label>
-                    <p>${escapeHtml(item.categorySlug || "")}</p>
+                    <p>${escapeHtml(categoryData.slug || item.categorySlug || "")}</p>
                 </div>
 
                 <div class="view-block">
@@ -755,17 +795,20 @@
             e.preventDefault();
 
             const editId = document.getElementById("editId").value;
-            const categoryName = document.getElementById("category").value;
-            const selectedCategory = categories.find((category) => getCategoryName(category) === categoryName);
-            const categorySlug = selectedCategory ? getCategorySlug(selectedCategory) : toSlug(categoryName);
+            const categoryId = document.getElementById("category").value;
+            const selectedCategory = categories.find((category) => category.id === categoryId);
 
-            if (!categoryName) {
+            if (!categoryId || !selectedCategory) {
                 alert("Vui lòng chọn category");
                 return;
             }
 
+            const categoryName = getCategoryName(selectedCategory);
+            const categorySlug = getCategorySlug(selectedCategory);
+
             const data = {
                 termName: document.getElementById("termName").value.trim(),
+                categoryId: categoryId,
                 category: categoryName,
                 categorySlug: categorySlug,
                 video: document.getElementById("video").value.trim(),
