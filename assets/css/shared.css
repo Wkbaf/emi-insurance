@@ -31,6 +31,14 @@
     box-shadow: 0 20px 40px rgba(191, 155, 66, .38)
 }
 
+section {
+    padding: 96px 0;
+}
+
+.contact-section {
+    padding: 96px 0 !important;
+}
+
 /* FOR STYLE 3 CARDS */
 .pieces {
     background: var(--cream)
