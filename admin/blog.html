@@ -90,6 +90,15 @@
 <body>
 
     <!-- Sidebar -->
+    <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()">
+        <i class="bi bi-arrow-left-short"></i>
+    </button>
+
+    <button class="mobile-menu-btn" onclick="openMobileSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
     <div class="sidebar">
         <div id="adminNavbar"></div>
     </div>

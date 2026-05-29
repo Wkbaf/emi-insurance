@@ -34,6 +34,21 @@ const NAV_ITEMS = [
     permission: "categories:manage",
     key: "categories",
   },
+  {
+    label: "Settings",
+    icon: "bi-gear",
+    key: "settings",
+    permission: "settings:manage",
+    children: [
+      {
+        label: "Convert link",
+        href: "/admin/settings/convert-link",
+        icon: "bi-link-45deg",
+        permission: "convert-link:manage",
+        key: "convert-link",
+      },
+    ],
+  },
 ];
 
 async function logout(event) {
@@ -58,12 +73,13 @@ function getCurrentPageKey() {
   if (path.includes("case-study")) return "case-study";
   if (path.includes("blog")) return "blog";
   if (path.includes("categories")) return "categories";
+  if (path.includes("/admin/settings/convert-link")) return "convert-link";
 
   return "";
 }
 
 function renderNavbar(permissions = []) {
-  console.log("rendering")
+  console.log("rendering");
   const navbar = document.getElementById("adminNavbar");
   if (!navbar) return;
 
@@ -82,6 +98,46 @@ function renderNavbar(permissions = []) {
 
     ${allowedItems
       .map((item) => {
+        const hasChildren = item.children?.length;
+
+        // MENU CHA
+        if (hasChildren) {
+          const isParentActive = item.children.some(
+            (child) => child.key === currentPageKey,
+          );
+
+          return `
+            <div class="nav-group">
+              <div class="nav-link-admin parent-menu ${isParentActive ? "active" : ""}"
+                   onclick="toggleSubMenu(this)">
+                <div>
+                  <i class="bi ${item.icon} me-2"></i>
+                  ${item.label}
+                </div>
+    
+                <i class="bi bi-chevron-down"></i>
+              </div>
+    
+              <div class="sub-navbar">
+                ${item.children
+                  .map((child) => {
+                    const isChildActive = child.key === currentPageKey;
+
+                    return `
+                      <a href="${child.href}"
+                         class="nav-link-admin sub-link ${isChildActive ? "active" : ""}">
+                        <i class="bi ${child.icon || "bi-dot"} me-2"></i>
+                        ${child.label}
+                      </a>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            </div>
+          `;
+        }
+
+        // MENU THƯỜNG
         const isActive = currentPageKey === item.key;
 
         return `
@@ -102,3 +158,58 @@ function renderNavbar(permissions = []) {
     </a>
   `;
 }
+
+function toggleSubMenu(element) {
+  const submenu = element.nextElementSibling;
+  submenu.classList.toggle("open");
+}
+
+function toggleSidebarCollapse() {
+  document.body.classList.toggle("sidebar-collapsed");
+
+  const collapsed =
+    document.body.classList.contains("sidebar-collapsed");
+
+  localStorage.setItem(
+    "adminSidebarCollapsed",
+    collapsed ? "true" : "false"
+  );
+
+  updateSidebarIcon();
+}
+
+function updateSidebarIcon() {
+  const icon = document.querySelector(".sidebar-collapse-btn i");
+
+  if (!icon) return;
+
+  const isCollapsed =
+    document.body.classList.contains("sidebar-collapsed");
+
+  if (isCollapsed) {
+    icon.classList.remove("bi-arrow-left-short");
+    icon.classList.add("bi-arrow-right-short");
+  } else {
+    icon.classList.remove("bi-arrow-right-short");
+    icon.classList.add("bi-arrow-left-short");
+  }
+}
+
+function openMobileSidebar() {
+  document.body.classList.add("sidebar-mobile-open");
+}
+
+function closeMobileSidebar() {
+  document.body.classList.remove("sidebar-mobile-open");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const collapsed =
+    localStorage.getItem("adminSidebarCollapsed");
+
+  if (collapsed === "true") {
+    document.body.classList.add("sidebar-collapsed");
+  }
+
+  updateSidebarIcon();
+});

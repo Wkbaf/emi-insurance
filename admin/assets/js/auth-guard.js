@@ -6,13 +6,15 @@ const PAGE_PERMISSIONS = {
   "case-study": "case-studies:manage",
   blog: "blogs:manage",
   categories: "categories:manage",
+  "settings/convert-link": "convert-links:manage"
 };
 
 function getCurrentPage() {
-  const path = window.location.pathname;
+  const path = window.location.pathname
+    .replace("/admin/", "")
+    .replace(".html", "");
 
-  // /admin/dashboard -> dashboard
-  return path.split("/").pop().replace(".html", "");
+  return path;
 }
 
 function getFirstAllowedPage(permissions) {
