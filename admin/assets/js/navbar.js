@@ -44,8 +44,15 @@ const NAV_ITEMS = [
         label: "Convert link",
         href: "/admin/settings/convert-link",
         icon: "bi-link-45deg",
-        permission: "convert-link:manage",
+        permission: "convert-links:manage",
         key: "convert-link",
+      },
+      {
+        label: "Video link",
+        href: "/admin/settings/video-link",
+        icon: "bi-link-45deg",
+        permission: "video-links:manage",
+        key: "video-link",
       },
     ],
   },
@@ -86,9 +93,26 @@ function renderNavbar(permissions = []) {
   const currentPageKey = getCurrentPageKey();
   const hasAllPermission = permissions.includes("all");
 
-  const allowedItems = NAV_ITEMS.filter(
-    (item) => hasAllPermission || permissions.includes(item.permission),
-  );
+  const allowedItems = NAV_ITEMS.map((item) => {
+    if (hasAllPermission) return item;
+
+    if (item.children?.length) {
+      const allowedChildren = item.children.filter((child) =>
+        permissions.includes(child.permission),
+      );
+
+      if (allowedChildren.length) {
+        return {
+          ...item,
+          children: allowedChildren,
+        };
+      }
+
+      return null;
+    }
+
+    return permissions.includes(item.permission) ? item : null;
+  }).filter(Boolean);
 
   navbar.innerHTML = `
     <h3 class="mb-4">
@@ -167,13 +191,9 @@ function toggleSubMenu(element) {
 function toggleSidebarCollapse() {
   document.body.classList.toggle("sidebar-collapsed");
 
-  const collapsed =
-    document.body.classList.contains("sidebar-collapsed");
+  const collapsed = document.body.classList.contains("sidebar-collapsed");
 
-  localStorage.setItem(
-    "adminSidebarCollapsed",
-    collapsed ? "true" : "false"
-  );
+  localStorage.setItem("adminSidebarCollapsed", collapsed ? "true" : "false");
 
   updateSidebarIcon();
 }
@@ -183,8 +203,7 @@ function updateSidebarIcon() {
 
   if (!icon) return;
 
-  const isCollapsed =
-    document.body.classList.contains("sidebar-collapsed");
+  const isCollapsed = document.body.classList.contains("sidebar-collapsed");
 
   if (isCollapsed) {
     icon.classList.remove("bi-arrow-left-short");
@@ -204,8 +223,7 @@ function closeMobileSidebar() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const collapsed =
-    localStorage.getItem("adminSidebarCollapsed");
+  const collapsed = localStorage.getItem("adminSidebarCollapsed");
 
   if (collapsed === "true") {
     document.body.classList.add("sidebar-collapsed");
