@@ -37,14 +37,6 @@ const defaultSections = [
     ],
     note: "Toàn bộ quá trình được thực hiện theo đúng triết lý: “Làm chậm mà chắc.”",
   },
-  {
-    number: "04",
-    title: "Kết quả & bài học kinh nghiệm",
-    content:
-      "Gia đình không chỉ được tối ưu chi phí mà quan trọng hơn là hiểu rõ quyền lợi, tự tin trước mọi rủi ro.",
-    bullets: [],
-    note: "Bài học rút ra: Đừng để rủi ro nhỏ hôm nay trở thành tổn thất lớn.",
-  },
 ];
 
 const caseStudyModal = new bootstrap.Modal(
@@ -77,55 +69,8 @@ function toSlug(text) {
     .replace(/^-|-$/g, "");
 }
 
-function getCategoryName(category) {
-  return category.name || category.title || category.categoryName || "";
-}
-
-function getCategorySlug(category) {
-  return category.slug || toSlug(getCategoryName(category));
-}
-
 function getCaseStudyCategory(item) {
-  const categoryId = item.categoryId || "";
-
-  let matchedCategory = caseStudyCategories.find((category) => {
-    return category.id === categoryId;
-  });
-
-  if (!matchedCategory) {
-    matchedCategory = caseStudyCategories.find((category) => {
-      const slug = getCategorySlug(category);
-      const name = getCategoryName(category);
-
-      return (
-        slug === item.categorySlug ||
-        slug === item.category ||
-        name === item.category
-      );
-    });
-  }
-
-  if (matchedCategory) {
-    return {
-      id: matchedCategory.id,
-      name: getCategoryName(matchedCategory),
-      slug: getCategorySlug(matchedCategory),
-
-      // NEW
-      isDeleted: matchedCategory.isDeleted === true,
-      status: matchedCategory.status || "active",
-    };
-  }
-
-  return {
-    id: categoryId,
-    name: item.category || "",
-    slug: item.categorySlug || item.category || "",
-
-    // fallback snapshot
-    isDeleted: item.categoryIsDeleted === true,
-    status: item.categoryStatus || "active",
-  };
+  return getItemCategory(item, caseStudyCategories);
 }
 
 async function loadCaseStudyCategories() {
@@ -304,42 +249,6 @@ function renderCaseStudies() {
   });
 }
 
-function renderDetailSectionInputs(sections = defaultSections) {
-  const wrapper = document.getElementById("detailSections");
-  wrapper.innerHTML = "";
-
-  sections.forEach((section, index) => {
-    const box = document.createElement("div");
-    box.className = "section-box";
-
-    box.innerHTML = `
-      <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
-
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Tiêu đề mục</label>
-        <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Nội dung chính</label>
-        <textarea class="form-control section-content" rows="4" required>${escapeHtml(section.content || "")}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Bullet points</label>
-        <textarea class="form-control section-bullets" rows="4" placeholder="Mỗi dòng là một bullet point">${escapeHtml((section.bullets || []).join("\n"))}</textarea>
-      </div>
-
-      <div>
-        <label class="form-label fw-semibold">Ghi chú / bài học / điểm nhấn</label>
-        <textarea class="form-control section-note" rows="2">${escapeHtml(section.note || "")}</textarea>
-      </div>
-    `;
-
-    wrapper.appendChild(box);
-  });
-}
-
 function openAddModal() {
   document.getElementById("modalTitle").innerText = "Thêm Case Study";
   document.getElementById("caseStudyForm").reset();
@@ -411,6 +320,10 @@ function editCaseStudy(id) {
   document.getElementById("customDetailEditor").innerHTML =
     item.customDetailHtml || "";
 
+  document.getElementById("conclusionLabel").value = item.conclusionLabel || "";
+
+  document.getElementById("conclusion").value = item.conclusion || "";
+
   toggleDetailForm();
 
   renderDetailSectionInputs(
@@ -427,35 +340,6 @@ function updateThumbnailPreview() {
 
   document.getElementById("thumbnailPreview").src =
     url || "assets/image/test1.webp";
-}
-
-function toggleDetailForm() {
-  const type = document.getElementById("detailContentType").value;
-
-  document
-    .getElementById("structuredDetailForm")
-    .classList.toggle("d-none", type !== "structured");
-
-  document
-    .getElementById("customDetailForm")
-    .classList.toggle("d-none", type !== "custom");
-}
-
-function formatEditor(command, value = null) {
-  document.getElementById("customDetailEditor").focus();
-  document.execCommand(command, false, value);
-}
-
-function getDetailSectionsFromForm() {
-  return Array.from(
-    document.querySelectorAll("#detailSections .section-box"),
-  ).map((box, index) => ({
-    number: String(index + 1).padStart(2, "0"),
-    title: box.querySelector(".section-title").value.trim(),
-    content: box.querySelector(".section-content").value.trim(),
-    bullets: linesToArray(box.querySelector(".section-bullets").value),
-    note: box.querySelector(".section-note").value.trim(),
-  }));
 }
 
 function viewCaseStudy(id) {
@@ -637,6 +521,10 @@ document
             )
           : "",
 
+      conclusionLabel: document.getElementById("conclusionLabel").value.trim(),
+
+      conclusion: document.getElementById("conclusion").value.trim(),
+
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
@@ -663,93 +551,3 @@ document
       alert(`Lưu thất bại: ${error.message || error.code || "Không rõ lỗi"}`);
     }
   });
-
-function linesToArray(text) {
-  return String(text || "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-}
-
-function normalizeDateInput(value) {
-  if (!value) return "";
-  if (typeof value === "string") return value.slice(0, 10);
-  if (value.toDate) return value.toDate().toISOString().slice(0, 10);
-  return "";
-}
-
-function formatDisplayDate(value) {
-  const dateInput = normalizeDateInput(value);
-  if (!dateInput) return "";
-
-  const [year, month, day] = dateInput.split("-");
-
-  return `${day}/${month}/${year}`;
-}
-
-function shortText(text, max) {
-  if (!text) return "";
-
-  return text.length > max ? text.slice(0, max) + "..." : text;
-}
-
-function escapeHtml(text) {
-  return String(text || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function escapeAttr(text) {
-  return escapeHtml(text).replaceAll("`", "&#096;");
-}
-
-function sanitizeEditorHtml(html) {
-  const template = document.createElement("template");
-  template.innerHTML = html || "";
-
-  template.content
-    .querySelectorAll("script, iframe, object, embed, style")
-    .forEach((el) => el.remove());
-
-  template.content.querySelectorAll("*").forEach((el) => {
-    [...el.attributes].forEach((attr) => {
-      const name = attr.name.toLowerCase();
-      const value = attr.value || "";
-
-      if (
-        name.startsWith("on") ||
-        value.toLowerCase().includes("javascript:")
-      ) {
-        el.removeAttribute(attr.name);
-      }
-    });
-  });
-
-  return template.innerHTML.trim();
-}
-
-function clearModalFocus(modalEl) {
-  if (
-    modalEl &&
-    modalEl.contains(document.activeElement) &&
-    document.activeElement instanceof HTMLElement
-  ) {
-    document.activeElement.blur();
-  }
-}
-
-function hideModalSafely(modalInstance, modalEl) {
-  clearModalFocus(modalEl);
-
-  requestAnimationFrame(() => {
-    modalInstance.hide();
-  });
-}
-
-document.querySelectorAll(".modal").forEach((modalEl) => {
-  modalEl.addEventListener("hide.bs.modal", () => clearModalFocus(modalEl));
-  modalEl.addEventListener("hidden.bs.modal", () => clearModalFocus(modalEl));
-});
