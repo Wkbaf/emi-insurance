@@ -155,6 +155,7 @@
 
   function renderDetailBody(item, config) {
     const conclusion = item.conclusion || config.defaultConclusion;
+    const conclusion_label = item.conclusionLabel || config.defaultConclusionLabel;
 
     if (item.detailContentType === "custom") {
       return `
@@ -164,7 +165,7 @@
 
                 <div class="case-conclusion">
                     <div class="case-conclusion-label">
-                        ${escapeHtml(item.conclusionLabel || "EMI Insight")}
+                        ${escapeHtml(conclusion_label)}
                     </div>
 
                     <p>${escapeHtml(conclusion)}</p>
@@ -179,7 +180,7 @@
 
             <div class="case-conclusion">
                 <div class="case-conclusion-label">
-                    ${escapeHtml(item.conclusionLabel || "EMI Insight")}
+                    ${escapeHtml(conclusion_label)}
                 </div>
 
                 <p>${escapeHtml(conclusion)}</p>
@@ -223,11 +224,6 @@
 
     elements.articleContent.innerHTML = `
             <div class="article-body">
-                <div class="article-category">
-                    <i class="${escapeAttr(config.articleIconClass)}"></i>
-                    ${escapeHtml(item.category || config.defaultCategory)}
-                </div>
-
                 <h2 class="article-title">${escapeHtml(item.title || config.defaultTitle)}</h2>
                 ${item.description ? `<p class="article-description">${escapeHtml(item.description)}</p>` : ""}
 
@@ -400,6 +396,7 @@
         defaultThumbnail: "assets/image/case-study-detail-bg.jpg",
         defaultConclusion:
           "Một hợp đồng tốt không phải là hợp đồng đắt nhất. Quan trọng nhất là khách hàng hiểu rõ mình đang được bảo vệ điều gì và quyền lợi đó có thực sự phù hợp với gia đình hay không.",
+        defaultConclusionLabel: "EMI Insight",
         dateFields: ["updatedDate", "updatedAt"],
         readingTimeFields: ["readingTime"],
         defaultReadingTime: "4 phút",

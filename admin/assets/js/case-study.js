@@ -320,6 +320,10 @@ function editCaseStudy(id) {
   document.getElementById("customDetailEditor").innerHTML =
     item.customDetailHtml || "";
 
+  document.getElementById("conclusionLabel").value = item.conclusionLabel || "";
+
+  document.getElementById("conclusion").value = item.conclusion || "";
+
   toggleDetailForm();
 
   renderDetailSectionInputs(
@@ -516,6 +520,10 @@ document
               document.getElementById("customDetailEditor").innerHTML,
             )
           : "",
+
+      conclusionLabel: document.getElementById("conclusionLabel").value.trim(),
+
+      conclusion: document.getElementById("conclusion").value.trim(),
 
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };

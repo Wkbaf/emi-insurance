@@ -356,6 +356,9 @@ function editBlog(id) {
     item.thumbnail || "assets/image/test1.webp";
   document.getElementById("detailContentType").value =
     item.detailContentType || "structured";
+  document.getElementById("conclusionLabel").value = item.conclusionLabel || "";
+
+  document.getElementById("conclusion").value = item.conclusion || "";
   document.getElementById("customDetailEditor").innerHTML =
     item.customDetailHtml || "";
   toggleDetailForm();
@@ -565,6 +568,9 @@ document
               document.getElementById("customDetailEditor").innerHTML,
             )
           : "",
+      conclusionLabel: document.getElementById("conclusionLabel").value.trim(),
+
+      conclusion: document.getElementById("conclusion").value.trim(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
