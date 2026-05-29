@@ -37,15 +37,7 @@ const defaultSections = [
       "Đánh giá lại kế hoạch mỗi 6-12 tháng",
     ],
     note: "Triết lý phù hợp: làm chậm, hiểu đúng, rồi mới cam kết dài hạn.",
-  },
-  {
-    number: "04",
-    title: "Kết luận & hành động",
-    content:
-      "Kế hoạch hưu trí không phải câu chuyện của tuổi già. Đó là cách người trẻ bảo vệ quyền tự do tài chính trong tương lai.",
-    bullets: [],
-    note: "Bài học rút ra: bắt đầu sớm bằng số tiền nhỏ thường dễ hơn bắt đầu muộn với áp lực lớn.",
-  },
+  }
 ];
 
 const blogModal = new bootstrap.Modal(document.getElementById("blogModal"));
@@ -353,6 +345,30 @@ function renderBlogs() {
     tbody.appendChild(row);
   });
 }
+// CUSTOM SECTION FOR DETAIL
+function addDetailSection() {
+  const currentSections = getDetailSectionsFromForm();
+
+  currentSections.push({
+    number: "",
+    title: "",
+    content: "",
+    bullets: [],
+    note: "",
+  });
+
+  renderDetailSectionInputs(currentSections);
+}
+
+function removeDetailSection(button) {
+  const box = button.closest(".section-box");
+  if (!box) return;
+
+  box.remove();
+
+  const currentSections = getDetailSectionsFromForm();
+  renderDetailSectionInputs(currentSections);
+}
 
 function renderDetailSectionInputs(sections = defaultSections) {
   const wrapper = document.getElementById("detailSections");
@@ -362,7 +378,13 @@ function renderDetailSectionInputs(sections = defaultSections) {
     const box = document.createElement("div");
     box.className = "section-box";
     box.innerHTML = `
-                    <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="fw-bold mb-0">Mục ${String(index + 1).padStart(2, "0")}</h6>
+
+                      <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDetailSection(this)">
+                        Xóa
+                      </button>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Tiêu đề mục</label>
                         <input class="form-control section-title" value="${escapeAttr(section.title || "")}" required>

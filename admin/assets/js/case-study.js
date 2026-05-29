@@ -36,15 +36,7 @@ const defaultSections = [
       "Tối ưu lại dòng phí đóng hằng năm",
     ],
     note: "Toàn bộ quá trình được thực hiện theo đúng triết lý: “Làm chậm mà chắc.”",
-  },
-  {
-    number: "04",
-    title: "Kết quả & bài học kinh nghiệm",
-    content:
-      "Gia đình không chỉ được tối ưu chi phí mà quan trọng hơn là hiểu rõ quyền lợi, tự tin trước mọi rủi ro.",
-    bullets: [],
-    note: "Bài học rút ra: Đừng để rủi ro nhỏ hôm nay trở thành tổn thất lớn.",
-  },
+  }
 ];
 
 const caseStudyModal = new bootstrap.Modal(
@@ -304,6 +296,31 @@ function renderCaseStudies() {
   });
 }
 
+// CUSTOM SECTION FOR DETAIL
+function addDetailSection() {
+  const currentSections = getDetailSectionsFromForm();
+
+  currentSections.push({
+    number: "",
+    title: "",
+    content: "",
+    bullets: [],
+    note: "",
+  });
+
+  renderDetailSectionInputs(currentSections);
+}
+
+function removeDetailSection(button) {
+  const box = button.closest(".section-box");
+  if (!box) return;
+
+  box.remove();
+
+  const currentSections = getDetailSectionsFromForm();
+  renderDetailSectionInputs(currentSections);
+}
+
 function renderDetailSectionInputs(sections = defaultSections) {
   const wrapper = document.getElementById("detailSections");
   wrapper.innerHTML = "";
@@ -313,7 +330,13 @@ function renderDetailSectionInputs(sections = defaultSections) {
     box.className = "section-box";
 
     box.innerHTML = `
-      <h6 class="fw-bold mb-3">Mục ${String(index + 1).padStart(2, "0")}</h6>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold mb-0">Mục ${String(index + 1).padStart(2, "0")}</h6>
+
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDetailSection(this)">
+          Xóa
+        </button>
+      </div>
 
       <div class="mb-3">
         <label class="form-label fw-semibold">Tiêu đề mục</label>
