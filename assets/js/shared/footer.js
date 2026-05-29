@@ -97,7 +97,7 @@ class EmiFooter extends HTMLElement {
 
                                 <div>
                                     <strong>Email</strong>
-                                    <p>emiinsurance4@gmail.com</p>
+                                    <p>emiinsurance40@gmail.com</p>
                                 </div>
                             </div>
 
