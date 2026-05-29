@@ -78,6 +78,13 @@ class EmiContact extends HTMLElement {
                           <textarea name="ghi_chu" class="form-control custom-textarea"
                             placeholder="Bạn muốn EMI hỗ trợ thêm điều gì?"></textarea>
                         </div>
+
+                        <div class="col-12">
+                          <div
+                            class="cf-turnstile"
+                            data-sitekey="0x4AAAAAADYZEiBO8toTYlhv"
+                          ></div>
+                        </div>
   
                         <div class="col-12">
                           <button type="submit" class="contact-btn">Đặt lịch trò chuyện</button>
@@ -119,20 +126,31 @@ class EmiContact extends HTMLElement {
       btn.disabled = true;
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbw0Ahqj1Wgun0SLhu0b1AptUUCM8KcHKASTpiW_oj7Fj5gLxAKAzFACnOVk-5k6PP-f/exec", {
+        const response = await fetch("https://autumn-sound-88ca.baf2681995.workers.dev", {
           method: "POST",
-          mode: "no-cors",
           body: new FormData(consultForm)
         });
-
+      
+        const result = await response.json();
+      
+        if (!response.ok) {
+          console.error("Worker error:", result);
+          throw new Error(result.message || "Send failed");
+        }
+      
         alert("Gửi yêu cầu thành công! EMI sẽ liên hệ bạn sớm.");
         consultForm.reset();
+      
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
       } catch (error) {
+        console.error(error);
         alert("Có lỗi xảy ra. Vui lòng thử lại.");
+      } finally {
+        btn.innerText = "Đặt lịch trò chuyện";
+        btn.disabled = false;
       }
-
-      btn.innerText = "Đặt lịch trò chuyện";
-      btn.disabled = false;
     });
   }
 
