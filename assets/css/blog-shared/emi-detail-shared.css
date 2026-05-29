@@ -22,7 +22,7 @@ body {
     min-height: 520px;
     padding: 150px 0 76px;
     color: #fff;
-    background-image: var(--hero-bg, url("../../image/background2.jpg"));
+    background-image: var(--hero-bg, url("../../image/loading-img2.jpg"));
     background-position: center;
     background-size: min(100%, 1400px);
     background-repeat: no-repeat;
