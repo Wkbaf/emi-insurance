@@ -153,6 +153,39 @@
       .join("");
   }
 
+  function renderHero(item, config, elements) {
+    const updatedDate =
+      config.dateFields
+        .map((field) => formatDisplayDate(item[field]))
+        .find(Boolean) || "";
+  
+    const readingTime =
+      config.readingTimeFields.map((field) => item[field]).find(Boolean) ||
+      config.defaultReadingTime;
+  
+    const thumbnail = item.thumbnail || config.defaultThumbnail;
+  
+    elements.hero.style.setProperty(
+      "--hero-bg",
+      `url("${String(thumbnail).replaceAll('"', "%22")}")`,
+    );
+  
+    elements.heroContent.classList.remove("loading-box");
+  
+    elements.heroContent.innerHTML = `
+      <div class="hero-eyebrow">
+        <i class="fa-solid fa-shield-heart"></i>
+        EMI INSURANCE
+      </div>
+  
+      <h1>${escapeHtml(item.cardQuote || "Nội dung đang được cập nhật.")}</h1>
+  
+      <div class="${escapeHtml(config.metaClass || "blog-meta")}">
+        ${config.showAuthor && item.quoteAuthor ? `<span><i class="fa-regular fa-user"></i> ${escapeHtml(item.quoteAuthor)}</span>` : ""}
+      </div>
+    `;
+  }
+
   function renderDetailBody(item, config) {
     const conclusion = item.conclusion || config.defaultConclusion;
     const conclusion_label = item.conclusionLabel || config.defaultConclusionLabel;
@@ -188,25 +221,6 @@
         `;
   }
 
-  function renderHero(item, config, elements) {
-    const updatedDate =
-      config.dateFields
-        .map((field) => formatDisplayDate(item[field]))
-        .find(Boolean) || "";
-    const readingTime =
-      config.readingTimeFields.map((field) => item[field]).find(Boolean) ||
-      config.defaultReadingTime;
-    const thumbnail = item.thumbnail || config.defaultThumbnail;
-
-    elements.hero.style.setProperty(
-      "--hero-bg",
-      `url("${String(thumbnail).replaceAll('"', "%22")}")`,
-    );
-
-    elements.heroContent.classList.remove("loading-box");
-    elements.heroContent.innerHTML = "";
-  }
-
   function renderArticle(item, config, elements) {
     const updatedDate =
       config.dateFields
@@ -235,9 +249,62 @@
 
                 ${config.showVideo ? renderVideo(item) : ""}
                 ${renderDetailBody(item, config)}
+                ${renderShareBox(item, config)}
             </div>
         `;
   }
+
+  function getShareUrl(item, config) {
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
+    return `${currentUrl}#${encodeURIComponent(item.id)}`;
+  }
+  
+  function renderShareBox(item, config) {
+    if (config.canShare !== true) return "";
+  
+    const shareUrl = getShareUrl(item, config);
+    const title = item.title || config.defaultTitle;
+    const text = item.description || title;
+  
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+    const zaloUrl = `https://zalo.me/share?u=${encodeURIComponent(shareUrl)}`;
+    // const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    // const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`;
+  
+    return `
+      <div class="article-share-box">
+        <div>
+          <div class="share-label">Chia sẻ bài viết</div>
+          <p>Gửi bài viết này lên mạng xã hội hoặc sao chép liên kết.</p>
+        </div>
+  
+        <div class="share-actions">
+          <a href="${escapeAttr(fbUrl)}" target="_blank" rel="noopener" class="share-btn facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+  
+          <a href="${escapeAttr(zaloUrl)}" target="_blank" rel="noopener" class="share-btn zalo">
+            Zalo
+          </a>
+  
+          
+  
+          <button type="button" class="share-btn copy-link" data-share-url="${escapeAttr(shareUrl)}">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+    // Link share for linkedin and x
+    // <a href="${escapeAttr(linkedinUrl)}" target="_blank" rel="noopener" class="share-btn linkedin">
+    //   <i class="fa-brands fa-linkedin-in"></i>
+    // </a>
+
+    // <a href="${escapeAttr(xUrl)}" target="_blank" rel="noopener" class="share-btn x-twitter">
+    //   <i class="fa-brands fa-x-twitter"></i>
+    // </a>
 
   function renderCurrentSidebar(item, config, elements) {
     const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
@@ -248,11 +315,11 @@
         `;
 
     const quote = item.cardQuote || item.quote || config.defaultQuote;
-    const author = item.quoteAuthor || item.author || "EMI";
+    const author = item.author || "EMI";
 
     elements.sidebarQuote.innerHTML = `
             “${escapeHtml(quote)}”
-            <span>— ${escapeHtml(author)}</span>
+            <span> ${escapeHtml(author)}</span>
         `;
   }
 
@@ -401,7 +468,8 @@
         readingTimeFields: ["readingTime"],
         defaultReadingTime: "4 phút",
         showVideo: false,
-        showAuthor: false,
+        showAuthor: true,
+        canShare: false,
         ...userConfig,
       };
 
@@ -418,6 +486,29 @@
       loadDetail(getParamId(), config, elements);
     });
   }
+
+  // Event click share
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest(".copy-link");
+    if (!button) return;
+  
+    const url = button.dataset.shareUrl;
+    if (!url) return;
+  
+    try {
+      await navigator.clipboard.writeText(url);
+      const oldHtml = button.innerHTML;
+      button.innerHTML = `<i class="fa-solid fa-check"></i>`;
+      button.classList.add("copied");
+  
+      setTimeout(() => {
+        button.innerHTML = oldHtml;
+        button.classList.remove("copied");
+      }, 1400);
+    } catch (error) {
+      alert("Không thể copy link. Bạn vui lòng copy thủ công.");
+    }
+  });
 
   window.EMIDetailPage = { init };
 })();

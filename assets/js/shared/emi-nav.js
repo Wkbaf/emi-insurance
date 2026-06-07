@@ -1,19 +1,16 @@
 class EmiNav extends HTMLElement {
-    connectedCallback() {
+  connectedCallback() {
+    const currentPage =
+      window.location.pathname.split("/").pop() || "index.html";
 
-        const currentPage =
-            window.location.pathname.split("/").pop() || "index.html";
+    const isHome = currentPage === "" || currentPage === "index.html";
 
-        const isHome =
-            currentPage === "" ||
-            currentPage === "index.html";
-
-        this.innerHTML = `
+    this.innerHTML = `
       <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex align-items-center">
   
           <a class="navbar-brand"
-             href="${isHome ? '#home' : 'index.html#home'}">
+             href="${isHome ? "#home" : "index.html#home"}">
   
             EMI<span class="brand-dot">.</span>
             <span class="brand-name">Insurance</span>
@@ -36,30 +33,88 @@ class EmiNav extends HTMLElement {
   
               <li class="nav-item">
                 <a class="nav-link"
-                   href="${isHome ? '#home' : 'index.html#home'}">
+                   href="${isHome ? "#home" : "index.html#home"}">
                    Trang chủ
                 </a>
               </li>
   
               <li class="nav-item">
                 <a class="nav-link"
-                   href="${isHome ? '#about' : 'index.html#about'}">
+                   href="${isHome ? "#about" : "index.html#about"}">
                    Giới thiệu
                 </a>
               </li>
-  
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="${isHome ? '#products' : 'index.html#products'}">
-                   Sản phẩm
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                  href="${isHome ? "#products" : "index.html#products"}"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Sản phẩm
                 </a>
+
+                <ul class="dropdown-menu emi-dropdown">
+                  <li>
+                    <a class="dropdown-item" href="nhan-tho-di-san.html">
+                      Giải pháp nhân thọ & di sản
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="tien-ich-cuoc-song.html">
+                      Bảo vệ tiện ích sống
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="cham-soc-y-te.html">
+                      Quỹ chăm sóc y tế
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="an-sinh-xa-hoi.html">
+                      Hoạch định an sinh xã hội
+                    </a>
+                  </li>
+                </ul>
               </li>
   
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="${isHome ? '#knowledge' : 'index.html#knowledge'}">
-                   Kiến thức
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                  href="${isHome ? "#knowledge" : "index.html#knowledge"}"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Kiến thức
                 </a>
+
+                <ul class="dropdown-menu emi-dropdown">
+                  <li>
+                    <a class="dropdown-item" href="giai-ma-thuat-ngu.html">
+                      Giải mã thuật ngữ
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="boc-tach-giai-phap.html">
+                      Bóc tách giải pháp
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="case-study-thuc-te.html">
+                      Case study thực tế
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item" href="blog.html">
+                      Góc nhìn chuyên gia
+                    </a>
+                  </li>
+                </ul>
               </li>
   
               <li class="nav-item">
@@ -90,24 +145,68 @@ class EmiNav extends HTMLElement {
       </nav>
       `;
 
-        const active = this.getAttribute("active");
+    /* =========================
+   ACTIVE MENU SYSTEM
+========================= */
 
-        if (active) {
-            const activeLink = this.querySelector(`.nav-link[href*="#${active}"]`);
-        
-            if (activeLink) {
-                this.querySelectorAll(".nav-link").forEach(link => {
-                    link.classList.remove("active-menu");
-                });
-        
-                activeLink.classList.add("active-menu");
-            }
-        }
+    const menuGroups = [
+      {
+        key: "products",
+        pages: [
+          "nhan-tho-di-san.html",
+          "tien-ich-cuoc-song.html",
+          "cham-soc-y-te.html",
+          "an-sinh-xa-hoi.html",
+        ],
+      },
+      {
+        key: "knowledge",
+        pages: [
+          "giai-ma-thuat-ngu.html",
+          "boc-tach-giai-phap.html",
+          "case-study-thuc-te.html",
+          "blog.html",
+          "blog-detail.html",
+          "case-study-detail.html",
+        ],
+      },
+    ];
 
-        window.dispatchEvent(
-            new Event("emi-nav-loaded")
-        );
+    const clearActiveMenu = () => {
+      this.querySelectorAll(".nav-link, .dropdown-item").forEach((link) => {
+        link.classList.remove("active-menu");
+      });
+    };
+
+    const setActiveMenu = (menuKey) => {
+      const menuLink = this.querySelector(`.nav-link[href*="#${menuKey}"]`);
+
+      if (!menuLink) return;
+
+      clearActiveMenu();
+      menuLink.classList.add("active-menu");
+    };
+
+    /* active từ attribute */
+
+    const active = this.getAttribute("active");
+
+    if (active) {
+      setActiveMenu(active);
     }
+
+    /* active tự động theo page */
+
+    const matchedGroup = menuGroups.find((group) =>
+      group.pages.includes(currentPage),
+    );
+
+    if (matchedGroup) {
+      setActiveMenu(matchedGroup.key);
+    }
+
+    window.dispatchEvent(new Event("emi-nav-loaded"));
+  }
 }
 
 customElements.define("emi-nav", EmiNav);

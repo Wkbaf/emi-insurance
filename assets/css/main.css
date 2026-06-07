@@ -1947,45 +1947,30 @@ textarea.form-control {
     align-items: center;
 }
 
-
+/* BEGIN FOR PARTNER SLIDER */
 .partner-slider {
-    overflow: hidden;
-    width: 100%;
-}
-
-
-.partner-list {
-    display: flex;
-    gap: 0;
     overflow-x: auto;
-    scroll-behavior: auto;
-
-    padding: 24px;
-
-    background: #fff;
-
-    border-radius: 30px;
-
-    scrollbar-width: none;
-    white-space: nowrap;
+    scroll-behavior: smooth;
 }
 
-.partner-list::-webkit-scrollbar {
+.partner-slider::-webkit-scrollbar {
     display: none;
 }
 
-
-.partner-item {
-    min-width: 220px;
-
-    flex-shrink: 0;
-
+.partner-list {
     display: flex;
-    justify-content: center;
-
-    border-right: 1px solid #edd0aa;
+    gap: 24px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: max-content;
 }
 
+.partner-item {
+    flex: 0 0 220px;
+}
+
+/* END FOR PARTNER SLIDER */
 .partner-item:last-child {
     border-right: 0;
 }

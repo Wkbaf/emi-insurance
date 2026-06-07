@@ -30,7 +30,18 @@
     <main id="blogDetailApp">
         <section class="blog-detail-hero" id="blogDetailHero">
             <div class="container">
-                <div id="heroContent" class="loading-box">Đang tải blog...</div>
+                <div class="row align-items-center">
+                    <div class="hero-content">
+                        <!-- Giữ heroContent để emi-blog-detail.js vẫn chạy, nhưng ẩn bằng CSS -->
+                        <div id="heroContent" class="loading-box">Đang tải blog...</div>
+
+                        <!-- Text trong background lấy từ sidebarQuote -->
+                        <div id="sidebarQuote">
+                            <p>Đang tải quote...</p>
+                            <span>— EMI</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -54,11 +65,6 @@
                             <div class="sidebar-card result-inline" id="sidebarResults">
                                 <h3>Điểm nổi bật</h3>
                                 <p class="mb-0 text-white-50">Đang tải...</p>
-                            </div>
-
-                            <div class="sidebar-card quote-inline" id="sidebarQuote">
-                                Đang tải quote...
-                                <span>— EMI</span>
                             </div>
 
                             <div class="sidebar-card">
@@ -118,6 +124,7 @@
             defaultReadingTime: "5 phút",
             showVideo: true,
             showAuthor: true,
+            canShare: true,
             defaultQuote: "Học từ tình huống thực tế giúp bạn triển khai nhanh và chắc hơn."
         });
     </script>
