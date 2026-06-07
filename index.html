@@ -393,8 +393,10 @@
                     <i class="bi bi-stars eco-deco" aria-hidden="true"></i>
                 </p>
                 <p class="eco-intro">
-                    Không chỉ cung cấp một bản hợp đồng, EMI thiết kế một mạng lưới bảo vệ đan xen giữa con người, tài sản, sức khỏe và quỹ hưu trí dài hạn.
-                    Một nền tảng vững chắc để bạn an tâm xây dựng sự ổn định tài chính bền vững cho bản thân và gia đình qua từng giai đoạn cuộc sống.  
+                    Không chỉ cung cấp một bản hợp đồng, EMI thiết kế một mạng lưới bảo vệ đan xen giữa con người, tài
+                    sản, sức khỏe và quỹ hưu trí dài hạn.
+                    Một nền tảng vững chắc để bạn an tâm xây dựng sự ổn định tài chính bền vững cho bản thân và gia đình
+                    qua từng giai đoạn cuộc sống.
                 </p>
             </header>
 
@@ -1054,134 +1056,89 @@
         });
     });
 </script>
-<!-- FOR PARTNER -->
+<!-- FOR SCROLL PARTNER -->
 <script>
-    const partnerSlider =
-        document.querySelector(".partner-list");
-
-    document
-        .querySelector(".partner-nav.next")
-        .addEventListener("click", () => {
-
-            partnerSlider.scrollBy({
-                left: 250,
-                behavior: "smooth"
-            });
-
-        });
-
-    document
-        .querySelector(".partner-nav.prev")
-        .addEventListener("click", () => {
-
-            partnerSlider.scrollBy({
-                left: -250,
-                behavior: "smooth"
-            });
-
-        });
-</script>
-<!-- FOR AUTO SCROLL PARTNERS LIST -->
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const slider = document.querySelector(".partner-list");
+    window.addEventListener("load", () => {
+        const slider = document.querySelector(".partner-slider");
+        const list = document.querySelector(".partner-list");
         const prevBtn = document.querySelector(".partner-nav.prev");
         const nextBtn = document.querySelector(".partner-nav.next");
 
-        if (!slider || !prevBtn || !nextBtn) return;
+        if (!slider || !list || !prevBtn || !nextBtn) return;
 
-        let rafId = null;
-        let resumeTimer = null;
-        let endTimer = null;
-        let isPaused = false;
-
-        const speed = 0.45;
-        const step = 260;
-        const resumeDelay = 1800;
-        const endDelay = 900;
-
-        function maxScroll() {
-            return slider.scrollWidth - slider.clientWidth;
+        if (!list.dataset.cloned) {
+            list.innerHTML += list.innerHTML;
+            list.dataset.cloned = "true";
         }
 
-        function stopAuto() {
-            cancelAnimationFrame(rafId);
-            rafId = null;
+        let autoTimer = null;
+        let resumeTimer = null;
+
+        const speed = 1;
+        const step = 260;
+        const resumeDelay = 2000;
+
+        function halfScrollWidth() {
+            return list.scrollWidth / 2;
+        }
+
+        function normalizeScroll() {
+            const half = halfScrollWidth();
+
+            if (slider.scrollLeft >= half) {
+                slider.scrollLeft -= half;
+            }
+
+            if (slider.scrollLeft < 0) {
+                slider.scrollLeft += half;
+            }
         }
 
         function startAuto() {
             stopAuto();
-            if (isPaused) return;
 
-            function tick() {
-                const max = maxScroll();
-
-                if (slider.scrollLeft >= max - 1) {
-                    stopAuto();
-                    clearTimeout(endTimer);
-
-                    endTimer = setTimeout(() => {
-                        slider.scrollTo({ left: 0, behavior: "auto" });
-                        startAuto();
-                    }, endDelay);
-
-                    return;
-                }
-
+            autoTimer = setInterval(() => {
                 slider.scrollLeft += speed;
-                rafId = requestAnimationFrame(tick);
-            }
+                normalizeScroll();
+            }, 20);
+        }
 
-            rafId = requestAnimationFrame(tick);
+        function stopAuto() {
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+            }
         }
 
         function pauseThenResume() {
             stopAuto();
             clearTimeout(resumeTimer);
-            clearTimeout(endTimer);
 
             resumeTimer = setTimeout(() => {
-                if (!isPaused) startAuto();
+                startAuto();
             }, resumeDelay);
         }
 
         function manualScroll(direction) {
-            pauseThenResume();
+            stopAuto();
+            clearTimeout(resumeTimer);
 
-            const target = Math.max(
-                0,
-                Math.min(slider.scrollLeft + direction * step, maxScroll())
-            );
-
-            slider.scrollTo({
-                left: target,
+            slider.scrollBy({
+                left: direction * step,
                 behavior: "smooth"
             });
+
+            setTimeout(() => {
+                normalizeScroll();
+                pauseThenResume();
+            }, 500);
         }
 
         nextBtn.addEventListener("click", () => manualScroll(1));
         prevBtn.addEventListener("click", () => manualScroll(-1));
 
-        slider.addEventListener("mouseenter", () => {
-            isPaused = true;
-            stopAuto();
-            clearTimeout(resumeTimer);
-        });
-
-        slider.addEventListener("mouseleave", () => {
-            isPaused = false;
-            pauseThenResume();
-        });
-
-        slider.addEventListener("touchstart", () => {
-            isPaused = true;
-            stopAuto();
-        }, { passive: true });
-
-        slider.addEventListener("touchend", () => {
-            isPaused = false;
-            pauseThenResume();
-        });
+        slider.addEventListener("mouseenter", stopAuto);
+        slider.addEventListener("mouseleave", startAuto);
 
         startAuto();
     });
