@@ -153,6 +153,39 @@
       .join("");
   }
 
+  function renderHero(item, config, elements) {
+    const updatedDate =
+      config.dateFields
+        .map((field) => formatDisplayDate(item[field]))
+        .find(Boolean) || "";
+  
+    const readingTime =
+      config.readingTimeFields.map((field) => item[field]).find(Boolean) ||
+      config.defaultReadingTime;
+  
+    const thumbnail = item.thumbnail || config.defaultThumbnail;
+  
+    elements.hero.style.setProperty(
+      "--hero-bg",
+      `url("${String(thumbnail).replaceAll('"', "%22")}")`,
+    );
+  
+    elements.heroContent.classList.remove("loading-box");
+  
+    elements.heroContent.innerHTML = `
+      <div class="hero-eyebrow">
+        <i class="fa-solid fa-shield-heart"></i>
+        EMI INSURANCE
+      </div>
+  
+      <h1>${escapeHtml(item.cardQuote || "Nội dung đang được cập nhật.")}</h1>
+  
+      <div class="${escapeHtml(config.metaClass || "blog-meta")}">
+        ${config.showAuthor && item.quoteAuthor ? `<span><i class="fa-regular fa-user"></i> ${escapeHtml(item.quoteAuthor)}</span>` : ""}
+      </div>
+    `;
+  }
+
   function renderDetailBody(item, config) {
     const conclusion = item.conclusion || config.defaultConclusion;
     const conclusion_label = item.conclusionLabel || config.defaultConclusionLabel;
@@ -186,25 +219,6 @@
                 <p>${escapeHtml(conclusion)}</p>
             </div>
         `;
-  }
-
-  function renderHero(item, config, elements) {
-    const updatedDate =
-      config.dateFields
-        .map((field) => formatDisplayDate(item[field]))
-        .find(Boolean) || "";
-    const readingTime =
-      config.readingTimeFields.map((field) => item[field]).find(Boolean) ||
-      config.defaultReadingTime;
-    const thumbnail = item.thumbnail || config.defaultThumbnail;
-
-    elements.hero.style.setProperty(
-      "--hero-bg",
-      `url("${String(thumbnail).replaceAll('"', "%22")}")`,
-    );
-
-    elements.heroContent.classList.remove("loading-box");
-    elements.heroContent.innerHTML = "";
   }
 
   function renderArticle(item, config, elements) {
@@ -248,11 +262,11 @@
         `;
 
     const quote = item.cardQuote || item.quote || config.defaultQuote;
-    const author = item.quoteAuthor || item.author || "EMI";
+    const author = item.author || "EMI";
 
     elements.sidebarQuote.innerHTML = `
             “${escapeHtml(quote)}”
-            <span>— ${escapeHtml(author)}</span>
+            <span> ${escapeHtml(author)}</span>
         `;
   }
 
@@ -401,7 +415,7 @@
         readingTimeFields: ["readingTime"],
         defaultReadingTime: "4 phút",
         showVideo: false,
-        showAuthor: false,
+        showAuthor: true,
         ...userConfig,
       };
 

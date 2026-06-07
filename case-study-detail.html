@@ -28,9 +28,20 @@
     <emi-nav active="knowledge"></emi-nav>
 
     <main id="caseDetailApp">
-        <section class="case-detail-hero" id="caseDetailHero">
+        <section class="blog-detail-hero" id="caseDetailHero">
             <div class="container">
-                <div id="heroContent" class="loading-box">Đang tải case study...</div>
+                <div class="row align-items-center">
+                    <div class="hero-content">
+                        <!-- Giữ heroContent để emi-blog-detail.js vẫn chạy, nhưng ẩn bằng CSS -->
+                        <div id="heroContent" class="loading-box">Đang tải blog...</div>
+
+                        <!-- Text trong background lấy từ sidebarQuote -->
+                        <div id="sidebarQuote">
+                            <p>Đang tải quote...</p>
+                            <span>— EMI</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -109,7 +120,7 @@
             listPageUrl: "case-study-thuc-te.html",
             detailPageUrl: "case-study-detail.html",
             heroDescClass: "case-hero-desc",
-            metaClass: "case-meta",
+            metaClass: "blog-meta",
             articleIconClass: "fa-solid fa-file-shield",
             sidebarResultTitle: "Kết quả nổi bật",
             readingTimeLabel: "Thời gian đọc",
@@ -117,7 +128,7 @@
             dateFields: ["updatedDate", "updatedAt"],
             defaultReadingTime: "4 phút",
             showVideo: false,
-            showAuthor: false,
+            showAuthor: true,
             defaultQuote: "Một hợp đồng tốt là hợp đồng bạn thực sự hiểu rõ."
         });
     </script>
