@@ -469,7 +469,7 @@
         defaultReadingTime: "4 phút",
         showVideo: false,
         showAuthor: true,
-        canShare: true,
+        canShare: false,
         ...userConfig,
       };
 
