@@ -249,9 +249,62 @@
 
                 ${config.showVideo ? renderVideo(item) : ""}
                 ${renderDetailBody(item, config)}
+                ${renderShareBox(item, config)}
             </div>
         `;
   }
+
+  function getShareUrl(item, config) {
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
+    return `${currentUrl}#${encodeURIComponent(item.id)}`;
+  }
+  
+  function renderShareBox(item, config) {
+    if (config.canShare !== true) return "";
+  
+    const shareUrl = getShareUrl(item, config);
+    const title = item.title || config.defaultTitle;
+    const text = item.description || title;
+  
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+    const zaloUrl = `https://zalo.me/share?u=${encodeURIComponent(shareUrl)}`;
+    // const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    // const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`;
+  
+    return `
+      <div class="article-share-box">
+        <div>
+          <div class="share-label">Chia sẻ bài viết</div>
+          <p>Gửi bài viết này lên mạng xã hội hoặc sao chép liên kết.</p>
+        </div>
+  
+        <div class="share-actions">
+          <a href="${escapeAttr(fbUrl)}" target="_blank" rel="noopener" class="share-btn facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+  
+          <a href="${escapeAttr(zaloUrl)}" target="_blank" rel="noopener" class="share-btn zalo">
+            Zalo
+          </a>
+  
+          
+  
+          <button type="button" class="share-btn copy-link" data-share-url="${escapeAttr(shareUrl)}">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+    // Link share for linkedin and x
+    // <a href="${escapeAttr(linkedinUrl)}" target="_blank" rel="noopener" class="share-btn linkedin">
+    //   <i class="fa-brands fa-linkedin-in"></i>
+    // </a>
+
+    // <a href="${escapeAttr(xUrl)}" target="_blank" rel="noopener" class="share-btn x-twitter">
+    //   <i class="fa-brands fa-x-twitter"></i>
+    // </a>
 
   function renderCurrentSidebar(item, config, elements) {
     const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
@@ -416,6 +469,7 @@
         defaultReadingTime: "4 phút",
         showVideo: false,
         showAuthor: true,
+        canShare: true,
         ...userConfig,
       };
 
@@ -432,6 +486,29 @@
       loadDetail(getParamId(), config, elements);
     });
   }
+
+  // Event click share
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest(".copy-link");
+    if (!button) return;
+  
+    const url = button.dataset.shareUrl;
+    if (!url) return;
+  
+    try {
+      await navigator.clipboard.writeText(url);
+      const oldHtml = button.innerHTML;
+      button.innerHTML = `<i class="fa-solid fa-check"></i>`;
+      button.classList.add("copied");
+  
+      setTimeout(() => {
+        button.innerHTML = oldHtml;
+        button.classList.remove("copied");
+      }, 1400);
+    } catch (error) {
+      alert("Không thể copy link. Bạn vui lòng copy thủ công.");
+    }
+  });
 
   window.EMIDetailPage = { init };
 })();

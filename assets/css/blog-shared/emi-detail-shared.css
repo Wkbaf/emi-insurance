@@ -672,3 +672,89 @@ body {
 .blog-meta i {
     display: none;
 }
+/* FOR SHARING */
+.article-share-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 22px;
+    background: #fffaf0;
+    border: 1px solid rgba(191, 155, 66, .2);
+}
+
+.share-label {
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.article-share-box p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.share-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 900;
+    color: #fff;
+    background: var(--navy);
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.share-btn.facebook {
+    background: #1877f2;
+}
+
+.share-btn.zalo {
+    background: #0068ff;
+    font-size: 12px;
+}
+
+.share-btn.linkedin {
+    background: #0a66c2;
+}
+
+.share-btn.x-twitter {
+    background: #111827;
+}
+
+.share-btn.copy-link {
+    background: var(--gold);
+}
+
+.share-btn.copy-link.copied {
+    background: #16a34a;
+}
+
+@media(max-width: 768px) {
+    .article-share-box {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
