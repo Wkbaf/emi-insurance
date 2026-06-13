@@ -296,3 +296,9 @@
 .dropdown-parent-link:hover {
     background: #fff6df;
 }
+
+.emi-dropdown .dropdown-item:hover,
+.emi-dropdown .dropdown-item.active-menu {
+    background: #fff6df !important;
+    color: #bf9b42 !important;
+}

@@ -1,6 +1,6 @@
 /* MENU SMOOTH SCROLL */
 function initSmoothScroll() {
-    document.querySelectorAll(".nav-link, .btn-main").forEach(link => {
+    document.querySelectorAll(".nav-link, .btn-main, .dropdown-item").forEach(link => {
         if (link.dataset.menuReady === "true") return;
         link.dataset.menuReady = "true";
 

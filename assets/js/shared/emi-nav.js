@@ -48,6 +48,7 @@ class EmiNav extends HTMLElement {
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
                   href="javascript:void(0)"
+                  data-menu="products"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -91,6 +92,7 @@ class EmiNav extends HTMLElement {
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
                   href="javascript:void(0)"
+                  data-menu="knowledge"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -167,21 +169,21 @@ class EmiNav extends HTMLElement {
       {
         key: "products",
         pages: [
-          "nhan-tho-di-san.html",
-          "tien-ich-cuoc-song.html",
-          "cham-soc-y-te.html",
-          "an-sinh-xa-hoi.html",
+          "nhan-tho-di-san",
+          "tien-ich-cuoc-song",
+          "cham-soc-y-te",
+          "an-sinh-xa-hoi",
         ],
       },
       {
         key: "knowledge",
         pages: [
-          "giai-ma-thuat-ngu.html",
-          "boc-tach-giai-phap.html",
-          "case-study-thuc-te.html",
-          "blog.html",
-          "blog-detail.html",
-          "case-study-detail.html",
+          "giai-ma-thuat-ngu",
+          "boc-tach-giai-phap",
+          "case-study-thuc-te",
+          "blog",
+          "blog-detail",
+          "case-study-detail",
         ],
       },
     ];
@@ -193,12 +195,27 @@ class EmiNav extends HTMLElement {
     };
 
     const setActiveMenu = (menuKey) => {
-      const menuLink = this.querySelector(`.nav-link[href*="#${menuKey}"]`);
+      const menuLink = this.querySelector(`.nav-link[data-menu="${menuKey}"]`);
 
       if (!menuLink) return;
 
       clearActiveMenu();
       menuLink.classList.add("active-menu");
+    };
+
+    const setActiveSubMenu = (pageName, menuKey) => {
+      clearActiveMenu();
+    
+      const parentLink = this.querySelector(`.nav-link[href*="#${menuKey}"]`);
+      const subLink = Array.from(
+        this.querySelectorAll(".dropdown-item")
+      ).find(link => {
+        const href = link.getAttribute("href") || "";
+        return href.includes(pageName);
+      });
+    
+      if (parentLink) parentLink.classList.add("active-menu");
+      if (subLink) subLink.classList.add("active-menu");
     };
 
     /* active từ attribute */
@@ -216,7 +233,8 @@ class EmiNav extends HTMLElement {
     );
 
     if (matchedGroup) {
-      setActiveMenu(matchedGroup.key);
+      // setActiveMenu(matchedGroup.key);
+      setActiveSubMenu(currentPage, matchedGroup.key);
     }
 
     window.dispatchEvent(new Event("emi-nav-loaded"));
