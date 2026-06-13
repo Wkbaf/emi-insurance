@@ -47,7 +47,7 @@ class EmiNav extends HTMLElement {
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
-                  href="${isHome ? "#products" : "index.html#products"}"
+                  href="javascript:void(0)"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -78,12 +78,19 @@ class EmiNav extends HTMLElement {
                       Hoạch định an sinh xã hội
                     </a>
                   </li>
+
+                  <li>
+                    <a class="dropdown-item dropdown-parent-link"
+                      href="${isHome ? "#products" : "index.html#products"}">
+                      Xem tất cả sản phẩm
+                    </a>
+                  </li>
                 </ul>
               </li>
   
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
-                  href="${isHome ? "#knowledge" : "index.html#knowledge"}"
+                  href="javascript:void(0)"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -112,6 +119,13 @@ class EmiNav extends HTMLElement {
                   <li>
                     <a class="dropdown-item" href="blog.html">
                       Góc nhìn chuyên gia
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="dropdown-item dropdown-parent-link"
+                      href="${isHome ? "#knowledge" : "index.html#knowledge"}">
+                      Xem tất cả kiến thức
                     </a>
                   </li>
                 </ul>
