@@ -158,20 +158,20 @@
       config.dateFields
         .map((field) => formatDisplayDate(item[field]))
         .find(Boolean) || "";
-  
+
     const readingTime =
       config.readingTimeFields.map((field) => item[field]).find(Boolean) ||
       config.defaultReadingTime;
-  
+
     const thumbnail = item.thumbnail || config.defaultThumbnail;
-  
+
     elements.hero.style.setProperty(
       "--hero-bg",
       `url("${String(thumbnail).replaceAll('"', "%22")}")`,
     );
-  
+
     elements.heroContent.classList.remove("loading-box");
-  
+
     elements.heroContent.innerHTML = `
       <div class="hero-eyebrow">
         <i class="fa-solid fa-shield-heart"></i>
@@ -188,7 +188,8 @@
 
   function renderDetailBody(item, config) {
     const conclusion = item.conclusion || config.defaultConclusion;
-    const conclusion_label = item.conclusionLabel || config.defaultConclusionLabel;
+    const conclusion_label =
+      item.conclusionLabel || config.defaultConclusionLabel;
 
     if (item.detailContentType === "custom") {
       return `
@@ -219,6 +220,41 @@
                 <p>${escapeHtml(conclusion)}</p>
             </div>
         `;
+  }
+  // FOR SHARE META
+  function setMeta(property, content) {
+    let meta = document.querySelector(`meta[property="${property}"]`);
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("property", property);
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute("content", content || "");
+  }
+
+  function updateOgMeta(item, config) {
+    const title = item.title || config.defaultTitle || "Blog";
+    const description = item.description || item.excerpt || title;
+    const image = item.thumbnail || config.defaultThumbnail || "";
+    const url = window.location.href;
+
+    document.title = `${title} | EMI Insurance`;
+
+    setMeta("og:type", "article");
+    setMeta("og:title", title);
+    setMeta("og:description", description);
+    setMeta("og:image", image);
+    setMeta("og:image:secure_url", image);
+    setMeta("og:url", url);
+
+    console.log("OG meta updated:", {
+      title,
+      description,
+      image,
+      url,
+    });
   }
 
   function renderArticle(item, config, elements) {
@@ -254,23 +290,29 @@
         `;
   }
 
+  // function getShareUrl(item, config) {
+  //   const currentUrl = window.location.href.split("#")[0].split("?")[0];
+  //   return `${currentUrl}?id=${encodeURIComponent(item.id)}&v=${Date.now()}`;
+  // }
+
   function getShareUrl(item, config) {
-    const currentUrl = window.location.href.split("#")[0].split("?")[0];
-    return `${currentUrl}#${encodeURIComponent(item.id)}`;
+    return `https://share.emi-insurance.com/share-blog?id=${encodeURIComponent(item.id)}&v=${Date.now()}`;
   }
-  
+
+
   function renderShareBox(item, config) {
     if (config.canShare !== true) return "";
-  
+
     const shareUrl = getShareUrl(item, config);
     const title = item.title || config.defaultTitle;
     const text = item.description || title;
-  
+
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-    const zaloUrl = `https://zalo.me/share?u=${encodeURIComponent(shareUrl)}`;
+    // const zaloUrl = `https://zalo.me/share?u=${encodeURIComponent(shareUrl)}`;
+    const zaloUrl = `https://zalo.me/share?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}`;
     // const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
     // const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`;
-  
+
     return `
       <div class="article-share-box">
         <div>
@@ -279,13 +321,19 @@
         </div>
   
         <div class="share-actions">
-          <a href="${escapeAttr(fbUrl)}" target="_blank" rel="noopener" class="share-btn facebook">
+          <button
+            type="button"
+            class="share-btn facebook open-share-popup"
+            data-share-url="${escapeAttr(shareUrl)}">
             <i class="fa-brands fa-facebook-f"></i>
-          </a>
-  
-          <a href="${escapeAttr(zaloUrl)}" target="_blank" rel="noopener" class="share-btn zalo">
+          </button>
+
+          <button
+            type="button"
+            class="share-btn zalo open-share-popup"
+            data-share-url="${escapeAttr(shareUrl)}">
             Zalo
-          </a>
+          </button>
   
           
   
@@ -297,14 +345,14 @@
     `;
   }
 
-    // Link share for linkedin and x
-    // <a href="${escapeAttr(linkedinUrl)}" target="_blank" rel="noopener" class="share-btn linkedin">
-    //   <i class="fa-brands fa-linkedin-in"></i>
-    // </a>
+  // Link share for linkedin and x
+  // <a href="${escapeAttr(linkedinUrl)}" target="_blank" rel="noopener" class="share-btn linkedin">
+  //   <i class="fa-brands fa-linkedin-in"></i>
+  // </a>
 
-    // <a href="${escapeAttr(xUrl)}" target="_blank" rel="noopener" class="share-btn x-twitter">
-    //   <i class="fa-brands fa-x-twitter"></i>
-    // </a>
+  // <a href="${escapeAttr(xUrl)}" target="_blank" rel="noopener" class="share-btn x-twitter">
+  //   <i class="fa-brands fa-x-twitter"></i>
+  // </a>
 
   function renderCurrentSidebar(item, config, elements) {
     const keyResults = Array.isArray(item.keyResults) ? item.keyResults : [];
@@ -336,7 +384,7 @@
   }
 
   function detailHref(id, config) {
-    return `${config.detailPageUrl}#${encodeURIComponent(id)}`;
+    return `${config.detailPageUrl}?id=${encodeURIComponent(id)}`;
   }
 
   function renderSidebar(items, currentId, config, elements) {
@@ -431,6 +479,8 @@
 
       const item = { id: doc.id, ...doc.data() };
 
+      updateOgMeta(item, config);
+
       if (item.isDeleted === true) {
         renderError(
           `${config.entityLabel} này không còn khả dụng.`,
@@ -489,18 +539,60 @@
 
   // Event click share
   document.addEventListener("click", async (event) => {
+    const shareButton = event.target.closest(".open-share-popup");
+
+    if (shareButton) {
+      const popup = document.getElementById("sharePopup");
+      const input = document.getElementById("sharePopupInput");
+      const copyBtn = document.getElementById("copySharePopupBtn");
+
+      if (!popup || !input) return;
+
+      input.value = shareButton.dataset.shareUrl || "";
+      popup.classList.add("show");
+      input.select();
+
+      if (copyBtn) {
+        copyBtn.innerText = "Copy Link";
+      }
+
+      return;
+    }
+
+    if (
+      event.target.id === "closeSharePopup" ||
+      event.target.id === "sharePopup"
+    ) {
+      document.getElementById("sharePopup")?.classList.remove("show");
+    }
+
+    if (event.target.id === "copySharePopupBtn") {
+      const input = document.getElementById("sharePopupInput");
+
+      await navigator.clipboard.writeText(input.value);
+
+      const btn = event.target;
+      const oldText = btn.innerText;
+
+      btn.innerText = "✓ Đã copy link";
+
+      setTimeout(() => {
+        btn.innerText = oldText;
+      }, 1500);
+    }
+    // Copy link
     const button = event.target.closest(".copy-link");
     if (!button) return;
-  
+
     const url = button.dataset.shareUrl;
     if (!url) return;
-  
+
     try {
       await navigator.clipboard.writeText(url);
       const oldHtml = button.innerHTML;
       button.innerHTML = `<i class="fa-solid fa-check"></i>`;
       button.classList.add("copied");
-  
+
       setTimeout(() => {
         button.innerHTML = oldHtml;
         button.classList.remove("copied");
