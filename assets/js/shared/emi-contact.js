@@ -126,7 +126,7 @@ class EmiContact extends HTMLElement {
       btn.disabled = true;
 
       try {
-        const response = await fetch("https://autumn-sound-88ca.baf2681995.workers.dev", {
+        const response = await fetch("https://brevo-mail.emi-insurance.com", {
           method: "POST",
           body: new FormData(consultForm)
         });
