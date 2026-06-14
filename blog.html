@@ -510,7 +510,8 @@
                 visibleBlogs.forEach(item => {
                     const categoryKey = item.categorySlug || "";
                     const col = document.createElement("div");
-                    const detailUrl = `/blog-detail#${encodeURIComponent(item.id)}`;
+                    // const detailUrl = `/blog-detail#${encodeURIComponent(item.id)}`;
+                    const detailUrl = `/blog-detail?id=${encodeURIComponent(item.id)}`;
                     const thumbnail = getThumbnail(item);
                     const publishedDate = formatDate(item.publishedAt || item.createdAt);
                     const author = item.author || "EMI Team";

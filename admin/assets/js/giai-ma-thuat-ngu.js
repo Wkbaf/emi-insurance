@@ -360,6 +360,10 @@ function editTerm(id) {
   termModal.show();
 }
 
+function multiline(text) {
+  return escapeHtml(text || "").replaceAll("\n", "<br>");
+}
+
 function viewTerm(id) {
   const item = terms.find((term) => term.id === id);
 
@@ -405,17 +409,17 @@ function viewTerm(id) {
 
                 <div class="view-block">
                     <label>Definition</label>
-                    <p>${escapeHtml(item.definition || "")}</p>
+                    <p>${multiline(item.definition)}</p>
                 </div>
 
                 <div class="view-block">
                     <label>Simple</label>
-                    <p>${escapeHtml(item.simple || "")}</p>
+                    <p>${multiline(item.simple)}</p>
                 </div>
 
                 <div class="view-block">
                     <label>Description</label>
-                    <p>${escapeHtml(item.description || "")}</p>
+                    <p>${multiline(item.description)}</p>
                 </div>
 
                 <div class="view-block">

@@ -379,6 +379,10 @@
                 filterTerms();
             }
 
+            function formatMultiline(text) {
+                return escapeHtml(text || "").replaceAll("\n", "<br>");
+            }
+
             function openTermModal(id) {
                 const item = terms.find(term => term.id === id);
                 if (!item) return;
@@ -388,10 +392,10 @@
                 });
 
                 document.getElementById("modalCategory").textContent = item.category || "";
-                document.getElementById("modalTitle").textContent = `${item.termName || ""} là gì?`;
-                document.getElementById("modalDescription").textContent = item.description || "";
-                document.getElementById("modalDefinition").textContent = item.definition || "";
-                document.getElementById("modalSimple").textContent = item.simple || "";
+                document.getElementById("modalTitle").textContent = `${item.termName || ""}`;
+                document.getElementById("modalDescription").innerHTML = formatMultiline(item.description);
+                document.getElementById("modalDefinition").innerHTML = formatMultiline(item.definition);
+                document.getElementById("modalSimple").innerHTML = formatMultiline(item.simple);
 
                 const notes = Array.isArray(item.notes) ? item.notes : [];
                 document.getElementById("modalNotes").innerHTML = notes.map(note => `<li>${escapeHtml(note)}</li>`).join("");
