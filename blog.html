@@ -321,360 +321,50 @@
     <script src="assets/js/shared/footer.js"></script>
     <script src="assets/js/nav.js"></script>
 
+    <script src="assets/js/shared/emi-list-page.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const filterButtons = Array.from(document.querySelectorAll(".case-tab-btn"));
-            const blogGrid = document.getElementById("blogGrid");
-            const blogEmpty = document.getElementById("blogEmpty");
-            const blogResultCount = document.getElementById("blogResultCount");
-            const loadMoreWrap = document.getElementById("blogLoadMoreWrap");
-            const loadMoreBtn = document.getElementById("blogLoadMoreBtn");
-            const clearSearchBtn = document.getElementById("clearBlogSearch");
-            const searchInput = document.getElementById("blogSearchInput");
+        EMIListPage.init({
+            collectionName: "blogs",
+            categoryType: "blog",
+            gridId: "blogGrid",
+            emptyId: "blogEmpty",
+            loadMoreWrapId: "blogLoadMoreWrap",
+            loadMoreBtnId: "blogLoadMoreBtn",
+            clearSearchId: "clearBlogSearch",
+            searchInputId: "blogSearchInput",
+            categoryTabsId: "blogCategoryTabs",
+            loadingText: "Đang tải bài viết...",
+            renderCard({ item, escapeHtml, shortText, formatDate }) {
+                const detailUrl = `/blog-detail?id=${encodeURIComponent(item.id)}`;
+                const thumbnail = item.thumbnail || "assets/image/case-study-01.png";
+                const publishedDate = formatDate(item.publishedAt || item.createdAt);
 
-            const blogCategoryTabs = document.getElementById("blogCategoryTabs");
-            let blogCategories = [];
-
-            const PAGE_SIZE = 6;
-            let blogs = [];
-            let activeCategory = "all";
-            let searchKeyword = "";
-            let visibleCount = PAGE_SIZE;
-
-            function escapeHtml(text) {
-                return String(text || "")
-                    .replaceAll("&", "&amp;")
-                    .replaceAll("<", "&lt;")
-                    .replaceAll(">", "&gt;")
-                    .replaceAll('"', "&quot;")
-                    .replaceAll("'", "&#039;");
-            }
-
-            async function loadBlogCategories() {
-                const snapshot = await db.collection("categories")
-                    .where("type", "==", "blog")
-                    .where("isDeleted", "==", false)
-                    .where("status", "==", "active")
-                    .orderBy("position", "asc")
-                    .get();
-
-                blogCategories = [];
-
-                snapshot.forEach(doc => {
-                    blogCategories.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-
-                renderBlogCategoryTabs();
-            }
-
-            function renderBlogCategoryTabs() {
-                blogCategoryTabs.innerHTML = `
-                    <button class="case-tab-btn active" data-filter="all">
-                        Tất cả
-                    </button>
-                `;
-
-                blogCategories.forEach(category => {
-                    blogCategoryTabs.innerHTML += `
-                        <button class="case-tab-btn" data-filter="${escapeHtml(category.slug || category.id)}">
-                            ${escapeHtml(category.name || "")}
-                        </button>
-                    `;
-                });
-
-                blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(button => {
-                    button.addEventListener("click", () => {
-                        blogCategoryTabs.querySelectorAll(".case-tab-btn").forEach(btn => {
-                            btn.classList.remove("active");
-                        });
-
-                        button.classList.add("active");
-                        activeCategory = button.dataset.filter || "all";
-                        renderCards(true);
-                    });
-                });
-            }
-
-            function shortText(text, max = 130) {
-                if (!text) return "";
-                return text.length > max ? text.slice(0, max) + "..." : text;
-            }
-
-            function normalizeText(text) {
-                return String(text || "")
-                    .toLowerCase()
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "");
-            }
-
-            function formatDate(value) {
-                if (!value) return "";
-
-                let date = null;
-
-                if (value.toDate && typeof value.toDate === "function") {
-                    date = value.toDate();
-                } else if (value.seconds) {
-                    date = new Date(value.seconds * 1000);
-                } else {
-                    date = new Date(value);
-                }
-
-                if (!date || Number.isNaN(date.getTime())) return "";
-
-                return date.toLocaleDateString("vi-VN", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric"
-                });
-            }
-
-            function getFilteredBlogs() {
-                const keyword = normalizeText(searchKeyword);
-
-                return blogs.filter(item => {
-                    const text = normalizeText(`
-                        ${item.title || ""}
-                        ${item.category || ""}
-                        ${item.description || ""}
-                        ${item.excerpt || ""}
-                        ${item.author || ""}
-                    `);
-
-                    const matchSearch = !keyword || text.includes(keyword);
-                    const categoryKey = item.categorySlug || "";
-                    const matchCategory = activeCategory === "all" || categoryKey === activeCategory;
-
-                    return matchSearch && matchCategory;
-                });
-            }
-
-            function updateResultCount() {
-                if (blogResultCount) blogResultCount.innerText = "";
-            }
-
-            function updateClearSearchButton() {
-                if (!clearSearchBtn) return;
-                clearSearchBtn.classList.toggle("show", Boolean(searchKeyword));
-            }
-
-            function getYoutubeId(url) {
-                if (!url) return "";
-
-                try {
-                    const parsedUrl = new URL(url);
-
-                    if (parsedUrl.hostname.includes("youtu.be")) {
-                        return parsedUrl.pathname.replace("/", "");
-                    }
-
-                    if (parsedUrl.searchParams.get("v")) {
-                        return parsedUrl.searchParams.get("v");
-                    }
-
-                    const embedMatch = parsedUrl.pathname.match(/\/embed\/([^/?]+)/);
-                    if (embedMatch && embedMatch[1]) {
-                        return embedMatch[1];
-                    }
-                } catch (error) {
-                    return "";
-                }
-
-                return "";
-            }
-
-            function getThumbnail(item) {
-                if (item.thumbnail) return item.thumbnail;
-
-                const youtubeId = getYoutubeId(item.youtubeUrl || item.videoUrl || "");
-                if (youtubeId) {
-                    return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
-                }
-
-                return "assets/image/case-study-01.png";
-            }
-
-            function renderCards(resetVisible = false) {
-                if (resetVisible) {
-                    visibleCount = PAGE_SIZE;
-                }
-
-                blogGrid.innerHTML = "";
-
-                const filteredBlogs = getFilteredBlogs();
-                const visibleBlogs = filteredBlogs.slice(0, visibleCount);
-
-                visibleBlogs.forEach(item => {
-                    const categoryKey = item.categorySlug || "";
-                    const col = document.createElement("div");
-                    // const detailUrl = `/blog-detail#${encodeURIComponent(item.id)}`;
-                    const detailUrl = `/blog-detail?id=${encodeURIComponent(item.id)}`;
-                    const thumbnail = getThumbnail(item);
-                    const publishedDate = formatDate(item.publishedAt || item.createdAt);
-                    const author = item.author || "EMI Team";
-                    const duration = item.videoDuration || item.duration || "";
-
-                    col.className = "col-lg-4 col-md-6 case-item";
-                    col.dataset.category = categoryKey;
-
-                    col.innerHTML = `
-                        <article class="case-card h-100">
-                            <div class="case-card-img">
-                                <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Blog")}">
-                                </div>
-                            </div>
-
-                            <div class="case-card-body">
-                                <span class="solution-badge">
-                                    ${escapeHtml(item.category || "Blog")}
-                                </span>
-
-                                <h3>${escapeHtml(item.title || "")}</h3>
-
-                                <div class="blog-meta">
-                                    ${publishedDate ? `<span><i class="bi bi-calendar3"></i>${escapeHtml(publishedDate)}</span>` : ""}
-                                    ${author ? `<span><i class="bi bi-person-circle"></i>${escapeHtml(author)}</span>` : ""}
-                                    ${duration ? `<span><i class="bi bi-clock"></i>${escapeHtml(duration)}</span>` : ""}
-                                </div>
-
-                                <p>${escapeHtml(shortText(item.description || item.excerpt || ""))}</p>
-
-                                ${item.cardQuote || item.quote ? `
-                                    <div class="case-quote">
-                                        “${escapeHtml(item.cardQuote || item.quote || "Start small, build real.")}”
-                                    </div>
-                                ` : ""}
-
-                                <a href="${detailUrl}" class="case-link">
-                                    Xem chi tiết
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    `;
-
-                    blogGrid.appendChild(col);
-                });
-
-                const hasMore = filteredBlogs.length > visibleCount;
-
-                if (loadMoreWrap) {
-                    loadMoreWrap.classList.toggle("d-none", !hasMore);
-                }
-
-                if (blogEmpty) {
-                    blogEmpty.classList.toggle("show", filteredBlogs.length === 0);
-                }
-
-                updateResultCount();
-                updateClearSearchButton();
-            }
-
-            async function loadBlogsFromFirebase() {
-                try {
-                    blogGrid.innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            Đang tải bài viết...
+                return `
+                    <article class="case-card h-100">
+                        <div class="case-card-img">
+                        <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Blog")}">
                         </div>
-                    `;
 
-                    updateResultCount();
+                        <div class="case-card-body">
+                        <span class="solution-badge">${escapeHtml(item.category || "Blog")}</span>
+                        <h3>${escapeHtml(item.title || "")}</h3>
 
-                    if (typeof firebase === "undefined" || typeof db === "undefined") {
-                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra assets/js/shared/firebase.js và Firebase SDK.");
-                    }
-
-                    const snapshot = await db.collection("blogs")
-                        .where("isDeleted", "==", false)
-                        .where("categoryIsDeleted", "==", false)
-                        .where("categoryStatus", "==", "active")
-                        .get();
-
-                    blogs = [];
-
-                    snapshot.forEach(doc => {
-                        blogs.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-                    });
-
-                    blogs.sort((a, b) => {
-                        const getTime = (item) => {
-                            const value = item.publishedAt || item.createdAt;
-
-                            if (!value) return 0;
-                            if (value.toMillis && typeof value.toMillis === "function") return value.toMillis();
-                            if (value.seconds) return value.seconds * 1000;
-
-                            const date = new Date(value);
-                            return Number.isNaN(date.getTime()) ? 0 : date.getTime();
-                        };
-
-                        return getTime(b) - getTime(a);
-                    });
-
-                    renderCards(true);
-                } catch (error) {
-                    console.error("Firestore Error:", error);
-
-                    const errorMessage = error && (error.message || error.code)
-                        ? `${error.code ? error.code + ": " : ""}${error.message || ""}`
-                        : "Không rõ lỗi";
-
-                    blogGrid.innerHTML = `
-                        <div class="col-12 text-center py-5 text-danger">
-                            <div class="fw-bold mb-2">Không thể tải bài viết.</div>
-                            <div class="small">${escapeHtml(errorMessage)}</div>
+                        <div class="blog-meta">
+                            ${publishedDate ? `<span><i class="bi bi-calendar3"></i>${escapeHtml(publishedDate)}</span>` : ""}
+                            ${item.author ? `<span><i class="bi bi-person-circle"></i>${escapeHtml(item.author)}</span>` : ""}
+                            ${item.readingTime ? `<span><i class="bi bi-clock"></i>${escapeHtml(item.readingTime)}</span>` : ""}
                         </div>
+
+                        <p>${escapeHtml(shortText(item.description || item.excerpt || ""))}</p>
+
+                        <a href="${detailUrl}" class="case-link">
+                            Xem chi tiết <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        </div>
+                    </article>
                     `;
-
-                    if (loadMoreWrap) {
-                        loadMoreWrap.classList.add("d-none");
-                    }
-                }
             }
-
-            if (searchInput) {
-                searchInput.addEventListener("input", (e) => {
-                    searchKeyword = e.target.value.trim();
-                    renderCards(true);
-                });
-            }
-
-            if (clearSearchBtn && searchInput) {
-                clearSearchBtn.addEventListener("click", () => {
-                    searchInput.value = "";
-                    searchKeyword = "";
-                    renderCards(true);
-                    searchInput.focus();
-                });
-            }
-
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener("click", () => {
-                    visibleCount += PAGE_SIZE;
-                    renderCards(false);
-                });
-            }
-
-            filterButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    filterButtons.forEach(btn => btn.classList.remove("active"));
-                    button.classList.add("active");
-
-                    activeCategory = button.dataset.filter || "all";
-                    renderCards(true);
-                });
-            });
-
-            Promise.all([
-                loadBlogCategories(),
-                loadBlogsFromFirebase()
-            ]);
         });
     </script>
 

@@ -299,7 +299,6 @@
     return `https://share.emi-insurance.com/share-blog?id=${encodeURIComponent(item.id)}&v=${Date.now()}`;
   }
 
-
   function renderShareBox(item, config) {
     if (config.canShare !== true) return "";
 
@@ -387,18 +386,39 @@
     return `${config.detailPageUrl}?id=${encodeURIComponent(id)}`;
   }
 
+  function buildCategoryUrl(category, item, config) {
+    const listUrl = config.listPageUrl || "";
+    const paramName = config.categoryParamName || "category";
+
+    const categoryValue =
+      item.categorySlug || item.categoryId || item.category || category;
+
+    return `${listUrl}?${paramName}=${encodeURIComponent(categoryValue)}`;
+  }
+
   function renderSidebar(items, currentId, config, elements) {
-    const categories = [
-      ...new Set(items.map((item) => item.category).filter(Boolean)),
-    ];
+    const categoryMap = new Map();
+
+    items.forEach((item) => {
+      const label = item.category || config.defaultCategory;
+      if (!label) return;
+
+      if (!categoryMap.has(label)) {
+        categoryMap.set(label, item);
+      }
+    });
+
+    const categories = Array.from(categoryMap.entries());
 
     elements.categoryCloud.innerHTML = categories.length
       ? categories
-          .map(
-            (category) => `
-                <a href="${escapeAttr(config.listPageUrl)}?category=${encodeURIComponent(category)}">${escapeHtml(category)}</a>
-            `,
-          )
+          .map(([category, item]) => {
+            return `
+              <a href="${escapeAttr(buildCategoryUrl(category, item, config))}">
+                ${escapeHtml(category)}
+              </a>
+            `;
+          })
           .join("")
       : `<span class="text-muted small">Chưa có category.</span>`;
 
@@ -408,13 +428,13 @@
       ? popular
           .map(
             (item) => `
-                <a href="${detailHref(item.id, config)}" class="popular-item">
-                    <img src="${escapeAttr(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeAttr(item.title || config.defaultTitle)}">
-                    <div>
-                        <strong>${escapeHtml(shortText(item.title || config.defaultTitle, 54))}</strong>
-                        <small>${escapeHtml(item.category || config.defaultCategory)}</small>
-                    </div>
-                </a>
+              <a href="${detailHref(item.id, config)}" class="popular-item">
+                <img src="${escapeAttr(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeAttr(item.title || config.defaultTitle)}">
+                <div>
+                  <strong>${escapeHtml(shortText(item.title || config.defaultTitle, 54))}</strong>
+                  <small>${escapeHtml(item.category || config.defaultCategory)}</small>
+                </div>
+              </a>
             `,
           )
           .join("")

@@ -320,12 +320,7 @@
                 <div id="caseResultCount" class="case-result-count" aria-live="polite"></div>
             </div>
 
-            <div class="case-tabs">
-                <button class="case-tab-btn active" data-filter="all">Tất cả</button>
-                <button class="case-tab-btn" data-filter="old-contract">Giải cứu hợp đồng cũ</button>
-                <button class="case-tab-btn" data-filter="claim">Hành trình bồi thường</button>
-                <button class="case-tab-btn" data-filter="planning">Hoạch định mốc nhân sinh</button>
-            </div>
+            <div class="case-tabs" id="caseCategoryTabs"></div>
 
             <div class="row g-4 case-grid" id="caseGrid"></div>
 
@@ -363,243 +358,48 @@
     <script src="assets/js/shared/footer.js"></script>
     <script src="assets/js/nav.js"></script>
 
+    <script src="assets/js/shared/emi-list-page.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const filterButtons = Array.from(document.querySelectorAll(".case-tab-btn"));
-            const caseGrid = document.getElementById("caseGrid");
-            const caseEmpty = document.getElementById("caseEmpty");
-            const caseResultCount = document.getElementById("caseResultCount");
-            const loadMoreWrap = document.getElementById("caseLoadMoreWrap");
-            const loadMoreBtn = document.getElementById("caseLoadMoreBtn");
-            const clearSearchBtn = document.getElementById("clearCaseSearch");
-            const searchInput = document.getElementById("caseSearchInput");
+        EMIListPage.init({
+            collectionName: "caseStudies",
+            categoryType: "case_study",
+            gridId: "caseGrid",
+            emptyId: "caseEmpty",
+            loadMoreWrapId: "caseLoadMoreWrap",
+            loadMoreBtnId: "caseLoadMoreBtn",
+            clearSearchId: "clearCaseSearch",
+            searchInputId: "caseSearchInput",
+            categoryTabsId: "caseCategoryTabs",
+            loadingText: "Đang tải case study...",
+            renderCard({ item, escapeHtml, shortText }) {
+                const detailUrl = `/case-study-detail?id=${encodeURIComponent(item.id)}`;
+                const thumbnail = item.thumbnail || "assets/image/case-study-01.png";
 
-            const PAGE_SIZE = 6;
-            let caseStudies = [];
-            let activeCategory = "all";
-            let searchKeyword = "";
-            let visibleCount = PAGE_SIZE;
-
-            function escapeHtml(text) {
-                return String(text || "")
-                    .replaceAll("&", "&amp;")
-                    .replaceAll("<", "&lt;")
-                    .replaceAll(">", "&gt;")
-                    .replaceAll('"', "&quot;")
-                    .replaceAll("'", "&#039;");
-            }
-
-            function shortText(text, max = 130) {
-                if (!text) return "";
-                return text.length > max ? text.slice(0, max) + "..." : text;
-            }
-
-            function normalizeText(text) {
-                return String(text || "")
-                    .toLowerCase()
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "");
-            }
-
-            function normalizeCategory(category) {
-                const text = normalizeText(category);
-
-                if (text.includes("giai cuu") || text.includes("hop dong")) {
-                    return "old-contract";
-                }
-
-                if (text.includes("boi thuong")) {
-                    return "claim";
-                }
-
-                if (text.includes("hoach dinh") || text.includes("nhan sinh")) {
-                    return "planning";
-                }
-
-                return "other";
-            }
-
-            function getFilteredStudies() {
-                const keyword = normalizeText(searchKeyword);
-
-                return caseStudies.filter(item => {
-                    const text = normalizeText(`
-                        ${item.title || ""}
-                        ${item.category || ""}
-                        ${item.description || ""}
-                        ${item.cardQuote || ""}
-                        ${item.quote || ""}
-                    `);
-
-                    const matchSearch = !keyword || text.includes(keyword);
-                    const categoryKey = normalizeCategory(item.category);
-                    const matchCategory = activeCategory === "all" || categoryKey === activeCategory;
-
-                    return matchSearch && matchCategory;
-                });
-            }
-
-            function updateResultCount() {
-                // Không hiển thị dòng số lượng case study theo yêu cầu UI.
-                if (caseResultCount) caseResultCount.innerText = "";
-            }
-
-            function updateClearSearchButton() {
-                if (!clearSearchBtn) return;
-                clearSearchBtn.classList.toggle("show", Boolean(searchKeyword));
-            }
-
-            function renderCards(resetVisible = false) {
-                if (resetVisible) {
-                    visibleCount = PAGE_SIZE;
-                }
-
-                caseGrid.innerHTML = "";
-
-                const filteredStudies = getFilteredStudies();
-                const visibleStudies = filteredStudies.slice(0, visibleCount);
-
-                visibleStudies.forEach(item => {
-                    const categoryKey = normalizeCategory(item.category);
-                    const col = document.createElement("div");
-
-                    col.className = "col-lg-4 col-md-6 case-item";
-                    col.dataset.category = categoryKey;
-
-                    col.innerHTML = `
-                        <article class="case-card h-100">
-                            <div class="case-card-img">
-                                <img src="${escapeHtml(item.thumbnail || "assets/image/case-study-01.png")}" alt="${escapeHtml(item.title || "Case Study")}">
-                            </div>
-
-                            <div class="case-card-body">
-                                <span class="solution-badge">
-                                    ${escapeHtml(item.category || "Case Study")}
-                                </span>
-
-                                <h3>${escapeHtml(item.title || "")}</h3>
-
-                                <p>${escapeHtml(shortText(item.description || ""))}</p>
-
-                                <div class="case-quote">
-                                    “${escapeHtml(item.cardQuote || item.quote || "")}”
-                                </div>
-
-                                <a href="/case-study-detail#${encodeURIComponent(item.id)}" class="case-link">
-                                    Xem chi tiết
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    `;
-
-                    caseGrid.appendChild(col);
-                });
-
-                const hasMore = filteredStudies.length > visibleCount;
-
-                if (loadMoreWrap) {
-                    loadMoreWrap.classList.toggle("d-none", !hasMore);
-                }
-
-                if (caseEmpty) {
-                    caseEmpty.classList.toggle("show", filteredStudies.length === 0);
-                }
-
-                updateResultCount();
-                updateClearSearchButton();
-            }
-
-            async function loadCaseStudiesFromFirebase() {
-                try {
-                    caseGrid.innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            Đang tải case study...
+                return `
+                    <article class="case-card h-100">
+                        <div class="case-card-img">
+                        <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Case Study")}">
                         </div>
-                    `;
 
-                    updateResultCount();
+                        <div class="case-card-body">
+                        <span class="solution-badge">${escapeHtml(item.category || "Case Study")}</span>
+                        <h3>${escapeHtml(item.title || "")}</h3>
+                        <p>${escapeHtml(shortText(item.description || ""))}</p>
 
-                    if (typeof firebase === "undefined" || typeof db === "undefined") {
-                        throw new Error("Firebase chưa được khởi tạo. Kiểm tra assets/js/shared/firebase.js và Firebase SDK.");
-                    }
+                        ${item.cardQuote || item.quote ? `
+                            <div class="case-quote">
+                            “${escapeHtml(item.cardQuote || item.quote || "")}”
+                            </div>
+                        ` : ""}
 
-                    const snapshot = await db.collection("caseStudies")
-                        .where("isDeleted", "==", false)
-                        .where("categoryIsDeleted", "==", false)
-                        .where("categoryStatus", "==", "active")
-                        .get();
-
-                    caseStudies = [];
-
-                    snapshot.forEach(doc => {
-                        caseStudies.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-                    });
-
-                    caseStudies.sort((a, b) => {
-                        const timeA = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
-                        const timeB = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
-                        return timeB - timeA;
-                    });
-
-                    renderCards(true);
-                } catch (error) {
-                    console.error("Firestore Error:", error);
-
-                    const errorMessage = error && (error.message || error.code)
-                        ? `${error.code ? error.code + ": " : ""}${error.message || ""}`
-                        : "Không rõ lỗi";
-
-                    caseGrid.innerHTML = `
-                        <div class="col-12 text-center py-5 text-danger">
-                            <div class="fw-bold mb-2">Không thể tải case study.</div>
-                            <div class="small">${escapeHtml(errorMessage)}</div>
+                        <a href="${detailUrl}" class="case-link">
+                            Xem chi tiết <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                         </div>
+                    </article>
                     `;
-
-                    if (loadMoreWrap) {
-                        loadMoreWrap.classList.add("d-none");
-                    }
-                }
             }
-
-            if (searchInput) {
-                searchInput.addEventListener("input", (e) => {
-                    searchKeyword = e.target.value.trim();
-                    renderCards(true);
-                });
-            }
-
-            if (clearSearchBtn && searchInput) {
-                clearSearchBtn.addEventListener("click", () => {
-                    searchInput.value = "";
-                    searchKeyword = "";
-                    renderCards(true);
-                    searchInput.focus();
-                });
-            }
-
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener("click", () => {
-                    visibleCount += PAGE_SIZE;
-                    renderCards(false);
-                });
-            }
-
-            filterButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    filterButtons.forEach(btn => btn.classList.remove("active"));
-                    button.classList.add("active");
-
-                    activeCategory = button.dataset.filter || "all";
-                    renderCards(true);
-                });
-            });
-
-            loadCaseStudiesFromFirebase();
         });
     </script>
 
