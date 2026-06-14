@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/image/favicon.png">
+
+    <title>EMI Insurance | Công cụ hoạch định bảo vệ 4.0</title>
+    <meta name="description"
+        content="Công cụ hoạch định giúp bạn xác định lộ trình bảo vệ 4.0 phù hợp theo giai đoạn cuộc sống, người phụ thuộc, tài sản và ngân sách." />
+    <meta name="keywords"
+        content="công cụ hoạch định bảo hiểm, lộ trình bảo vệ 4.0, bảo hiểm nhân thọ, bảo hiểm sức khỏe, hưu trí, bảo vệ tài sản" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/cong-cu-hoach-dinh.css">
+
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+
+<body>
+    <emi-nav active="planning"></emi-nav>
+
+    <main class="planning-page">
+        <section class="planning-hero">
+            <div class="container">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-7">
+                        <div class="planning-kicker">
+                            <i class="bi bi-stars"></i>
+                            EMI Insurance · Hệ sinh thái bảo vệ 4.0
+                        </div>
+
+                        <h1>Thiết kế <span>lớp khiên</span> bảo vệ phù hợp với bạn</h1>
+
+                        <p class="planning-lead">
+                            Trả lời 7 câu hỏi ngắn để EMI gợi ý thứ tự ưu tiên giữa 4 trụ cột:
+                            Nhân thọ &amp; Di sản, Chăm sóc Sức khỏe kép, Hưu trí &amp; An sinh,
+                            Bảo vệ tài sản — kèm ngân sách và phân bổ tham khảo.
+                        </p>
+
+                        <div class="planning-pills">
+                            <span class="planning-pill"><i class="bi bi-check2-circle"></i> Minh bạch</span>
+                            <span class="planning-pill"><i class="bi bi-heart"></i> Không thúc ép</span>
+                            <span class="planning-pill"><i class="bi bi-sliders"></i> Cá nhân hóa</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="planning-hero-card">
+                            <div class="planning-hero-icon">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </div>
+                            <h3>Công cụ hoạch định bảo vệ tài chính</h3>
+                            <p>
+                                Mỗi giai đoạn cuộc sống cần một cấu trúc bảo vệ khác nhau.
+                                Công cụ này giúp bạn nhìn nhanh những mảnh ghép nên ưu tiên trước.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="planning-tool-section">
+            <div class="container">
+                <div class="planning-app">
+                    <aside class="planning-side">
+                        <div class="planning-brand">
+                            <div class="planning-brand-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div>
+                                <b>EMI Insurance</b>
+                                <small>Lộ trình bảo vệ 4.0</small>
+                            </div>
+                        </div>
+
+                        <div class="planning-progress">
+                            <div class="planning-progress-bar" id="planningProgressBar"></div>
+                        </div>
+
+                        <div class="planning-steps" id="planningSteps"></div>
+
+                        <p class="planning-side-note">
+                            Kết quả chỉ là gợi ý ban đầu. Không phải bảng minh họa hoặc báo phí chính thức.
+                        </p>
+                    </aside>
+
+                    <main class="planning-panel">
+                        <section id="planningQuizBox">
+                            <div class="planning-question-top">
+                                <span class="planning-tag" id="planningTag">Câu hỏi 1</span>
+                                <span class="planning-counter" id="planningCounter">1/7</span>
+                            </div>
+
+                            <div class="planning-question">
+                                <h2 id="planningQuestionTitle"></h2>
+                                <p class="planning-hint" id="planningQuestionHint"></p>
+                            </div>
+
+                            <div class="planning-options" id="planningOptions"></div>
+
+                            <div class="planning-nav">
+                                <button class="planning-btn planning-btn-ghost" id="planningPrevBtn" type="button">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Quay lại
+                                </button>
+                                <button class="planning-btn planning-btn-primary" id="planningNextBtn" type="button">
+                                    Tiếp tục
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="planning-result" id="planningResultBox">
+                            <div class="planning-result-intro">
+                                <h2>Lộ trình bảo vệ 4.0 của bạn</h2>
+                                <p id="planningResultSummary">
+                                    Dựa trên câu trả lời, EMI sắp xếp thứ tự ưu tiên các giải pháp và gợi ý ngân sách
+                                    bảo vệ tham khảo.
+                                </p>
+                            </div>
+
+                            <div class="planning-priority-list" id="planningPriorityList"></div>
+
+                            <div class="planning-budget-box">
+                                <div class="planning-budget-grid">
+                                    <div class="planning-money-card">
+                                        <span>Ngân sách bảo vệ gợi ý</span>
+                                        <b id="planningBudgetMonthly">—</b>
+                                        <small id="planningBudgetText">Tương ứng tỷ lệ thu nhập đã chọn.</small>
+
+                                        <div class="planning-life-cover">
+                                            <span>Mức bảo vệ nhân thọ gợi ý</span>
+                                            <b id="planningLifeCover">—</b>
+                                            <small>Dựa trên nhu cầu thay thế thu nhập và trách nhiệm gia đình.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="planning-solution-card">
+                                        <h3>Giải pháp đề xuất</h3>
+                                        <ul>
+                                            <li><i class="bi bi-check-circle-fill"></i><span><strong>Nhân thọ &amp; Di sản:</strong> Nền tảng thay thế thu nhập cho người trụ cột và đảm bảo học vấn cho con.</span></li>
+                                            <li><i class="bi bi-check-circle-fill"></i><span><strong>Chăm sóc Sức khỏe kép:</strong> Kết hợp BHYT và thẻ tư nhân để san sẻ gánh nặng viện phí.</span></li>
+                                            <li><i class="bi bi-check-circle-fill"></i><span><strong>Hưu trí &amp; An sinh:</strong> Thiết lập dòng tiền độc lập cho tuổi già.</span></li>
+                                            <li><i class="bi bi-check-circle-fill"></i><span><strong>Bảo vệ tài sản:</strong> Che chắn nhà cửa, xe cộ trước rủi ro vật chất bất ngờ.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="planning-disclaimer">
+                                * Kết quả trên là ước tính tham khảo. Phí và quyền lợi chính xác cần được tư vấn theo
+                                tuổi, giới tính, nghề nghiệp, tình trạng sức khỏe, số tiền bảo vệ, thời hạn đóng phí và
+                                điều khoản từng sản phẩm.
+                            </p>
+
+                            <div class="planning-quote">
+                                “Một kế hoạch rời rạc là rủi ro bạn không cần phải chấp nhận. Hãy để EMI đồng bộ hóa
+                                các mảnh ghép này trên nền tảng 4.0, giúp lớp bảo vệ của bạn luôn sát thực với từng
+                                giai đoạn cuộc đời.”
+                            </div>
+
+                            <div class="planning-cta-box">
+                                <h3>Bạn muốn cụ thể hóa lộ trình này?</h3>
+                                <p>
+                                    Đặt lịch tư vấn miễn phí để EMI giúp bóc tách quyền lợi, so sánh giải pháp và thiết
+                                    kế lớp khiên vừa vặn. Cam kết không thúc ép chốt sale.
+                                </p>
+                                <div class="planning-cta-actions">
+                                    <a class="planning-btn planning-btn-gold" href="#contact">
+                                        Đặt lịch tư vấn miễn phí
+                                        <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="planning-reset-wrap">
+                                <button id="planningResetBtn" type="button">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    Làm lại từ đầu
+                                </button>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+            </div>
+        </section>
+
+        <emi-contact></emi-contact>
+    </main>
+
+    <emi-footer></emi-footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/shared/emi-nav.js"></script>
+    <script src="assets/js/shared/emi-contact.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/shared/footer.js"></script>
+
+    <script>
+        const planningQuestions = [
+            {
+                title: "Bạn đang ở giai đoạn nào của cuộc sống?",
+                hint: "Giai đoạn cuộc sống quyết định trách nhiệm tài chính và thứ tự ưu tiên bảo vệ.",
+                options: [
+                    ["Độc thân / Mới đi làm", "Tập trung tích lũy", { life: 1, health: 1, retire: 1 }],
+                    ["Mới lập gia đình", "Bắt đầu trách nhiệm chung", { life: 3, health: 2, retire: 1 }],
+                    ["Có con nhỏ", "Trụ cột nuôi dưỡng", { life: 5, health: 3, retire: 1 }],
+                    ["Trung niên, trụ cột gia đình", "Thu nhập & tài sản đỉnh cao", { life: 4, health: 3, retire: 3, asset: 1 }],
+                    ["Gần / Đã nghỉ hưu", "Bảo toàn & An sinh", { health: 4, retire: 5, asset: 1 }]
+                ]
+            },
+            {
+                title: "Ai đang phụ thuộc tài chính vào bạn?",
+                hint: "Càng nhiều người phụ thuộc, nhu cầu bảo vệ thu nhập càng cần được ưu tiên.",
+                multiple: true,
+                options: [
+                    ["Chưa có ai", "Chỉ lo cho bản thân", { health: 1, retire: 1 }],
+                    ["Vợ / Chồng", "Có trách nhiệm tài chính chung", { life: 3, health: 1 }],
+                    ["Con nhỏ", "Cần bảo vệ dài hạn", { life: 5, health: 2 }],
+                    ["Cha mẹ lớn tuổi", "Chi phí y tế cao", { health: 4, life: 2 }],
+                    ["Nhiều người phụ thuộc", "Trách nhiệm lớn", { life: 5, health: 4, retire: 2 }]
+                ]
+            },
+            {
+                title: "Mối lo lớn nhất của bạn hiện tại là gì?",
+                hint: "Mối lo chính sẽ kéo trụ cột tương ứng lên vị trí ưu tiên cao hơn.",
+                multiple: true,
+                options: [
+                    ["Thu nhập gia đình nếu tôi gặp rủi ro", "Bảo vệ dòng tiền cho người ở lại", { life: 5 }],
+                    ["Chi phí y tế, viện phí bất ngờ", "Giảm áp lực tài chính khi điều trị", { health: 5 }],
+                    ["Bảo vệ tài sản: nhà, xe", "Che chắn thành quả lao động", { asset: 5 }],
+                    ["Hưu trí & an sinh lâu dài", "Chuẩn bị dòng tiền tuổi già", { retire: 5 }],
+                    ["Quỹ học vấn cho con", "Đảm bảo kế hoạch học tập dài hạn", { life: 4, retire: 1 }]
+                ]
+            },
+            {
+                title: "Bạn đã có sẵn những “tấm khiên” bảo hiểm nào?",
+                hint: "Khoảng trống hiện tại giúp EMI nhận diện lớp bảo vệ cần bổ sung trước.",
+                multiple: true,
+                options: [
+                    ["Chưa có gì", "Cần nền tảng cơ bản", { life: 4, health: 4, retire: 1 }],
+                    ["Chỉ có BHYT nhà nước", "Thiếu lớp bảo vệ tư nhân", { health: 5, life: 2 }],
+                    ["Đã có nhân thọ", "Cần rà soát thêm", { health: 3, retire: 2, asset: 1 }],
+                    ["Đã có sức khỏe tư nhân", "Cần củng cố thu nhập / di sản", { life: 3, retire: 2 }],
+                    ["Đã tham gia BHXH", "Có nền tảng an sinh cơ bản", { life: 2, health: 2, retire: 1 }]
+                ]
+            },
+            {
+                title: "Bạn sở hữu tài sản giá trị nào cần bảo vệ?",
+                hint: "Nhà, xe và tài sản lớn nên có một lớp bảo vệ riêng, tránh ảnh hưởng quỹ tích lũy.",
+                multiple: true,
+                options: [
+                    ["Có nhà / bất động sản", "Cần bảo vệ nơi ở và tài sản lớn", { asset: 4 }],
+                    ["Có ô tô", "Cần bảo vệ phương tiện và trách nhiệm liên quan", { asset: 4 }],
+                    ["Cả nhà và xe", "Nhu cầu bảo vệ tài sản cao", { asset: 5 }],
+                    ["Chưa có tài sản lớn", "Có thể ưu tiên con người và sức khỏe trước", { life: 1, health: 1, retire: 1 }]
+                ]
+            },
+            {
+                title: "Thu nhập hàng tháng của gia đình bạn là bao nhiêu?",
+                hint: "EMI dùng khoảng thu nhập để ước tính ngân sách bảo vệ phù hợp.",
+                options: [
+                    ["Dưới 15 triệu", "Ước tính 12 triệu/tháng", { income: 12 }],
+                    ["15 - 30 triệu", "Ước tính 22 triệu/tháng", { income: 22 }],
+                    ["30 - 50 triệu", "Ước tính 40 triệu/tháng", { income: 40 }],
+                    ["50 - 100 triệu", "Ước tính 75 triệu/tháng", { income: 75 }],
+                    ["Trên 100 triệu", "Ước tính 120 triệu/tháng", { income: 120 }]
+                ]
+            },
+            {
+                title: "Bạn muốn dành bao nhiêu cho việc bảo vệ?",
+                hint: "Tỷ lệ này dùng để tính ngân sách bảo vệ tổng thể, không phải phí nhân thọ riêng.",
+                options: [
+                    ["Tối thiểu", "6–8% thu nhập – chỉ phần thiết yếu", { rate: 0.07, label: "~7% thu nhập – mức tối thiểu" }],
+                    ["Cân bằng", "8–12% thu nhập – hợp lý & bền vững", { rate: 0.10, label: "~10% thu nhập – mức cân bằng" }],
+                    ["Toàn diện", "12–18% thu nhập – bảo vệ tối đa", { rate: 0.15, label: "~15% thu nhập – mức toàn diện" }]
+                ]
+            }
+        ];
+
+        const planningPillars = {
+            life: {
+                name: "Nhân thọ & Di sản",
+                icon: "<i class='fa-solid fa-people-roof'></i>",
+                desc: "Nền tảng thay thế thu nhập cho người trụ cột và đảm bảo học vấn cho con trước mọi biến cố."
+            },
+            health: {
+                name: "Chăm sóc Sức khỏe kép",
+                icon: "<i class='fa-solid fa-kit-medical'></i>",
+                desc: "Kết hợp BHYT và thẻ tư nhân để san sẻ gánh nặng viện phí ngay lập tức, bảo vệ quỹ tiết kiệm của gia đình."
+            },
+            retire: {
+                name: "Hưu trí & An sinh",
+                icon: "<i class='fa-solid fa-seedling'></i>",
+                desc: "Thiết lập dòng tiền độc lập cho tuổi già, giúp bạn an tâm về một nền tảng hưu trí ổn định."
+            },
+            asset: {
+                name: "Bảo vệ tài sản",
+                icon: "<i class='fa-solid fa-house-circle-check'></i>",
+                desc: "Che chắn nhà cửa, xe cộ trước rủi ro vật chất bất ngờ, bảo vệ thành quả lao động."
+            }
+        };
+
+        let planningCurrent = 0;
+        let planningAnswers = Array(planningQuestions.length).fill(null);
+
+        const planningSteps = document.getElementById("planningSteps");
+        const planningProgressBar = document.getElementById("planningProgressBar");
+        const planningQuestionTitle = document.getElementById("planningQuestionTitle");
+        const planningQuestionHint = document.getElementById("planningQuestionHint");
+        const planningOptions = document.getElementById("planningOptions");
+        const planningCounter = document.getElementById("planningCounter");
+        const planningTag = document.getElementById("planningTag");
+        const planningPrevBtn = document.getElementById("planningPrevBtn");
+        const planningNextBtn = document.getElementById("planningNextBtn");
+        const planningQuizBox = document.getElementById("planningQuizBox");
+        const planningResultBox = document.getElementById("planningResultBox");
+
+        function initPlanningSteps() {
+            planningSteps.innerHTML = planningQuestions
+                .map((_, index) => `
+                    <div class="planning-step" id="planningStep${index}">
+                        <i>${index + 1}</i>
+                        <span>Câu ${index + 1}</span>
+                    </div>
+                `)
+                .join("");
+        }
+
+        function renderPlanningQuestion() {
+            const question = planningQuestions[planningCurrent];
+
+            planningTag.textContent = `Câu hỏi ${planningCurrent + 1}`;
+            planningCounter.textContent = `${planningCurrent + 1}/${planningQuestions.length}`;
+            planningQuestionTitle.textContent = question.title;
+            planningQuestionHint.textContent = question.multiple ? `${question.hint} Bạn có thể chọn nhiều đáp án.` : question.hint;
+
+            const currentAnswer = planningAnswers[planningCurrent];
+
+            planningOptions.innerHTML = question.options
+                .map((option, index) => {
+                    const isSelected = question.multiple
+                        ? Array.isArray(currentAnswer) && currentAnswer.includes(index)
+                        : currentAnswer === index;
+
+                    return `
+                        <button class="planning-option ${isSelected ? "selected" : ""} ${question.multiple ? "multiple" : ""}"
+                            type="button" onclick="selectPlanningOption(${index})">
+                            <span class="planning-dot"></span>
+                            <span>
+                                <b>${option[0]}</b>
+                                <small>${option[1]}</small>
+                            </span>
+                        </button>
+                    `;
+                })
+                .join("");
+
+            planningPrevBtn.disabled = planningCurrent === 0;
+            planningNextBtn.disabled = question.multiple
+                ? !Array.isArray(currentAnswer) || currentAnswer.length === 0
+                : currentAnswer === null;
+            planningNextBtn.innerHTML = planningCurrent === planningQuestions.length - 1
+                ? `Xem lộ trình <i class="bi bi-arrow-right"></i>`
+                : `Tiếp tục <i class="bi bi-arrow-right"></i>`;
+
+            planningProgressBar.style.width = `${(planningCurrent / (planningQuestions.length - 1)) * 100}%`;
+
+            planningQuestions.forEach((_, index) => {
+                const step = document.getElementById(`planningStep${index}`);
+                step.className = "planning-step " + (index < planningCurrent ? "done" : index === planningCurrent ? "active" : "");
+            });
+        }
+
+        window.selectPlanningOption = function (index) {
+            const question = planningQuestions[planningCurrent];
+
+            if (question.multiple) {
+                const currentAnswer = Array.isArray(planningAnswers[planningCurrent])
+                    ? [...planningAnswers[planningCurrent]]
+                    : [];
+                const existedIndex = currentAnswer.indexOf(index);
+
+                if (existedIndex >= 0) {
+                    currentAnswer.splice(existedIndex, 1);
+                } else {
+                    currentAnswer.push(index);
+                }
+
+                planningAnswers[planningCurrent] = currentAnswer;
+            } else {
+                planningAnswers[planningCurrent] = index;
+            }
+
+            renderPlanningQuestion();
+        };
+
+        planningPrevBtn.addEventListener("click", () => {
+            if (planningCurrent > 0) {
+                planningCurrent -= 1;
+                renderPlanningQuestion();
+            }
+        });
+
+        planningNextBtn.addEventListener("click", () => {
+            const currentQuestion = planningQuestions[planningCurrent];
+            const currentAnswer = planningAnswers[planningCurrent];
+            const hasAnswer = currentQuestion.multiple
+                ? Array.isArray(currentAnswer) && currentAnswer.length > 0
+                : currentAnswer !== null;
+
+            if (!hasAnswer) return;
+
+            if (planningCurrent < planningQuestions.length - 1) {
+                planningCurrent += 1;
+                renderPlanningQuestion();
+                return;
+            }
+
+            showPlanningResult();
+        });
+
+        function formatPlanningMoney(value) {
+            if (value >= 1) {
+                return `${String(Math.round(value * 10) / 10).replace(".", ",")} triệu`;
+            }
+
+            return `${Math.round(value * 1000)} nghìn`;
+        }
+
+        function formatLifeCover(value) {
+            return `${String(Math.round(value * 10) / 10).replace(".", ",")} tỷ`;
+        }
+
+        function getPlanningBadge(score, rank) {
+            if (rank === 0) return "Ưu tiên hàng đầu";
+            if (score >= 9) return "Nên bổ sung";
+            if (score >= 6) return "Xây dựng dần";
+            return "Cân nhắc thêm";
+        }
+
+        function calculateLifeCover(income, score) {
+            const years = score >= 14 ? 10 : score >= 10 ? 8 : score >= 6 ? 6 : 4;
+            const billion = income * 12 * years / 1000;
+            return Math.max(0.5, billion);
+        }
+
+        function showPlanningResult() {
+            const score = { life: 0, health: 0, retire: 0, asset: 0 };
+            let income = 0;
+            let rate = 0;
+            let rateLabel = "";
+
+            planningAnswers.forEach((answerValue, questionIndex) => {
+                const selectedIndexes = Array.isArray(answerValue) ? answerValue : [answerValue];
+
+                selectedIndexes.forEach((answerIndex) => {
+                    if (answerIndex === null || answerIndex === undefined) return;
+
+                    const data = planningQuestions[questionIndex].options[answerIndex][2];
+
+                    Object.keys(data).forEach((key) => {
+                        if (key === "income") {
+                            income = data[key];
+                        } else if (key === "rate") {
+                            rate = data[key];
+                            rateLabel = data.label;
+                        } else if (score[key] !== undefined) {
+                            score[key] += data[key];
+                        }
+                    });
+                });
+            });
+
+            const order = Object.keys(score)
+                .map((key) => ({ key, score: score[key] }))
+                .sort((a, b) => b.score - a.score);
+
+            const budget = income * rate;
+            const lifeCover = calculateLifeCover(income, score.life);
+
+            document.getElementById("planningResultSummary").textContent =
+                `Dựa trên câu trả lời, bạn nên ưu tiên trước: ${planningPillars[order[0].key].name}. Dưới đây là thứ tự đề xuất cho 4 trụ cột chính của bạn.`;
+
+            document.getElementById("planningPriorityList").innerHTML = order
+                .map((item, index) => {
+                    const pillar = planningPillars[item.key];
+
+                    return `
+                        <div class="planning-priority-card ${index === 0 ? "top" : ""}">
+                            <div class="planning-pc-icon">${pillar.icon}</div>
+                            <div>
+                                <div class="planning-pc-title">
+                                    <span class="planning-rank">Ưu tiên ${index + 1}</span>
+                                    <h3>${pillar.name}</h3>
+                                    <span class="planning-pc-badge">${getPlanningBadge(item.score, index)}</span>
+                                </div>
+                                <p>${pillar.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                })
+                .join("");
+
+            document.getElementById("planningBudgetMonthly").textContent = `${formatPlanningMoney(budget)}/tháng`;
+            document.getElementById("planningBudgetText").textContent = `Tương ứng ${rateLabel}.`;
+            document.getElementById("planningLifeCover").textContent = formatLifeCover(lifeCover);
+
+            planningQuizBox.style.display = "none";
+            planningResultBox.classList.add("show");
+            planningResultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        document.getElementById("planningResetBtn").addEventListener("click", () => {
+            planningAnswers = Array(planningQuestions.length).fill(null);
+            planningCurrent = 0;
+            planningResultBox.classList.remove("show");
+            planningQuizBox.style.display = "block";
+            renderPlanningQuestion();
+            document.querySelector(".planning-hero").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        initPlanningSteps();
+        renderPlanningQuestion();
+    </script>
+</body>
+
+</html>

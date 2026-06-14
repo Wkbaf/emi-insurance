@@ -135,8 +135,8 @@ class EmiNav extends HTMLElement {
   
               <li class="nav-item">
                 <a class="nav-link"
-                   href="#contact">
-                   Liên hệ
+                   href="cong-cu-hoach-dinh.html">
+                   Công cụ hoạch định
                 </a>
               </li>
   
