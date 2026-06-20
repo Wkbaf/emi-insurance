@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cấu hình website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="../assets/image/favicon.png?v=2">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="../assets/css/giai-ma-thuat-ngu.css">
+    <link rel="stylesheet" href="../assets/css/shared.css">
+
+    <style>
+        .section-toggle-card {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 20px;
+            background: #fffdf8;
+            margin-bottom: 16px;
+        }
+
+        .section-toggle-card h6 {
+            color: #004c45;
+            margin-bottom: 4px;
+        }
+
+        .section-toggle-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 0;
+        }
+
+        .save-status-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 1080;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 24px 16px;
+            background: rgba(15, 23, 42, 0.35);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .save-status-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .save-status-popup-card {
+            width: min(100%, 460px);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            border-radius: 18px;
+            border: 1px solid transparent;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+            transform: translateY(-18px);
+            transition: transform 0.25s ease;
+        }
+
+        .save-status-popup.show .save-status-popup-card {
+            transform: translateY(0);
+        }
+
+        .save-status-popup-card.success {
+            background: #ecfdf5;
+            border-color: rgba(15, 118, 110, 0.22);
+            color: #065f46;
+        }
+
+        .save-status-popup-card.error {
+            background: #fef2f2;
+            border-color: rgba(185, 28, 28, 0.22);
+            color: #991b1b;
+        }
+
+        .save-status-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .save-status-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .save-status-close {
+            border: 0;
+            background: transparent;
+            color: inherit;
+            opacity: 0.7;
+            font-size: 22px;
+            line-height: 1;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .save-status-close:hover {
+            opacity: 1;
+        }
+
+        .image-config-card {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 20px;
+            background: #fffdf8;
+            margin-bottom: 16px;
+        }
+
+        .image-config-card h6 {
+            color: #004c45;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-width: 220px;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        .advisor-config-item {
+            border: 1px solid #eadfc8;
+            border-radius: 18px;
+            padding: 18px;
+            background: #fff;
+            margin-bottom: 16px;
+        }
+
+        .advisor-config-item h6 {
+            color: #004c45;
+        }
+
+        .config-save-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+            padding-top: 20px;
+            border-top: 1px solid #eadfc8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()">
+        <i class="bi bi-arrow-left-short"></i>
+    </button>
+
+    <button class="mobile-menu-btn" onclick="openMobileSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+    <div class="sidebar">
+        <div id="adminNavbar"></div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="topbar d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-1 fw-bold">Cấu hình website</h3>
+                <div class="text-muted">Bật / tắt section và cập nhật hình ảnh trang chủ</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="text-end">
+                    <div class="fw-semibold">Admin</div>
+                    <small class="text-muted">Online</small>
+                </div>
+                <div class="admin-avatar">A</div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Trang chủ (index.html)</h4>
+                    <div class="text-muted">
+                        Thay đổi sẽ áp dụng ngay trên website sau khi lưu.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-toggle-card">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <h6 class="fw-bold">Section Đối tác (Hệ Sinh Thái Liên Kết)</h6>
+                        <p class="section-toggle-desc">
+                            Hiển thị slider logo các thương hiệu bảo hiểm đối tác trên trang chủ.
+                        </p>
+                    </div>
+
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" role="switch" id="partnerSectionEnabled">
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-config-card">
+                <h6 class="fw-bold mb-3">Ảnh Giới thiệu (about-image-modern)</h6>
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-8">
+                        <label class="form-label fw-semibold" for="imageAbout">Link ảnh</label>
+                        <input type="url" class="form-control config-image-input" id="imageAbout" data-preview="previewAbout" placeholder="https://...">
+                        <div class="section-toggle-desc mt-2">Để trống sẽ dùng ảnh mặc định trên website.</div>
+                    </div>
+                    <div class="col-lg-4">
+                        <img id="previewAbout" class="image-preview" alt="Preview ảnh giới thiệu">
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-config-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                    <h6 class="fw-bold mb-0">Ảnh Cố vấn (advisor-section)</h6>
+                    <button type="button" class="btn btn-outline-primary" onclick="addAdvisor()">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm cố vấn
+                    </button>
+                </div>
+
+                <div id="advisorConfigList"></div>
+            </div>
+
+            <div class="config-save-bar">
+                <button class="btn btn-primary-custom save-config-btn" type="button" onclick="saveSiteConfig()">
+                    <i class="bi bi-save me-2"></i>
+                    Lưu cấu hình
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="saveStatus" class="save-status-popup" role="alert" aria-live="assertive" hidden onclick="if (event.target === this) hideSaveStatus()">
+        <div class="save-status-popup-card">
+            <i class="save-status-icon bi bi-check-circle-fill" aria-hidden="true"></i>
+            <p class="save-status-text mb-0"></p>
+            <button type="button" class="save-status-close" aria-label="Đóng thông báo" onclick="hideSaveStatus()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script src="../assets/js/firebase.js"></script>
+    <script src="../assets/js/navbar.js"></script>
+    <script src="../assets/js/auth-guard.js"></script>
+    <script src="../assets/js/config.js"></script>
+
+    <script>
+        document.getElementById("imageAbout")?.addEventListener("input", (event) => {
+            updateImagePreview(event.target, "previewAbout");
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

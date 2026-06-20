@@ -1131,8 +1131,6 @@ a {
 
     overflow: hidden;
 
-    height: 100%;
-
     box-shadow:
         0 35px 80px rgba(0, 0, 0, .28);
 }
@@ -1141,11 +1139,40 @@ a {
 
     width: 100%;
 
-    height: 100%;
-
-    object-fit: cover;
+    height: auto;
 
     display: block;
+}
+
+.about-image-modern.config-image-wrap--pending {
+    min-height: 280px;
+}
+
+.config-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.config-image-wrap--pending img {
+    opacity: 0;
+}
+
+.config-image-wrap:not(.config-image-wrap--pending) img {
+    opacity: 1;
+}
+
+.config-image-loader {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #fffaf4 0%, #f3f0e8 100%);
+    z-index: 1;
+}
+
+.config-image-wrap--pending .config-image-loader {
+    display: flex;
 }
 
 .value-card-modern {
@@ -1891,6 +1918,47 @@ textarea.form-control {
             #fffaf4 0%,
             #fff 100%);
     overflow: hidden;
+}
+
+.partner-section--pending {
+    position: relative;
+    min-height: 320px;
+}
+
+.partner-section--pending .partner-section-content {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+}
+
+.partner-section--pending .partner-section-loader {
+    display: flex;
+}
+
+.partner-section-loader {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 320px;
+    color: #0f5f58;
+}
+
+.partner-section-loader-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4b6b68;
+}
+
+.partner-section--hidden {
+    display: none !important;
+}
+
+html[data-partner-hidden="true"] #partners {
+    display: none !important;
 }
 
 .partner-header {
@@ -2669,7 +2737,7 @@ textarea.form-control {
 
 .advisor-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 18px;
 }
 
@@ -2705,6 +2773,17 @@ textarea.form-control {
     object-fit: cover;
 
     transition: .6s ease;
+}
+
+.advisor-card-image {
+    position: relative;
+    min-height: 250px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fffdf8 0%, #f3f0e8 100%);
+}
+
+.advisor-card-image img {
+    display: block;
 }
 
 .advisor-card:hover img {

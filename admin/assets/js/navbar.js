@@ -54,6 +54,13 @@ const NAV_ITEMS = [
         permission: "video-links:manage",
         key: "video-link",
       },
+      {
+        label: "Config",
+        href: "/admin/settings/config",
+        icon: "bi-sliders",
+        permission: "configs:manage",
+        key: "config",
+      },
     ],
   },
 ];
@@ -81,6 +88,7 @@ function getCurrentPageKey() {
   if (path.includes("blog")) return "blog";
   if (path.includes("categories")) return "categories";
   if (path.includes("/admin/settings/convert-link")) return "convert-link";
+  if (path.includes("/admin/settings/config")) return "config";
 
   return "";
 }

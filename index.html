@@ -25,6 +25,47 @@
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="stylesheet" href="assets/css/footer.css">
 
+    <style>
+        html[data-partner-hidden="true"] #partners {
+            display: none !important;
+        }
+    </style>
+    <script>
+        (function () {
+            try {
+                var raw = localStorage.getItem("emi_site_config");
+                if (!raw) return;
+
+                var data = JSON.parse(raw);
+                window.__EMI_CONFIG_CACHE__ = data;
+
+                if (data.partnerSectionEnabled === false) {
+                    document.documentElement.setAttribute("data-partner-hidden", "true");
+                }
+
+                var images = data.images || {};
+                var advisors = Array.isArray(data.advisors) ? data.advisors : [];
+                var preloadUrls = [images.about];
+
+                advisors.forEach(function (advisor) {
+                    if (advisor && advisor.imageUrl) {
+                        preloadUrls.push(advisor.imageUrl);
+                    }
+                });
+
+                preloadUrls.forEach(function (url) {
+                    if (!url) return;
+
+                    var link = document.createElement("link");
+                    link.rel = "preload";
+                    link.as = "image";
+                    link.href = url;
+                    document.head.appendChild(link);
+                });
+            } catch (e) { }
+        })();
+    </script>
+
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
@@ -218,8 +259,13 @@
                     <!-- RIGHT IMAGE -->
                     <div class="col-lg-6">
 
-                        <div class="about-image-modern">
-                            <img src="assets/image/image-about.jpg" alt="EMI Insurance">
+                        <div class="about-image-modern config-image-wrap config-image-wrap--pending" data-config-wrap="about">
+                            <div class="config-image-loader" aria-hidden="true">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Đang tải...</span>
+                                </div>
+                            </div>
+                            <img data-config-image="about" src="assets/image/image-about.jpg" alt="EMI Insurance" loading="lazy">
                         </div>
 
                     </div>
@@ -725,54 +771,7 @@
                 </p>
             </div>
 
-            <div class="advisor-grid">
-
-                <article class="advisor-card">
-                    <img src="assets/image/advisor1.jpg" alt="Emi Ho">
-                    <div class="advisor-info">
-                        <h4>Emi Ho</h4>
-                        <h5>Người Đồng Hành &<br>Hoạch định Tổng thể</h5>
-                        <p>(Trưởng dự án 4.0)</p>
-                    </div>
-                </article>
-
-                <article class="advisor-card">
-                    <img src="assets/image/advisor2.jpg" alt="Lụa Nguyễn">
-                    <div class="advisor-info">
-                        <h4>Lụa Nguyễn</h4>
-                        <h5>Cố vấn Hoạch định<br>An sinh & Pháp lý</h5>
-                        <p>(Phụ trách BHXH/BHYT)</p>
-                    </div>
-                </article>
-
-                <article class="advisor-card">
-                    <img src="assets/image/advisor4.jpg" alt="Uyen Nguyen">
-                    <div class="advisor-info">
-                        <h4>Uyen Nguyen</h4>
-                        <h5>Chuyên viên<br>Thẩm định Y tế</h5>
-                        <p>(Phụ trách Thẻ sức khỏe & Bồi thường)</p>
-                    </div>
-                </article>
-
-                <article class="advisor-card">
-                    <img src="assets/image/advisor3.jpg" alt="Cao Tiến Phi">
-                    <div class="advisor-info">
-                        <h4>Cao Tiến Phi</h4>
-                        <h5>Chuyên gia Quản trị<br>Rủi ro Tài sản</h5>
-                        <p>(Phụ trách Phi nhân thọ)</p>
-                    </div>
-                </article>
-
-                <article class="advisor-card">
-                    <img src="assets/image/advisor5.jpg" alt="Tuan Tran">
-                    <div class="advisor-info">
-                        <h4>Tuan Tran</h4>
-                        <h5>Chuyên viên Hoạch định<br>Di sản</h5>
-                        <p>(Phụ trách Nhân thọ chuyên sâu)</p>
-                    </div>
-                </article>
-
-            </div>
+            <div class="advisor-grid" id="advisorGrid"></div>
 
             <div class="advisor-cta">
                 <div class="advisor-cta-main">
@@ -918,7 +917,15 @@
         </div>
     </section>
 
-    <section class="partner-section" id="partners">
+    <section class="partner-section partner-section--pending" id="partners">
+        <div class="partner-section-loader" aria-live="polite">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+            <p class="partner-section-loader-text mb-0">Đang tải...</p>
+        </div>
+
+        <div class="partner-section-content">
         <div class="container">
             <div class="partner-header">
                 <h2 class="eco-title">Hệ Sinh Thái <span class="text-gold">Liên Kết</span></h2>
@@ -1018,6 +1025,7 @@
 
             </div>
         </div>
+        </div>
     </section>
 
     <!-- FOR RENDER CONTACT -->
@@ -1030,6 +1038,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="assets/js/shared/firebase.js"></script>
+<script src="assets/js/shared/config-settings.js"></script>
 
 <!-- FOR NAV -->
 <script src="assets/js/shared/emi-nav.js"></script>

@@ -36,6 +36,7 @@ const SUPER_ADMIN = {
     "videos:manage",
     "categories:manage",
     "users:manage",
+    "configs:manage",
   ],
 };
 
@@ -66,7 +67,7 @@ const ADMIN = {
 
 const EDITOR = {
   role: "editor",
-  permissions: ["dashboard:view", "terms:manage", "blogs:manage", "categories:manage", "case-studies:manage", "convert-links:manage"],
+  permissions: ["dashboard:view", "terms:manage", "blogs:manage", "categories:manage", "case-studies:manage", "convert-links:manage", "configs:manage"],
 };
 
 /**
