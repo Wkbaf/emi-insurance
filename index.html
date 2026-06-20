@@ -25,6 +25,25 @@
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="stylesheet" href="assets/css/footer.css">
 
+    <style>
+        html[data-partner-hidden="true"] #partners {
+            display: none !important;
+        }
+    </style>
+    <script>
+        (function () {
+            try {
+                var raw = localStorage.getItem("emi_site_config");
+                if (!raw) return;
+
+                var data = JSON.parse(raw);
+                if (data.partnerSectionEnabled === false) {
+                    document.documentElement.setAttribute("data-partner-hidden", "true");
+                }
+            } catch (e) { }
+        })();
+    </script>
+
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
@@ -918,7 +937,15 @@
         </div>
     </section>
 
-    <section class="partner-section" id="partners">
+    <section class="partner-section partner-section--pending" id="partners">
+        <div class="partner-section-loader" aria-live="polite">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+            <p class="partner-section-loader-text mb-0">Đang tải...</p>
+        </div>
+
+        <div class="partner-section-content">
         <div class="container">
             <div class="partner-header">
                 <h2 class="eco-title">Hệ Sinh Thái <span class="text-gold">Liên Kết</span></h2>
@@ -1018,6 +1045,7 @@
 
             </div>
         </div>
+        </div>
     </section>
 
     <!-- FOR RENDER CONTACT -->
@@ -1030,6 +1058,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="assets/js/shared/firebase.js"></script>
+<script src="assets/js/shared/config-settings.js"></script>
 
 <!-- FOR NAV -->
 <script src="assets/js/shared/emi-nav.js"></script>

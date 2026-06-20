@@ -1893,6 +1893,47 @@ textarea.form-control {
     overflow: hidden;
 }
 
+.partner-section--pending {
+    position: relative;
+    min-height: 320px;
+}
+
+.partner-section--pending .partner-section-content {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+}
+
+.partner-section--pending .partner-section-loader {
+    display: flex;
+}
+
+.partner-section-loader {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 320px;
+    color: #0f5f58;
+}
+
+.partner-section-loader-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4b6b68;
+}
+
+.partner-section--hidden {
+    display: none !important;
+}
+
+html[data-partner-hidden="true"] #partners {
+    display: none !important;
+}
+
 .partner-header {
     text-align: center;
     max-width: 760px;

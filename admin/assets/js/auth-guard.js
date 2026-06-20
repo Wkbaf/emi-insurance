@@ -6,7 +6,8 @@ const PAGE_PERMISSIONS = {
   "case-study": "case-studies:manage",
   blog: "blogs:manage",
   categories: "categories:manage",
-  "settings/convert-link": "convert-links:manage"
+  "settings/convert-link": "convert-links:manage",
+  "settings/config": "configs:manage"
 };
 
 function getCurrentPage() {
