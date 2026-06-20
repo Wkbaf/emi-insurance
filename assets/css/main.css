@@ -1131,8 +1131,6 @@ a {
 
     overflow: hidden;
 
-    height: 100%;
-
     box-shadow:
         0 35px 80px rgba(0, 0, 0, .28);
 }
@@ -1141,11 +1139,40 @@ a {
 
     width: 100%;
 
-    height: 100%;
-
-    object-fit: cover;
+    height: auto;
 
     display: block;
+}
+
+.about-image-modern.config-image-wrap--pending {
+    min-height: 280px;
+}
+
+.config-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.config-image-wrap--pending img {
+    opacity: 0;
+}
+
+.config-image-wrap:not(.config-image-wrap--pending) img {
+    opacity: 1;
+}
+
+.config-image-loader {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #fffaf4 0%, #f3f0e8 100%);
+    z-index: 1;
+}
+
+.config-image-wrap--pending .config-image-loader {
+    display: flex;
 }
 
 .value-card-modern {
@@ -2710,7 +2737,7 @@ html[data-partner-hidden="true"] #partners {
 
 .advisor-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 18px;
 }
 
@@ -2746,6 +2773,17 @@ html[data-partner-hidden="true"] #partners {
     object-fit: cover;
 
     transition: .6s ease;
+}
+
+.advisor-card-image {
+    position: relative;
+    min-height: 250px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fffdf8 0%, #f3f0e8 100%);
+}
+
+.advisor-card-image img {
+    display: block;
 }
 
 .advisor-card:hover img {
