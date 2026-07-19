@@ -855,6 +855,11 @@ body {
   padding: 11px 14px !important;
   font-weight: 900;
   transition: .25s ease;
+  text-decoration: none;
+}
+
+a.thumb-play {
+  text-decoration: none;
 }
 
 .term-open-modal:hover {

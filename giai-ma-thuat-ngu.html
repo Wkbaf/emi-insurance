@@ -28,7 +28,6 @@
 </head>
 
 <body>
-    <!-- LOAD NAV -->
     <emi-nav active="knowledge"></emi-nav>
 
     <main class="glossary-page">
@@ -46,12 +45,10 @@
 
                     <div class="col-lg-5">
                         <div class="hero-advisor">
-
                             <div class="advisor-visual">
-
                                 <div class="advisor-ring"></div>
 
-                                <img src="assets/image/person1.png" alt="Tư vấn viên EMI Insurance">
+                                <img src="assets/image/person1.png" alt="Tư vấn viên EMI Insurance" loading="lazy">
 
                                 <div class="advisor-chip chip-top">
                                     <i class="bi bi-patch-check-fill"></i>
@@ -76,9 +73,7 @@
                                         <span>Trước khi ký hợp đồng</span>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -87,19 +82,15 @@
 
         <section class="glossary-section">
             <div class="container">
-
                 <div class="glossary-toolbar">
-
                     <div class="glossary-search">
                         <i class="bi bi-search"></i>
-
                         <input id="termSearch" type="text" placeholder="Tìm thuật ngữ: Phí ban đầu, Thời gian chờ..."
                             autocomplete="off">
-
                         <button id="clearTermSearch" type="button" aria-label="Xóa tìm kiếm">&times;</button>
                     </div>
-
                 </div>
+
                 <div class="glossary-tabs" id="categoryTabs" aria-label="Nhóm thuật ngữ">
                     <button class="term-tab active" data-category="all">Tất cả</button>
                 </div>
@@ -153,83 +144,6 @@
             </div>
         </section>
 
-
-        <div class="term-modal" id="termModal" aria-hidden="true">
-            <div class="term-modal-backdrop" data-close-modal></div>
-            <div class="term-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-                <button class="term-modal-close" type="button" data-close-modal aria-label="Đóng popup">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-
-                <div class="term-modal-head">
-                    <span id="modalCategory">Dòng tiền & Chi phí</span>
-                    <h3 id="modalTitle">Phí ban đầu là gì?</h3>
-                    <p id="modalDescription">Video giải thích ngắn giúp bạn hiểu đúng thuật ngữ trước khi ký hợp đồng.
-                    </p>
-                </div>
-
-                <div class="modal-video-wrap">
-                    <iframe id="modalYoutube" src="" title="Video giải mã thuật ngữ" loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                </div>
-
-                <div class="modal-content-grid">
-
-                    <div class="explain-card explain-full">
-                        <div class="explain-icon">
-                            <i class="bi bi-journal-text"></i>
-                        </div>
-
-                        <div class="explain-content">
-                            <span class="explain-label">
-                                1. Định nghĩa chuẩn
-                            </span>
-
-                            <p id="modalDefinition"></p>
-                        </div>
-                    </div>
-
-                    <div class="explain-card explain-full">
-                        <div class="explain-icon">
-                            <i class="bi bi-lightbulb"></i>
-                        </div>
-
-                        <div class="explain-content">
-                            <span class="explain-label">
-                                2. EMI “dịch”
-                            </span>
-
-                            <p id="modalSimple"></p>
-                        </div>
-                    </div>
-
-                    <div class="explain-card explain-full">
-                        <div class="explain-icon warning">
-                            <i class="bi bi-exclamation-triangle"></i>
-                        </div>
-
-                        <div class="explain-content">
-                            <span class="explain-label">
-                                3. Điều cần lưu ý
-                            </span>
-
-                            <ul id="modalNotes"></ul>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="modal-action">
-                    <a href="#contact" data-close-modal>Đặt lịch tư vấn ngay
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
         <emi-contact></emi-contact>
     </main>
 
@@ -241,320 +155,61 @@
     <script src="assets/js/nav.js"></script>
     <script src="assets/js/shared/footer.js"></script>
 
-    <!-- FOR FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-    <!-- shared firebase -->
     <script src="assets/js/shared/firebase.js"></script>
+    <script src="assets/js/shared/emi-term-list-page.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tabsWrap = document.getElementById("categoryTabs");
-            const searchInput = document.getElementById("termSearch");
-            const clearBtn = document.getElementById("clearTermSearch");
-            const empty = document.getElementById("termEmpty");
-            const grid = document.getElementById("termGrid");
-            const loadMoreBtn = document.getElementById("loadMoreTerms");
-            const ITEMS_PER_PAGE = 6;
-            let visibleLimit = ITEMS_PER_PAGE;
-            const modal = document.getElementById("termModal");
-            const iframe = document.getElementById("modalYoutube");
+        EMITermListPage.init({
+            collectionName: "explainCards",
+            categoryType: "term",
+            detailPageUrl: "video-detail",
+            categoryTabsId: "categoryTabs",
+            searchInputId: "termSearch",
+            clearSearchId: "clearTermSearch",
+            emptyId: "termEmpty",
+            gridId: "termGrid",
+            loadMoreBtnId: "loadMoreTerms",
+            categoryParamName: "category",
+            loadingText: "Đang tải thuật ngữ...",
+            renderCard({ item, escapeHtml, shortText, getDetailUrl }) {
+                const detailUrl = getDetailUrl(item.id);
+                return `
+                    <div class="term-thumb">
+                        <img
+                            src="${escapeHtml(item.termThumb || "assets/image/default-thumbnail.jpg")}"
+                            alt="${escapeHtml(item.termName || "")}"
+                            class="term-thumb-img"
+                            loading="lazy">
+                        <a href="${detailUrl}" class="thumb-play" aria-label="Xem video">
+                            <i class="bi bi-play-fill"></i>
+                        </a>
+                    </div>
 
-            let terms = [];
-            let categories = [];
-            let activeCategory = "all";
-            let unsubscribeTerms = null;
-            let unsubscribeCategories = null;
-
-            function normalize(text) {
-                return String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            }
-
-            function escapeHtml(text) {
-                return String(text || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
-            }
-
-            function shortText(text, max = 90) {
-                if (!text) return "";
-                return text.length > max ? text.slice(0, max) + "..." : text;
-            }
-
-            function createSlug(text) {
-                return String(text || "")
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/đ/g, "d")
-                    .replace(/Đ/g, "D")
-                    .toLowerCase()
-                    .trim()
-                    .replace(/[^a-z0-9\s-]/g, "")
-                    .replace(/\s+/g, "-")
-                    .replace(/-+/g, "-")
-                    .replace(/^-|-$/g, "");
-            }
-
-            function getCategorySlug(term) {
-                // Ưu tiên field categorySlug nếu admin explainCards đã lưu sẵn.
-                if (term.categorySlug) return term.categorySlug;
-
-                // Fallback cho data cũ: explainCards đang lưu category bằng tên tiếng Việt.
-                const matched = categories.find(category => category.name === term.category);
-                return matched ? matched.slug : createSlug(term.category || "other");
-            }
-
-            function renderCategoryTabs() {
-                const activeExists = activeCategory === "all" || categories.some(category => category.slug === activeCategory);
-                if (!activeExists) activeCategory = "all";
-
-                tabsWrap.innerHTML = `
-                    <button class="term-tab ${activeCategory === "all" ? "active" : ""}" data-category="all">
-                        Tất cả
-                    </button>
-                    ${categories.map(category => `
-                        <button class="term-tab ${activeCategory === category.slug ? "active" : ""}" data-category="${escapeHtml(category.slug)}">
-                            ${escapeHtml(category.name)}
-                        </button>
-                    `).join("")}
+                    <div class="term-body">
+                        <h3>${escapeHtml(item.termName || "")}</h3>
+                        <p>${escapeHtml(shortText(item.description || item.simple || item.definition || ""))}</p>
+                        <a href="${detailUrl}" class="term-open-modal">
+                            Xem giải mã <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 `;
-
-                tabsWrap.querySelectorAll(".term-tab").forEach(tab => {
-                    tab.addEventListener("click", () => {
-                        tabsWrap.querySelectorAll(".term-tab").forEach(item => item.classList.remove("active"));
-                        tab.classList.add("active");
-                        activeCategory = tab.dataset.category;
-                        visibleLimit = ITEMS_PER_PAGE;
-                        filterTerms();
-                    });
-                });
             }
-
-            function renderCards() {
-                grid.innerHTML = "";
-
-                terms.forEach((item, index) => {
-                    const article = document.createElement("article");
-                    article.className = index === 0 ? "term-card active" : "term-card";
-
-                    article.dataset.id = item.id;
-                    article.dataset.category = getCategorySlug(item);
-                    article.dataset.title = item.termName || "";
-                    article.dataset.keywords = normalize(`
-                        ${item.termName || ""}
-                        ${item.category || ""}
-                        ${item.categorySlug || ""}
-                        ${item.video || ""}
-                        ${item.definition || ""}
-                        ${item.simple || ""}
-                        ${item.description || ""}
-                    `);
-
-                    article.innerHTML = `
-                        <div class="term-thumb">
-                            <img
-                                src="${escapeHtml(item.termThumb || "assets/image/default-thumbnail.jpg")}"
-                                alt="${escapeHtml(item.termName || "")}"
-                                class="term-thumb-img">
-                            <button class="thumb-play" type="button" aria-label="Xem video">
-                                <i class="bi bi-play-fill"></i>
-                            </button>
-                        </div>
-
-                        <div class="term-body">
-                            <h3>${escapeHtml(item.termName || "")}</h3>
-                            <p>${escapeHtml(shortText(item.description || item.simple || item.definition || ""))}</p>
-                            <button class="term-open-modal" type="button">
-                                Xem giải mã <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-                    `;
-
-                    article.addEventListener("click", () => {
-                        openTermModal(item.id);
-                    });
-
-                    grid.appendChild(article);
-                });
-
-                filterTerms();
-            }
-
-            function formatMultiline(text) {
-                return escapeHtml(text || "").replaceAll("\n", "<br>");
-            }
-
-            function openTermModal(id) {
-                const item = terms.find(term => term.id === id);
-                if (!item) return;
-
-                document.querySelectorAll(".term-card").forEach(card => {
-                    card.classList.toggle("active", card.dataset.id === id);
-                });
-
-                document.getElementById("modalCategory").textContent = item.category || "";
-                document.getElementById("modalTitle").textContent = `${item.termName || ""}`;
-                document.getElementById("modalDescription").innerHTML = formatMultiline(item.description);
-                document.getElementById("modalDefinition").innerHTML = formatMultiline(item.definition);
-                document.getElementById("modalSimple").innerHTML = formatMultiline(item.simple);
-
-                const notes = Array.isArray(item.notes) ? item.notes : [];
-                document.getElementById("modalNotes").innerHTML = notes.map(note => `<li>${escapeHtml(note)}</li>`).join("");
-
-                const youtubeUrl = item.youtube || "";
-                iframe.src = youtubeUrl ? `${youtubeUrl}` : "";
-
-                modal.classList.add("show");
-                modal.setAttribute("aria-hidden", "false");
-                document.body.classList.add("modal-open");
-            }
-
-            function closeTermModal() {
-                modal.classList.remove("show");
-                modal.setAttribute("aria-hidden", "true");
-                document.body.classList.remove("modal-open");
-                iframe.src = "";
-            }
-
-            function filterTerms() {
-                const keyword = normalize(searchInput.value.trim());
-                let matchedCards = [];
-                const cards = Array.from(document.querySelectorAll(".term-card"));
-
-                cards.forEach(card => {
-                    const matchCategory = activeCategory === "all" || card.dataset.category === activeCategory;
-                    const text = normalize(card.innerText + " " + card.dataset.keywords);
-                    const matchSearch = !keyword || text.includes(keyword);
-                    const matched = matchCategory && matchSearch;
-
-                    card.hidden = true;
-                    if (matched) matchedCards.push(card);
-                });
-
-                matchedCards.forEach((card, index) => {
-                    card.hidden = index >= visibleLimit;
-                });
-
-                clearBtn.classList.toggle("show", searchInput.value.length > 0);
-                empty.classList.toggle("show", matchedCards.length === 0);
-                loadMoreBtn.style.display = matchedCards.length > visibleLimit ? "inline-flex" : "none";
-            }
-
-            function loadCategoriesFromFirebase() {
-                try {
-                    unsubscribeCategories = db.collection("categories")
-                        .where("isDeleted", "==", false)
-                        .where("type", "==", "term")
-                        .where("status", "==", "active")
-                        .orderBy("position", "asc")
-                        .onSnapshot((snapshot) => {
-                            categories = [];
-
-                            snapshot.forEach((doc) => {
-                                categories.push({
-                                    id: doc.id,
-                                    ...doc.data()
-                                });
-                            });
-
-                            renderCategoryTabs();
-                            renderCards();
-                        }, (error) => {
-                            console.log(error);
-                            tabsWrap.innerHTML = `<button class="term-tab active" data-category="all">Tất cả</button>`;
-                        });
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
-            function loadTermsFromFirebase() {
-                try {
-                    grid.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align:center; padding:40px;">
-                            Đang tải thuật ngữ...
-                        </div>
-                    `;
-
-                    unsubscribeTerms = db.collection("explainCards")
-                        .where("isDeleted", "==", false)
-                        .where("categoryIsDeleted", "==", false)
-                        .where("categoryStatus", "==", "active")
-                        .orderBy("createdAt", "desc")
-                        .onSnapshot((snapshot) => {
-                            terms = [];
-
-                            snapshot.forEach((doc) => {
-                                terms.push({
-                                    id: doc.id,
-                                    ...doc.data()
-                                });
-                            });
-
-                            renderCards();
-                        }, (error) => {
-                            console.log(error);
-                            grid.innerHTML = `
-                                <div style="grid-column: 1 / -1; text-align:center; padding:40px; color:red;">
-                                    Không thể tải dữ liệu thuật ngữ.
-                                </div>
-                            `;
-                        });
-                } catch (error) {
-                    console.log(error);
-                    grid.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align:center; padding:40px; color:red;">
-                            Không thể tải dữ liệu thuật ngữ.
-                        </div>
-                    `;
-                }
-            }
-
-            document.querySelectorAll("[data-close-modal]").forEach(button => {
-                button.addEventListener("click", closeTermModal);
-            });
-
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") closeTermModal();
-            });
-
-            searchInput.addEventListener("input", () => {
-                visibleLimit = ITEMS_PER_PAGE;
-                filterTerms();
-            });
-
-            clearBtn.addEventListener("click", () => {
-                searchInput.value = "";
-                searchInput.focus();
-                filterTerms();
-            });
-
-            loadMoreBtn.addEventListener("click", () => {
-                visibleLimit += ITEMS_PER_PAGE;
-                filterTerms();
-            });
-
-            window.addEventListener("beforeunload", () => {
-                if (typeof unsubscribeTerms === "function") unsubscribeTerms();
-                if (typeof unsubscribeCategories === "function") unsubscribeCategories();
-            });
-
-            loadCategoriesFromFirebase();
-            loadTermsFromFirebase();
         });
     </script>
 
     <script>
-        /* Mobile fake hover */
-        const advisor = document.querySelector('.hero-advisor');
+        const advisor = document.querySelector(".hero-advisor");
 
         if (advisor) {
-            advisor.addEventListener('touchstart', () => {
-                advisor.classList.add('is-active');
+            advisor.addEventListener("touchstart", () => {
+                advisor.classList.add("is-active");
             });
 
-            advisor.addEventListener('touchend', () => {
+            advisor.addEventListener("touchend", () => {
                 setTimeout(() => {
-                    advisor.classList.remove('is-active');
+                    advisor.classList.remove("is-active");
                 }, 500);
             });
         }
