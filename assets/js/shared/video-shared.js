@@ -132,6 +132,10 @@
       return config.shareUrlBuilder(item, config);
     }
 
+    if (config.shareType) {
+      return `https://share.emi-insurance.com/share?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(config.shareType)}&v=${Date.now()}`;
+    }
+
     const origin = window.location.origin;
     const detailPath = config.detailPagePath || window.location.pathname;
     return `${origin}${detailPath}?id=${encodeURIComponent(item.id)}`;
