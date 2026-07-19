@@ -4,405 +4,229 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Case Study Thực Tế 4.0 | EMI Insurance</title>
-
     <link rel="icon" href="assets/image/favicon.png?v=2">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Case Study Thực Tế | EMI Insurance</title>
+    <meta name="description"
+        content="Câu chuyện thực tế về bảo hiểm: bài học từ các tình huống đời thực giúp bạn bảo vệ gia đình tốt hơn.">
+    <meta name="keywords"
+        content="case study bảo hiểm, câu chuyện thực tế bảo hiểm, bài học bảo hiểm, EMI Insurance">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/case-study-thuc-te.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/nav.css">
     <link rel="stylesheet" href="assets/css/shared.css">
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="stylesheet" href="assets/css/footer.css">
-
-    <style>
-        .case-search-wrap {
-            max-width: 760px;
-            margin: 28px auto 24px;
-        }
-
-        .case-search-box {
-            position: relative;
-            background: #fff;
-            border: 1px solid rgba(0, 89, 79, 0.14);
-            border-radius: 999px;
-            box-shadow: 0 18px 45px rgba(0, 76, 69, 0.10);
-            overflow: hidden;
-        }
-
-        .case-search-box i {
-            position: absolute;
-            left: 22px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #b99655;
-            font-size: 18px;
-            z-index: 2;
-        }
-
-        .case-search-box .form-control {
-            height: 58px;
-            border: 0;
-            border-radius: 999px;
-            padding-left: 56px;
-            padding-right: 140px;
-            font-size: 15px;
-            background: transparent;
-            box-shadow: none;
-        }
-
-        .case-search-box .form-control:focus {
-            box-shadow: 0 0 0 4px rgba(185, 150, 85, 0.16);
-        }
-
-        .case-search-clear {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 0;
-            border-radius: 999px;
-            padding: 9px 16px;
-            background: #f5efe3;
-            color: #00594f;
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        .case-search-clear:hover {
-            background: #ead8b8;
-        }
-
-        .case-result-count {
-            margin-top: 10px;
-            text-align: center;
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        .case-load-more-wrap {
-            text-align: center;
-            margin-top: 36px;
-        }
-
-        .case-load-more {
-            border: 0;
-            border-radius: 999px;
-            padding: 13px 30px;
-            background: linear-gradient(135deg, #00594f, #003f39);
-            color: #fff;
-            font-weight: 800;
-            box-shadow: 0 16px 35px rgba(0, 76, 69, 0.22);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .case-load-more:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 45px rgba(0, 76, 69, 0.28);
-        }
-
-        .case-load-more i {
-            margin-left: 8px;
-        }
-
-        @media (max-width: 575px) {
-            .case-search-box .form-control {
-                height: 54px;
-                padding-right: 92px;
-                font-size: 14px;
-            }
-
-            .case-search-clear {
-                padding: 8px 12px;
-            }
-        }
-
-
-        /* Refined UI */
-        .case-search-wrap {
-            max-width: 680px;
-            margin: 24px auto 18px;
-        }
-
-        .case-search-box {
-            box-shadow: 0 10px 28px rgba(0, 76, 69, 0.08);
-            border-color: rgba(0, 89, 79, 0.12);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .case-search-box:focus-within {
-            border-color: rgba(185, 150, 85, 0.45);
-            box-shadow: 0 12px 32px rgba(0, 76, 69, 0.11);
-        }
-
-        .case-search-box i {
-            left: 18px;
-            font-size: 16px;
-            color: #a88a4d;
-        }
-
-        .case-search-box .form-control {
-            height: 50px;
-            padding-left: 48px;
-            padding-right: 54px;
-            font-size: 14px;
-        }
-
-        .case-search-box .form-control:focus {
-            box-shadow: none;
-        }
-
-        .case-search-clear {
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #f7f3ea;
-            color: #6b5d3a;
-            font-size: 20px;
-            font-weight: 400;
-            line-height: 1;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
-        }
-
-        .case-search-clear.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .case-search-clear:hover {
-            background: #efe3cc;
-            color: #004c45;
-        }
-
-        .case-result-count {
-            display: none !important;
-        }
-
-        .case-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin: 18px auto 30px;
-        }
-
-        .case-tab-btn {
-            border-radius: 999px;
-            padding: 8px 14px;
-            font-size: 13px;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-
-        .case-load-more-wrap {
-            margin-top: 30px;
-        }
-
-        .case-load-more {
-            padding: 11px 24px;
-            font-size: 14px;
-            box-shadow: 0 12px 26px rgba(0, 76, 69, 0.18);
-        }
-
-        @media (max-width: 575px) {
-            .case-search-wrap {
-                margin-top: 18px;
-            }
-
-            .case-tabs {
-                justify-content: flex-start;
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                padding-bottom: 6px;
-            }
-
-            .case-tab-btn {
-                flex: 0 0 auto;
-                font-size: 12px;
-                padding: 7px 12px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/giai-ma-thuat-ngu.css">
 
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
-
     <emi-nav active="knowledge"></emi-nav>
 
-    <section class="case-hero">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-7">
-                    <span class="case-kicker">Case study thực tế 4.0</span>
-
-                    <h1>CÂU CHUYỆN THỰC TẾ</h1>
-
-                    <p>Nắm rõ
-                        <strong>bài học đắt giá từ đời thực</strong>
-                        để bảo vệ gia đình tốt hơn.
-                    </p>
-
-                    <div class="hero-actions">
-                        <a href="#caseGrid" class="btn btn-gold">Xem case study mới nhất</a>
-                        <a href="#contact" class="btn btn-outline-emi">Đặt lịch rà soát</a>
+    <main class="glossary-page">
+        <section class="glossary-hero">
+            <div class="container">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-7">
+                        <span class="glossary-kicker">Case study thực tế 4.0</span>
+                        <h1>CÂU CHUYỆN THỰC TẾ</h1>
+                        <p>Nắm rõ
+                            <strong>bài học đắt giá từ đời thực</strong>
+                            để bảo vệ gia đình tốt hơn.
+                        </p>
                     </div>
-                </div>
 
-                <div class="col-lg-5">
-                    <div class="hero-advisor">
-                        <div class="advisor-visual">
-                            <div class="advisor-ring"></div>
+                    <div class="col-lg-5">
+                        <div class="hero-advisor">
+                            <div class="advisor-visual">
+                                <div class="advisor-ring"></div>
 
-                            <img src="assets/image/person1.png" alt="Tư vấn viên EMI Insurance">
+                                <img src="assets/image/person1.png" alt="Tư vấn viên EMI Insurance" loading="lazy">
 
-                            <div class="advisor-chip chip-top">
-                                <i class="bi bi-journal-check"></i>
-                                <div>
-                                    <strong>Case thật</strong>
-                                    <span>Bài học dễ áp dụng</span>
+                                <div class="advisor-chip chip-top">
+                                    <i class="bi bi-journal-check"></i>
+                                    <div>
+                                        <strong>Case thật</strong>
+                                        <span>Bài học dễ áp dụng</span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="advisor-chip chip-middle">
-                                <i class="bi bi-shield-check"></i>
-                                <div>
-                                    <strong>An tâm</strong>
-                                    <span>Trước rủi ro lớn</span>
+                                <div class="advisor-chip chip-middle">
+                                    <i class="bi bi-shield-check"></i>
+                                    <div>
+                                        <strong>An tâm</strong>
+                                        <span>Trước rủi ro lớn</span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="advisor-chip chip-bottom">
-                                <i class="bi bi-patch-check-fill"></i>
-                                <div>
-                                    <strong>Minh bạch</strong>
-                                    <span>Qua từng tình huống</span>
+                                <div class="advisor-chip chip-bottom">
+                                    <i class="bi bi-patch-check-fill"></i>
+                                    <div>
+                                        <strong>Minh bạch</strong>
+                                        <span>Qua từng tình huống</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="story-section">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="eco-title">
-                    Tìm Đúng Câu Chuyện
-                    <span class="text-gold">Bạn Đang Quan Tâm</span>
-                </h2>
-            </div>
-
-            <div class="case-search-wrap">
-                <div class="case-search-box">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="caseSearchInput" class="form-control"
-                        placeholder="Tìm theo tiêu đề, category hoặc mô tả...">
-                    <button type="button" id="clearCaseSearch" class="case-search-clear"
-                        aria-label="Xóa tìm kiếm">&times;</button>
+        <section class="glossary-section">
+            <div class="container">
+                <div class="glossary-toolbar">
+                    <div class="glossary-search">
+                        <i class="bi bi-search"></i>
+                        <input id="caseSearchInput" type="text"
+                            placeholder="Tìm theo tiêu đề, category hoặc mô tả..." autocomplete="off">
+                        <button id="clearCaseSearch" type="button" aria-label="Xóa tìm kiếm">&times;</button>
+                    </div>
                 </div>
-                <div id="caseResultCount" class="case-result-count" aria-live="polite"></div>
+
+                <div class="glossary-tabs" id="caseCategoryTabs" aria-label="Nhóm case study">
+                    <button class="term-tab active" data-category="all">Tất cả</button>
+                </div>
+
+                <div class="row g-4 align-items-start">
+                    <div>
+                        <div class="term-grid" id="caseGrid"></div>
+
+                        <div class="load-more-wrap">
+                            <button id="caseLoadMoreBtn" class="load-more-btn" type="button">
+                                Xem thêm case study
+                            </button>
+                        </div>
+
+                        <div class="term-empty" id="caseEmpty">
+                            <i class="bi bi-search-heart"></i>
+                            <h3>Không tìm thấy case study phù hợp</h3>
+                            <p>Thử đổi từ khóa hoặc chọn nhóm khác.</p>
+                        </div>
+
+                        <div class="glossary-cta-mini">
+                            <div>
+                                <i class="bi bi-book"></i>
+                                <strong>Học từ tình huống thực tế để bảo vệ gia đình tốt hơn</strong>
+                                <span>Liên hệ EMI nếu bạn cần rà soát hợp đồng của mình.</span>
+                            </div>
+                            <a href="#contact">Đặt lịch rà soát miễn phí</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5"></div>
+                </div>
+
+                <div class="trust-row">
+                    <div>
+                        <i class="bi bi-clock"></i>
+                        <strong>12 năm</strong>
+                        <span>Kinh nghiệm bảo hiểm</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-people"></i>
+                        <strong>200+ Gia đình</strong>
+                        <span>Đã đồng hành tư vấn</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-shield-check"></i>
+                        <strong>100%</strong>
+                        <span>Minh bạch trước hợp đồng</span>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="case-tabs" id="caseCategoryTabs"></div>
-
-            <div class="row g-4 case-grid" id="caseGrid"></div>
-
-            <div class="case-empty" id="caseEmpty">
-                <i class="bi bi-search-heart"></i>
-                <h3>Không tìm thấy case study phù hợp</h3>
-                <p>Thử đổi từ khóa hoặc chọn nhóm khác.</p>
-            </div>
-
-            <div id="caseLoadMoreWrap" class="case-load-more-wrap d-none">
-                <button type="button" id="caseLoadMoreBtn" class="case-load-more">
-                    Xem thêm case study
-                    <i class="fa-solid fa-arrow-down"></i>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <emi-contact></emi-contact>
+        <emi-contact></emi-contact>
+    </main>
 
     <emi-footer></emi-footer>
 
-
-    <!-- FOR FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-    <!-- shared firebase -->
-    <script src="assets/js/shared/firebase.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="assets/js/shared/emi-nav.js"></script>
     <script src="assets/js/shared/emi-contact.js"></script>
-    <script src="assets/js/shared/footer.js"></script>
     <script src="assets/js/nav.js"></script>
+    <script src="assets/js/shared/footer.js"></script>
 
-    <script src="assets/js/shared/emi-list-page.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="assets/js/shared/firebase.js"></script>
+    <script src="assets/js/shared/emi-term-list-page.js"></script>
 
     <script>
-        EMIListPage.init({
-            collectionName: "caseStudies",
-            categoryType: "case_study",
-            gridId: "caseGrid",
-            emptyId: "caseEmpty",
-            loadMoreWrapId: "caseLoadMoreWrap",
-            loadMoreBtnId: "caseLoadMoreBtn",
-            clearSearchId: "clearCaseSearch",
-            searchInputId: "caseSearchInput",
+        EMITermListPage.init({
+            collectionName: "caseStudyVideos",
+            categoryType: "case_study_video",
+            detailPageUrl: "case-study-detail",
             categoryTabsId: "caseCategoryTabs",
+            searchInputId: "caseSearchInput",
+            clearSearchId: "clearCaseSearch",
+            emptyId: "caseEmpty",
+            gridId: "caseGrid",
+            loadMoreBtnId: "caseLoadMoreBtn",
+            categoryParamName: "category",
             loadingText: "Đang tải case study...",
-            renderCard({ item, escapeHtml, shortText }) {
-                const detailUrl = `/case-study-detail?id=${encodeURIComponent(item.id)}`;
-                const thumbnail = item.thumbnail || "assets/image/case-study-01.png";
+            buildSearchKeywords(item) {
+                return `
+                    ${item.title || ""}
+                    ${item.category || ""}
+                    ${item.categorySlug || ""}
+                    ${item.description || ""}
+                    ${item.excerpt || ""}
+                    ${item.cardQuote || ""}
+                    ${item.quote || ""}
+                `;
+            },
+            renderCard({ item, escapeHtml, shortText, getDetailUrl }) {
+                const detailUrl = getDetailUrl(item.id);
+                const thumbnail = item.thumbnail || item.termThumb || "assets/image/case-study-01.png";
 
                 return `
-                    <article class="case-card h-100">
-                        <div class="case-card-img">
-                        <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(item.title || "Case Study")}">
-                        </div>
-
-                        <div class="case-card-body">
-                        <span class="solution-badge">${escapeHtml(item.category || "Case Study")}</span>
-                        <h3>${escapeHtml(item.title || "")}</h3>
-                        <p>${escapeHtml(shortText(item.description || ""))}</p>
-
-                        ${item.cardQuote || item.quote ? `
-                            <div class="case-quote">
-                            “${escapeHtml(item.cardQuote || item.quote || "")}”
-                            </div>
-                        ` : ""}
-
-                        <a href="${detailUrl}" class="case-link">
-                            Xem chi tiết <i class="fa-solid fa-arrow-right"></i>
+                    <div class="term-thumb">
+                        <img
+                            src="${escapeHtml(thumbnail)}"
+                            alt="${escapeHtml(item.title || item.termName || "Case Study")}"
+                            class="term-thumb-img"
+                            loading="lazy">
+                        <a href="${detailUrl}" class="thumb-play" aria-label="Xem chi tiết">
+                            <i class="bi bi-play-fill"></i>
                         </a>
-                        </div>
-                    </article>
-                    `;
+                    </div>
+
+                    <div class="term-body">
+                        <h3>${escapeHtml(item.title || item.termName || "")}</h3>
+                        <p>${escapeHtml(shortText(item.description || ""))}</p>
+                        <a href="${detailUrl}" class="term-open-modal">
+                            Xem chi tiết <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
             }
         });
     </script>
 
+    <script>
+        const advisor = document.querySelector(".hero-advisor");
+
+        if (advisor) {
+            advisor.addEventListener("touchstart", () => {
+                advisor.classList.add("is-active");
+            });
+
+            advisor.addEventListener("touchend", () => {
+                setTimeout(() => {
+                    advisor.classList.remove("is-active");
+                }, 500);
+            });
+        }
+    </script>
 </body>
 
 </html>

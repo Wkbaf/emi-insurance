@@ -67,7 +67,7 @@ const ADMIN = {
 
 const EDITOR = {
   role: "editor",
-  permissions: ["dashboard:view", "terms:manage", "blogs:manage", "categories:manage", "case-studies:manage", "convert-links:manage", "configs:manage"],
+  permissions: ["dashboard:view", "terms:manage", "blogs:manage", "categories:manage", "videos:manage", "convert-links:manage", "configs:manage"],
 };
 
 /**
@@ -129,7 +129,8 @@ admin.initializeApp({ credential: admin.credential.cert(require("./serviceAccoun
 
 async function setRole() {
   try {
-    const uid = "YVzDRckntLOO8j8yonsDeesfIWf2";
+    const uid = "YVzDRckntLOO8j8yonsDeesfIWf2"; // EDITOR
+    // const uid = "0l6aDQHhrHXRjtK5m9jkubLpZjE3"; // SUPER_ADMIN
 
     await admin.auth().setCustomUserClaims(
       uid,

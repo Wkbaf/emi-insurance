@@ -111,7 +111,7 @@
             <div class="col-md-3">
                 <div class="stat-box d-flex justify-content-between align-items-center">
                     <div>
-                        <div class="text-muted">Case Study</div>
+                        <div class="text-muted">Case Study Video</div>
                         <h3 id="caseStudyCount" class="fw-bold mt-2 mb-0">0</h3>
                     </div>
                     <div class="stat-icon"><i class="bi bi-shield-check"></i></div>
@@ -170,7 +170,7 @@
                         <h5 class="fw-bold">Case Study thực tế</h5>
                         <p class="text-muted mb-0">Quản lý và xem trang case study thực tế.</p>
                         <div class="quick-card-actions">
-                            <a href="case-study.html" class="btn btn-success">
+                            <a href="case-study-video.html" class="btn btn-success">
                                 <i class="bi bi-pencil-square me-1"></i> Quản lý
                             </a>
                             <a href="../case-study-thuc-te.html" class="btn btn-outline-success" target="_blank">
@@ -214,17 +214,18 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4">
                 <div class="content-card h-100">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                         <div>
-                            <h4 class="dashboard-section-title mb-1">Lịch sử Case Study</h4>
-                            <div class="text-muted">Log gần đây từ bảng <strong>caseStudies</strong></div>
+                            <h4 class="dashboard-section-title mb-1">Lịch sử Case Study Video</h4>
+                            <div class="text-muted">Log gần đây từ bảng <strong>caseStudyVideos</strong></div>
                         </div>
                     </div>
 
-                    <div id="caseStudyHistory" class="history-widget">
-                        <div class="history-empty">Đang tải lịch sử case study...</div>
+                    <div id="caseStudyVideoHistory" class="history-widget">
+                        <div class="history-empty">Đang tải lịch sử case study video...</div>
                     </div>
                 </div>
             </div>
@@ -259,11 +260,11 @@
     <script>
         const HISTORY_SOURCES = [
             {
-                collection: "caseStudies",
-                label: "Case Study",
-                icon: "bi-shield-check",
-                wrapperId: "caseStudyHistory",
-                titleFields: ["title", "name"],
+                collection: "caseStudyVideos",
+                label: "Case Study Video",
+                icon: "bi-camera-video",
+                wrapperId: "caseStudyVideoHistory",
+                titleFields: ["title", "termName", "name"],
                 subtitleFields: ["category", "description"],
                 showUrl: (id) => `../case-study-detail.html?id=${encodeURIComponent(id)}`
             },
@@ -274,7 +275,7 @@
                 wrapperId: "termHistory",
                 titleFields: ["termName", "title", "term", "name"],
                 subtitleFields: ["category", "definition", "description"],
-                showUrl: (id) => `giai-ma-thuat-ngu.html?show=${encodeURIComponent(id)}`
+                showUrl: (id) => `../video-detail.html?id=${encodeURIComponent(id)}`
             },
             {
                 collection: "blogs",
@@ -312,14 +313,14 @@
 
         async function loadDashboardStats() {
             try {
-                const [termsSnapshot, caseStudiesSnapshot, blogsSnapshot] = await Promise.all([
+                const [termsSnapshot, caseStudyVideosSnapshot, blogsSnapshot] = await Promise.all([
                     db.collection("explainCards").where("isDeleted", "==", false).get(),
-                    db.collection("caseStudies").where("isDeleted", "==", false).get(),
+                    db.collection("caseStudyVideos").where("isDeleted", "==", false).get(),
                     db.collection("blogs").where("isDeleted", "==", false).get()
                 ]);
 
                 const termCount = termsSnapshot.size || 0;
-                const caseStudyCount = caseStudiesSnapshot.size || 0;
+                const caseStudyCount = caseStudyVideosSnapshot.size || 0;
                 const blogCount = blogsSnapshot.size || 0;
 
                 document.getElementById("termCount").innerText = termCount;

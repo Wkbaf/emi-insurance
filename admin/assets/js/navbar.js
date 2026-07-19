@@ -14,6 +14,13 @@ const NAV_ITEMS = [
     key: "giai-ma-thuat-ngu",
   },
   {
+    label: "Manage Case Study Video",
+    href: "/admin/case-study-video",
+    icon: "bi-camera-video",
+    permission: "videos:manage",
+    key: "case-study-video",
+  },
+  {
     label: "Case study",
     href: "/admin/case-study",
     icon: "bi-journal-text",
@@ -84,6 +91,7 @@ function getCurrentPageKey() {
 
   if (path.includes("dashboard")) return "dashboard";
   if (path.includes("giai-ma-thuat-ngu")) return "giai-ma-thuat-ngu";
+  if (path.includes("case-study-video")) return "case-study-video";
   if (path.includes("case-study")) return "case-study";
   if (path.includes("blog")) return "blog";
   if (path.includes("categories")) return "categories";

@@ -3,6 +3,7 @@ const auth = firebase.auth();
 const PAGE_PERMISSIONS = {
   dashboard: "dashboard:view",
   "giai-ma-thuat-ngu": "terms:manage",
+  "case-study-video": "videos:manage",
   "case-study": "case-studies:manage",
   blog: "blogs:manage",
   categories: "categories:manage",
