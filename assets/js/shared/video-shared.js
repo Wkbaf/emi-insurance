@@ -133,7 +133,7 @@
     }
 
     if (config.shareType) {
-      return `https://share.emi-insurance.com/share?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(config.shareType)}&v=${Date.now()}`;
+      return `https://share.emi-insurance.com/share?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(config.shareType)}`;
     }
 
     const origin = window.location.origin;

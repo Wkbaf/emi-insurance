@@ -296,7 +296,7 @@
   // }
 
   function getShareUrl(item, config) {
-    return `https://share.emi-insurance.com/share?id=${encodeURIComponent(item.id)}&type=blog&v=${Date.now()}`;
+    return `https://share.emi-insurance.com/share?id=${encodeURIComponent(item.id)}&type=blog`;
   }
 
   function renderShareBox(item, config) {
