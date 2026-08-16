@@ -202,8 +202,127 @@
     `;
   }
 
+  function hasText(value) {
+    return String(value || "").trim().length > 0;
+  }
+
+  async function resolveCanShare(config) {
+    if (config.canShare !== true) return false;
+
+    const pageKey = config.shareSettingKey || "videoDetail";
+
+    if (window.EMISiteConfig?.getShareLinkEnabled) {
+      return window.EMISiteConfig.getShareLinkEnabled(pageKey);
+    }
+
+    if (window.EMISiteConfig?.isShareLinkEnabled) {
+      return window.EMISiteConfig.isShareLinkEnabled(pageKey);
+    }
+
+    if (typeof db === "undefined") return true;
+
+    try {
+      const doc = await db.collection("siteSettings").doc("config").get();
+      const data = doc.exists ? doc.data() : {};
+      const shareLinks = data.shareLinks || {};
+      const legacyEnabled = data.shareLinkEnabled !== false;
+
+      if (shareLinks[pageKey] !== undefined) {
+        return shareLinks[pageKey] !== false;
+      }
+
+      return legacyEnabled;
+    } catch (error) {
+      return true;
+    }
+  }
+
+  async function resolveContactActionEnabled(config) {
+    const pageKey = config.contactActionSettingKey || config.shareSettingKey || "videoDetail";
+
+    if (window.EMISiteConfig?.getContactActionEnabled) {
+      return window.EMISiteConfig.getContactActionEnabled(pageKey);
+    }
+
+    if (window.EMISiteConfig?.isContactActionEnabled) {
+      return window.EMISiteConfig.isContactActionEnabled(pageKey);
+    }
+
+    if (typeof db === "undefined") return true;
+
+    try {
+      const doc = await db.collection("siteSettings").doc("config").get();
+      const data = doc.exists ? doc.data() : {};
+      const contactActionLinks = data.contactActionLinks || {};
+      const legacyEnabled = data.contactActionEnabled !== false;
+
+      if (contactActionLinks[pageKey] !== undefined) {
+        return contactActionLinks[pageKey] !== false;
+      }
+
+      return legacyEnabled;
+    } catch (error) {
+      return true;
+    }
+  }
+
   function renderTermContent(item, config) {
-    const notes = Array.isArray(item.notes) ? item.notes : [];
+    const notes = Array.isArray(item.notes)
+      ? item.notes.filter((note) => hasText(note))
+      : [];
+    const definitionLabel =
+      item.definitionLabel || config.defaultDefinitionLabel || "1. Định nghĩa chuẩn";
+    const simpleLabel =
+      item.simpleLabel || config.defaultSimpleLabel || '2. EMI "dịch"';
+    const notesLabel =
+      item.notesLabel || config.defaultNotesLabel || "3. Điều cần lưu ý";
+
+    const definitionBlock = hasText(item.definition)
+      ? `
+        <div class="explain-card explain-full">
+          <div class="explain-icon">
+            <i class="bi bi-journal-text"></i>
+          </div>
+          <div class="explain-content">
+            <span class="explain-label">${escapeHtml(definitionLabel)}</span>
+            <p>${formatMultiline(item.definition)}</p>
+          </div>
+        </div>
+      `
+      : "";
+
+    const simpleBlock = hasText(item.simple)
+      ? `
+        <div class="explain-card explain-full">
+          <div class="explain-icon">
+            <i class="bi bi-lightbulb"></i>
+          </div>
+          <div class="explain-content">
+            <span class="explain-label">${escapeHtml(simpleLabel)}</span>
+            <p>${formatMultiline(item.simple)}</p>
+          </div>
+        </div>
+      `
+      : "";
+
+    const notesBlock = notes.length
+      ? `
+        <div class="explain-card explain-full">
+          <div class="explain-icon warning">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="explain-content">
+            <span class="explain-label">${escapeHtml(notesLabel)}</span>
+            <ul>${notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
+          </div>
+        </div>
+      `
+      : "";
+
+    const contentGrid =
+      definitionBlock || simpleBlock || notesBlock
+        ? `<div class="modal-content-grid">${definitionBlock}${simpleBlock}${notesBlock}</div>`
+        : "";
 
     return `
       <div class="video-detail-head">
@@ -214,41 +333,17 @@
 
       ${renderVideoEmbed(item, config)}
 
-      <div class="modal-content-grid">
-        <div class="explain-card explain-full">
-          <div class="explain-icon">
-            <i class="bi bi-journal-text"></i>
-          </div>
-          <div class="explain-content">
-            <span class="explain-label">1. Định nghĩa chuẩn</span>
-            <p>${formatMultiline(item.definition)}</p>
-          </div>
-        </div>
+      ${contentGrid}
 
-        <div class="explain-card explain-full">
-          <div class="explain-icon">
-            <i class="bi bi-lightbulb"></i>
-          </div>
-          <div class="explain-content">
-            <span class="explain-label">2. EMI “dịch”</span>
-            <p>${formatMultiline(item.simple)}</p>
-          </div>
-        </div>
-
-        <div class="explain-card explain-full">
-          <div class="explain-icon warning">
-            <i class="bi bi-exclamation-triangle"></i>
-          </div>
-          <div class="explain-content">
-            <span class="explain-label">3. Điều cần lưu ý</span>
-            <ul>${notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
-          </div>
-        </div>
-      </div>
-
+      ${
+        config.showContactAction !== false
+          ? `
       <div class="modal-action">
         <a href="#contact">Đặt lịch tư vấn ngay <i class="bi bi-arrow-right"></i></a>
       </div>
+      `
+          : ""
+      }
 
       ${renderShareBox(item, config)}
     `;
@@ -508,7 +603,11 @@
         categoryEl.textContent = item.category || config.defaultCategory || "";
       }
 
-      elements.articleContent.innerHTML = renderContent(item, config);
+      elements.articleContent.innerHTML = renderContent(item, {
+        ...config,
+        canShare: await resolveCanShare(config),
+        showContactAction: await resolveContactActionEnabled(config),
+      });
       loadSidebarItems(item.id, config, elements);
     } catch (error) {
       console.error("Firestore Error:", error);

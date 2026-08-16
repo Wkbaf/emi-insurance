@@ -467,6 +467,37 @@
     }
   }
 
+  async function resolveCanShare(config) {
+    if (config.canShare !== true) return false;
+
+    const pageKey = config.shareSettingKey || "blogDetail";
+
+    if (window.EMISiteConfig?.getShareLinkEnabled) {
+      return window.EMISiteConfig.getShareLinkEnabled(pageKey);
+    }
+
+    if (window.EMISiteConfig?.isShareLinkEnabled) {
+      return window.EMISiteConfig.isShareLinkEnabled(pageKey);
+    }
+
+    if (typeof db === "undefined") return true;
+
+    try {
+      const doc = await db.collection("siteSettings").doc("config").get();
+      const data = doc.exists ? doc.data() : {};
+      const shareLinks = data.shareLinks || {};
+      const legacyEnabled = data.shareLinkEnabled !== false;
+
+      if (shareLinks[pageKey] !== undefined) {
+        return shareLinks[pageKey] !== false;
+      }
+
+      return legacyEnabled;
+    } catch (error) {
+      return true;
+    }
+  }
+
   async function loadDetail(id, config, elements) {
     if (!id) {
       renderError(
@@ -512,10 +543,14 @@
       }
 
       document.title = `${item.title || config.defaultTitle} | EMI Insurance`;
-      renderHero(item, config, elements);
-      renderArticle(item, config, elements);
-      renderCurrentSidebar(item, config, elements);
-      loadSidebar(item.id, config, elements);
+      const activeConfig = {
+        ...config,
+        canShare: await resolveCanShare(config),
+      };
+      renderHero(item, activeConfig, elements);
+      renderArticle(item, activeConfig, elements);
+      renderCurrentSidebar(item, activeConfig, elements);
+      loadSidebar(item.id, activeConfig, elements);
     } catch (error) {
       console.error("Firestore Error:", error);
       renderError(
