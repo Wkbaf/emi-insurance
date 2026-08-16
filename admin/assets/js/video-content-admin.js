@@ -326,12 +326,15 @@ window.VideoContentAdmin = {
       document.getElementById("category").value = categoryData.id || "";
       document.getElementById("video").value = item.video || "";
       document.getElementById("definition").value = item.definition || "";
+      document.getElementById("definitionLabel").value = item.definitionLabel || "";
       document.getElementById("simple").value = item.simple || "";
+      document.getElementById("simpleLabel").value = item.simpleLabel || "";
       document.getElementById("description").value = item.description || "";
       document.getElementById("youtube").value = item.youtube || "";
       document.getElementById("notes").value = Array.isArray(item.notes)
         ? item.notes.join("\n")
         : "";
+      document.getElementById("notesLabel").value = item.notesLabel || "";
       setItemThumb(getItemThumb(item));
 
       termModal.show();
@@ -352,11 +355,14 @@ window.VideoContentAdmin = {
         <div class="view-block"><label>Category</label><p>${escapeHtml(categoryData.name || "")}</p></div>
         <div class="view-block"><label>Video</label><p>${escapeHtml(item.video || "")}</p></div>
         <div class="view-block"><label>Definition</label><p>${multiline(item.definition)}</p></div>
+        <div class="view-block"><label>Definition label</label><p>${escapeHtml(item.definitionLabel || "1. Định nghĩa chuẩn")}</p></div>
         <div class="view-block"><label>Simple</label><p>${multiline(item.simple)}</p></div>
+        <div class="view-block"><label>Simple label</label><p>${escapeHtml(item.simpleLabel || '2. EMI "dịch"')}</p></div>
         <div class="view-block"><label>Description</label><p>${multiline(item.description)}</p></div>
         <div class="view-block"><label>Youtube</label><p>${escapeHtml(item.youtube || "")}</p></div>
         <div class="view-block"><label>Thumbnail</label><p>${escapeHtml(getItemThumb(item))}</p></div>
-        <div class="view-block"><label>Notes</label><ul class="mb-0">${(item.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul></div>`;
+        <div class="view-block"><label>Notes</label><ul class="mb-0">${(item.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul></div>
+        <div class="view-block"><label>Notes label</label><p>${escapeHtml(item.notesLabel || "3. Điều cần lưu ý")}</p></div>`;
 
       viewModal.show();
     }
@@ -391,7 +397,9 @@ window.VideoContentAdmin = {
         categoryStatus: selectedCategory.status || "active",
         video: document.getElementById("video").value.trim(),
         definition: document.getElementById("definition").value.trim(),
+        definitionLabel: document.getElementById("definitionLabel").value.trim(),
         simple: document.getElementById("simple").value.trim(),
+        simpleLabel: document.getElementById("simpleLabel").value.trim(),
         description: document.getElementById("description").value.trim(),
         youtube: document.getElementById("youtube").value.trim(),
         notes: document
@@ -399,6 +407,7 @@ window.VideoContentAdmin = {
           .value.split("\n")
           .map((note) => note.trim())
           .filter(Boolean),
+        notesLabel: document.getElementById("notesLabel").value.trim(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
 

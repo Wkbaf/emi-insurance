@@ -1,5 +1,6 @@
 const SITE_CONFIG_DOC = "config";
 let saveStatusTimer = null;
+let saveStatusHideTimer = null;
 
 const DEFAULT_ADVISORS = [
   {
@@ -199,10 +200,12 @@ function hideSaveStatus() {
   if (!popup) return;
 
   clearTimeout(saveStatusTimer);
+  clearTimeout(saveStatusHideTimer);
   popup.classList.remove("show");
 
-  window.setTimeout(() => {
+  saveStatusHideTimer = window.setTimeout(() => {
     popup.hidden = true;
+    saveStatusHideTimer = null;
   }, 250);
 }
 
@@ -215,6 +218,7 @@ function showSaveStatus(type, message) {
   if (!popup || !textEl || !iconEl || !cardEl) return;
 
   clearTimeout(saveStatusTimer);
+  clearTimeout(saveStatusHideTimer);
 
   cardEl.className = `save-status-popup-card ${type}`;
   iconEl.className = type === "success"
@@ -230,6 +234,66 @@ function showSaveStatus(type, message) {
   }, 4000);
 }
 
+function normalizeShareLinks(data = {}) {
+  const legacyEnabled = data.shareLinkEnabled !== false;
+  const links = data.shareLinks || {};
+
+  return {
+    blogDetail: links.blogDetail !== undefined ? links.blogDetail !== false : legacyEnabled,
+    videoDetail: links.videoDetail !== undefined ? links.videoDetail !== false : legacyEnabled,
+    caseStudyDetail: links.caseStudyDetail !== undefined ? links.caseStudyDetail !== false : legacyEnabled,
+  };
+}
+
+function applyShareLinksToForm(data = {}) {
+  const shareLinks = normalizeShareLinks(data);
+  const blogToggle = document.getElementById("shareLinkBlogDetail");
+  const videoToggle = document.getElementById("shareLinkVideoDetail");
+  const caseStudyToggle = document.getElementById("shareLinkCaseStudyDetail");
+
+  if (blogToggle) blogToggle.checked = shareLinks.blogDetail;
+  if (videoToggle) videoToggle.checked = shareLinks.videoDetail;
+  if (caseStudyToggle) caseStudyToggle.checked = shareLinks.caseStudyDetail;
+}
+
+function collectShareLinksFromForm() {
+  return {
+    blogDetail: document.getElementById("shareLinkBlogDetail")?.checked !== false,
+    videoDetail: document.getElementById("shareLinkVideoDetail")?.checked !== false,
+    caseStudyDetail: document.getElementById("shareLinkCaseStudyDetail")?.checked !== false,
+  };
+}
+
+function normalizeContactActionLinks(data = {}) {
+  const legacyEnabled = data.contactActionEnabled !== false;
+  const links = data.contactActionLinks || {};
+
+  return {
+    blogDetail: links.blogDetail !== undefined ? links.blogDetail !== false : legacyEnabled,
+    videoDetail: links.videoDetail !== undefined ? links.videoDetail !== false : legacyEnabled,
+    caseStudyDetail: links.caseStudyDetail !== undefined ? links.caseStudyDetail !== false : legacyEnabled,
+  };
+}
+
+function applyContactActionLinksToForm(data = {}) {
+  const contactActionLinks = normalizeContactActionLinks(data);
+  const blogToggle = document.getElementById("contactActionBlogDetail");
+  const videoToggle = document.getElementById("contactActionVideoDetail");
+  const caseStudyToggle = document.getElementById("contactActionCaseStudyDetail");
+
+  if (blogToggle) blogToggle.checked = contactActionLinks.blogDetail;
+  if (videoToggle) videoToggle.checked = contactActionLinks.videoDetail;
+  if (caseStudyToggle) caseStudyToggle.checked = contactActionLinks.caseStudyDetail;
+}
+
+function collectContactActionLinksFromForm() {
+  return {
+    blogDetail: document.getElementById("contactActionBlogDetail")?.checked !== false,
+    videoDetail: document.getElementById("contactActionVideoDetail")?.checked !== false,
+    caseStudyDetail: document.getElementById("contactActionCaseStudyDetail")?.checked !== false,
+  };
+}
+
 async function loadSiteConfig() {
   const toggle = document.getElementById("partnerSectionEnabled");
   const aboutInput = document.getElementById("imageAbout");
@@ -242,6 +306,8 @@ async function loadSiteConfig() {
     const images = data.images || {};
 
     toggle.checked = data.partnerSectionEnabled !== false;
+    applyShareLinksToForm(data);
+    applyContactActionLinksToForm(data);
 
     if (aboutInput) {
       aboutInput.value = images.about || "";
@@ -252,6 +318,8 @@ async function loadSiteConfig() {
   } catch (error) {
     console.error("Load site config error:", error);
     toggle.checked = true;
+    applyShareLinksToForm({});
+    applyContactActionLinksToForm({});
     renderAdvisorList(DEFAULT_ADVISORS);
   }
 }
@@ -278,6 +346,8 @@ async function saveSiteConfig() {
   try {
     await db.collection("siteSettings").doc(SITE_CONFIG_DOC).set({
       partnerSectionEnabled: toggle.checked,
+      shareLinks: collectShareLinksFromForm(),
+      contactActionLinks: collectContactActionLinksFromForm(),
       images: {
         about: aboutInput?.value.trim() || "",
       },

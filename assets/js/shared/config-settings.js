@@ -96,12 +96,36 @@
     }));
   }
 
+  function normalizeShareLinks(data = {}) {
+    const legacyEnabled = data.shareLinkEnabled !== false;
+    const links = data.shareLinks || {};
+
+    return {
+      blogDetail: links.blogDetail !== undefined ? links.blogDetail !== false : legacyEnabled,
+      videoDetail: links.videoDetail !== undefined ? links.videoDetail !== false : legacyEnabled,
+      caseStudyDetail: links.caseStudyDetail !== undefined ? links.caseStudyDetail !== false : legacyEnabled,
+    };
+  }
+
+  function normalizeContactActionLinks(data = {}) {
+    const legacyEnabled = data.contactActionEnabled !== false;
+    const links = data.contactActionLinks || {};
+
+    return {
+      blogDetail: links.blogDetail !== undefined ? links.blogDetail !== false : legacyEnabled,
+      videoDetail: links.videoDetail !== undefined ? links.videoDetail !== false : legacyEnabled,
+      caseStudyDetail: links.caseStudyDetail !== undefined ? links.caseStudyDetail !== false : legacyEnabled,
+    };
+  }
+
   function buildCachePayload(data) {
     const images = data?.images || {};
     const rawAdvisors = Array.isArray(data.advisors) ? data.advisors : [];
 
     return {
       partnerSectionEnabled: data.partnerSectionEnabled !== false,
+      shareLinks: normalizeShareLinks(data),
+      contactActionLinks: normalizeContactActionLinks(data),
       images: {
         about: images.about || "",
       },
@@ -244,16 +268,31 @@
     renderAdvisors(data);
   }
 
-  async function applySiteConfig() {
-    const hasConfigTargets =
-      document.getElementById("partners") ||
-      document.getElementById("advisorGrid") ||
-      document.querySelector('[data-config-image="about"]');
+  function isShareLinkEnabled(pageKey, data) {
+    const source = data || getCachedConfig() || {};
+    const shareLinks = source.shareLinks || normalizeShareLinks(source);
 
-    if (!hasConfigTargets) return;
+    if (pageKey && shareLinks[pageKey] !== undefined) {
+      return shareLinks[pageKey] !== false;
+    }
 
+    return source.shareLinkEnabled !== false;
+  }
+
+  function isContactActionEnabled(pageKey, data) {
+    const source = data || getCachedConfig() || {};
+    const contactActionLinks = source.contactActionLinks || normalizeContactActionLinks(source);
+
+    if (pageKey && contactActionLinks[pageKey] !== undefined) {
+      return contactActionLinks[pageKey] !== false;
+    }
+
+    return source.contactActionEnabled !== false;
+  }
+
+  async function loadSiteConfigData() {
     if (typeof db === "undefined") {
-      return;
+      return getCachedConfig() || {};
     }
 
     try {
@@ -261,11 +300,38 @@
       const data = doc.exists ? doc.data() : {};
 
       cacheConfig(data);
-      applySiteData(data);
+      return data;
     } catch (error) {
       console.log("Site config error:", error);
+      return getCachedConfig() || {};
     }
   }
+
+  async function applySiteConfig() {
+    const data = await loadSiteConfigData();
+
+    const hasConfigTargets =
+      document.getElementById("partners") ||
+      document.getElementById("advisorGrid") ||
+      document.querySelector('[data-config-image="about"]');
+
+    if (!hasConfigTargets) return;
+
+    applySiteData(data);
+  }
+
+  window.EMISiteConfig = {
+    isShareLinkEnabled,
+    getShareLinkEnabled: async function (pageKey) {
+      const data = await loadSiteConfigData();
+      return isShareLinkEnabled(pageKey, data);
+    },
+    isContactActionEnabled,
+    getContactActionEnabled: async function (pageKey) {
+      const data = await loadSiteConfigData();
+      return isContactActionEnabled(pageKey, data);
+    },
+  };
 
   document.addEventListener("DOMContentLoaded", () => {
     const cached = getCachedConfig();
